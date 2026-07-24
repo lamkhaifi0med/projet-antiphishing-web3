@@ -5,6 +5,8 @@
 *.key
 *.pem
 secrets/
+# Local credential notes; never store or commit private keys here.
+comptes/
 
 # --- Node ---
 node_modules/

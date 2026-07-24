@@ -8,20 +8,21 @@ Concevoir, développer, tester, déployer et sécuriser le smart contract `Phish
 
 ## 2. Vos responsabilités (RACI simplifié)
 
-| Tâche | Vous | Binôme |
-|---|---|---|
-| Smart contract + tests + déploiement | **Responsable** | Relecteur |
-| Scripts d'interaction ethers.js | **Responsable** | Relecteur |
-| Workflow n8n WF3 (écriture on-chain) et WF4 (check) | **Responsable** | Support |
-| Audit sécurité du contrat + gestion des clés | **Responsable** | Relecteur |
-| Prompts IA, dataset, évaluation | Relecteur | Responsable |
-| Workflows n8n WF1 (ingestion) et WF2 (analyse) | Support | Responsable |
-| Durcissement n8n + anti prompt-injection | Relecteur | Responsable |
-| Rapport final | Sections 1 (archi blockchain) & 4 (sécurité) | Sections 2 (IA) & 3 (n8n) |
+| Tâche                                               | Vous                                         | Binôme                    |
+| --------------------------------------------------- | -------------------------------------------- | ------------------------- |
+| Smart contract + tests + déploiement                | **Responsable**                              | Relecteur                 |
+| Scripts d'interaction ethers.js                     | **Responsable**                              | Relecteur                 |
+| Workflow n8n WF3 (écriture on-chain) et WF4 (check) | **Responsable**                              | Support                   |
+| Audit sécurité du contrat + gestion des clés        | **Responsable**                              | Relecteur                 |
+| Prompts IA, dataset, évaluation                     | Relecteur                                    | Responsable               |
+| Workflows n8n WF1 (ingestion) et WF2 (analyse)      | Support                                      | Responsable               |
+| Durcissement n8n + anti prompt-injection            | Relecteur                                    | Responsable               |
+| Rapport final                                       | Sections 1 (archi blockchain) & 4 (sécurité) | Sections 2 (IA) & 3 (n8n) |
 
 ## 3. Vos exigences à implémenter
 
 ### Smart contract `PhishingRegistry` (Phase 1, J5–J11)
+
 - **RF-B1** — URLs blacklistées stockées en `keccak256(url normalisée)` — règle de normalisation figée en §8.4 du cahier des charges complet.
 - **RF-B2** — Blacklist d'adresses wallet (`address`).
 - **RF-B3 à RF-B7** — Implémenter exactement l'interface Solidity figée en §8.5 du cahier des charges complet (enum `Category`, struct `Entry`, signatures des fonctions et events).
@@ -30,11 +31,13 @@ Concevoir, développer, tester, déployer et sécuriser le smart contract `Phish
 - **RF-B10** — Tests Hardhat, couverture ≥ 90 % (cas nominaux + accès refusés + doublons + suppression).
 
 ### Intégration n8n côté chaîne (Phase 3, J15–J26)
+
 - **RF-N8 (partie chain)** — WF3 : nœud qui appelle votre script/endpoint pour écrire on-chain, récupère le tx hash, gère l'échec (retry, alerte).
 - **RF-N10** — WF4 : endpoint `GET /check` conforme à la spéc §8.2 du cahier des charges complet.
 - **RF-N4 (partie chain)** — fournir au WF1 de votre binôme la fonction de pré-vérification "déjà blacklisté ?".
 
 ### Sécurité (Phase 4, J25–J31)
+
 - **RF-S1** — Clé privée du reporter en `.env` / credentials n8n uniquement ; vérifier le `.gitignore` dès J1.
 - **RF-S2** — Deux adresses distinctes : owner (vous, MetaMask) ≠ reporter (n8n).
 - **RF-S3** — Audit Slither + revue manuelle : access control, réentrance, DoS par gas, front-running (documenter pourquoi il est ou non applicable).
@@ -42,17 +45,82 @@ Concevoir, développer, tester, déployer et sécuriser le smart contract `Phish
 
 ## 4. Votre planning
 
-| Jours | Tâches | Jalon |
-|---|---|---|
-| J1–J4 | Installer Node LTS, Git, VS Code + ext. Solidity ; MetaMask (2 comptes : owner, reporter) ; POL test via faucets Amoy ; init Hardhat dans `contracts/` ; se former : Solidity basics, CryptoZombies/Speedrun Ethereum | Env prêt, faucet OK |
-| J5–J6 | Spéc détaillée du contrat (structs, mappings, events) validée avec le binôme | Spéc signée |
-| J7–J9 | Développement + tests unitaires | Tests verts, couverture ≥ 90 % |
-| J10–J11 | Déploiement Amoy + vérification Polygonscan + scripts ethers.js | **Livrable L2** |
-| J12–J16 | Support binôme : relecture prompts, aide dataset ; script `batchReport` ; écoute d'events | — |
-| J15–J20 | WF4 (check) + fonction de déduplication pour WF1 | /check opérationnel |
-| J21–J26 | WF3 (écriture on-chain + gestion erreurs + tx hash dans les logs) | **Livrable L1** (avec binôme) |
-| J25–J31 | Audit Slither, revue manuelle, doc de gestion des clés | **Livrable L4** (avec binôme) |
-| J32–J40 | Tests E2E, démo, rapport (sections blockchain + sécurité), soutenance | **L5, L6** |
+| Jours   | Tâches                                                                                                                                                                                                                | Jalon                          |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| J1–J4   | Installer Node LTS, Git, VS Code + ext. Solidity ; MetaMask (2 comptes : owner, reporter) ; POL test via faucets Amoy ; init Hardhat dans `contracts/` ; se former : Solidity basics, CryptoZombies/Speedrun Ethereum | Env prêt, faucet OK            |
+| J5–J6   | Spéc détaillée du contrat (structs, mappings, events) validée avec le binôme                                                                                                                                          | Spéc signée                    |
+| J7–J9   | Développement + tests unitaires                                                                                                                                                                                       | Tests verts, couverture ≥ 90 % |
+| J10–J11 | Déploiement Amoy + vérification Polygonscan + scripts ethers.js                                                                                                                                                       | **Livrable L2**                |
+| J12–J16 | Support binôme : relecture prompts, aide dataset ; script `batchReport` ; écoute d'events                                                                                                                             | —                              |
+| J15–J20 | WF4 (check) + fonction de déduplication pour WF1                                                                                                                                                                      | /check opérationnel            |
+| J21–J26 | WF3 (écriture on-chain + gestion erreurs + tx hash dans les logs)                                                                                                                                                     | **Livrable L1** (avec binôme)  |
+| J25–J31 | Audit Slither, revue manuelle, doc de gestion des clés                                                                                                                                                                | **Livrable L4** (avec binôme)  |
+| J32–J40 | Tests E2E, démo, rapport (sections blockchain + sécurité), soutenance                                                                                                                                                 | **L5, L6**                     |
+
+### 4.1 Plan d'exécution détaillé — votre feuille de route
+
+#### Bloc A — Fondations et contrat local (J1–J4)
+
+| Jour | Travail précis                                                                                                                                                              | Résultat vérifiable                                                                      |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| J1   | Installer/vérifier Node.js, Git, Docker ; créer le dépôt privé et la branche `feat/phishing-registry` ; créer les comptes MetaMask `Owner` et `Reporter`.                   | Outils disponibles, branch créée, transaction Amoy Owner → Reporter confirmée.           |
+| J2   | Ajouter Polygon Amoy (chain ID `80002`), obtenir des POL de test ; renseigner `AMOY_RPC_URL` dans `.env` ; relire les sections 8.4 et 8.5 du cahier complet avec le binôme. | Réseau Amoy utilisable ; accord commun sur la normalisation URL et l'interface Solidity. |
+| J3   | Initialiser Hardhat TypeScript dans `contracts/` ; installer OpenZeppelin ; écrire la configuration Amoy ; coder le squelette de `PhishingRegistry.sol`.                    | `npm run compile` passe localement.                                                      |
+| J4   | Écrire les tests unitaires : rôles, URL, wallets, doublons, suppressions, scores ; lancer la couverture ; soumettre une PR de revue au binôme.                              | `npm test` vert ; couverture lignes ≥ 90 %.                                              |
+
+**État actuel (24/07/2026) :** J1–J11 sont réalisés sur votre branche : Hardhat est configuré, le contrat existe, 13 tests passent, la couverture est de 100 % lignes / 92,31 % branches, le contrat est déployé et vérifié sur Amoy, et les scripts `check`, `report`, `batchReport` et `listen` ont été validés avec une URL réservée `.invalid`.
+
+#### Bloc B — Finaliser et déployer le registre (J5–J11)
+
+| Jour | Travail précis                                                                                                                                                                                                     | Commande / preuve attendue                                                      |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| J5   | Relire le contrat ligne par ligne avec le binôme : vérifier les rôles, le score `0–100`, les events, l'interdiction d'écrire sans rôle et le comportement des faux positifs. Appliquer les corrections approuvées. | PR revue et fusionnée vers `main`.                                              |
+| J6   | Préparer le déploiement : exporter **uniquement** les clés privées `Owner` et `Reporter` dans `.env` ; créer une clé API Polygonscan ; ne jamais copier la phrase de récupération. Vérifier `.gitignore`.          | `.env` complet mais non suivi : `git ls-files` ne doit jamais afficher `.env`.  |
+| J7   | Déployer via `npm run deploy:amoy`. Le script déploie avec Owner puis autorise Reporter. Noter l'adresse du contrat, les hashes de transactions et les liens Polygonscan.                                          | `PhishingRegistry` visible dans l'explorer ; `reporters(reporter)` vaut `true`. |
+| J8   | Vérifier le code source sur Polygonscan, automatiquement ou avec `npm run verify:amoy -- <ADRESSE> <OWNER_ADDRESS>`. Tester lecture et écriture depuis un script local.                                            | Contrat marqué **Contract Source Code Verified**.                               |
+| J9   | Écrire les scripts root `scripts/report.js` et `scripts/check.js` avec ethers v6 : ils appliquent la normalisation, calculent `keccak256`, lisent ou écrivent et retournent du JSON.                               | Une URL de démo peut être reportée puis trouvée par `check.js`.                 |
+| J10  | Écrire `scripts/listen.js` (events `URLReported` / `WalletReported`) et documenter les transactions, gas et erreurs réseau.                                                                                        | Listener affiche un event de test.                                              |
+| J11  | Préparer le paquet de livraison L2 : URL du contrat, ABI/artefact, commandes, résultats tests/couverture, captures Polygonscan et court guide d'intégration pour le binôme.                                        | **L2 terminé** ; binôme capable d'appeler `check` sans aide.                    |
+
+#### Bloc C — Intégration avec n8n (J12–J26)
+
+| Période | Votre travail                                                                                                                                                                            | Dépendance / sortie                                        |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| J12–J14 | Relire les prompts/dataset du binôme et vérifier que chaque catégorie IA correspond exactement à l'enum `Category`. Ajouter la table de conversion texte → enum dans le script `report`. | Convention de catégories partagée.                         |
+| J15–J18 | Stabiliser `check.js` pour produire le contrat de réponse §8.2 : `{blacklisted, category, score, since, txHash}`. Fournir au binôme la commande et l'adresse Amoy.                       | Son WF1 peut dédupliquer avant l'analyse.                  |
+| J19–J20 | Ajouter `batchReport.js`, gestion d'erreurs RPC, délai de confirmation et JSON d'erreur sans secret.                                                                                     | Plusieurs signalements peuvent être traités de façon sûre. |
+| J21–J23 | Intégrer l'appel à `report.js` dans le WF3 n8n avec le binôme ; valider catégorie, score et hash ; capturer le `txHash`.                                                                 | Signalement IA malveillant → transaction Amoy.             |
+| J24–J26 | Test bout-en-bout et gestion des incidents : RPC indisponible, score invalide, doublon, reporter révoqué, fonds test insuffisants.                                                       | **L1** : pipeline relié et rejouable.                      |
+
+#### Bloc D — Audit, rapport et démonstration (J25–J40)
+
+| Période | Votre travail                                                                                                                                             | Preuve                                                                                      |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| J25–J28 | Installer/exécuter Slither ; produire une checklist manuelle : access control, réentrance, validation, DoS/gas, front-running, événements et dépendances. | Rapport d'audit avec chaque alerte : corrigée, acceptée ou non applicable et justification. |
+| J29–J31 | Vérifier les secrets (gitleaks ou scan Git), les permissions Owner/Reporter et l'isolation de la clé Reporter dans n8n.                                   | **L4** sécurité terminé.                                                                    |
+| J32–J35 | Participer aux tests E2E, vérifier chaque lien `txHash` Discord/Polygonscan et relever gas/latence.                                                       | Scénario démo stable en < 60 s.                                                             |
+| J36–J38 | Rédiger vos sections du rapport : architecture blockchain, modèle de données, déploiement, sécurité, coût gas, limites.                                   | Brouillon relu par le binôme.                                                               |
+| J39–J40 | Répéter la démo et la soutenance ; expliquer le cycle complet d'une URL jusqu'au event on-chain.                                                          | Démo et rapport final livrés.                                                               |
+
+### 4.2 Routine de travail et règles de synchronisation
+
+1. Avant de commencer : `git switch feat/phishing-registry`, puis `git pull origin main`.
+2. À chaque unité finie : exécuter `npm test` et `npm run coverage`, puis faire un commit atomique.
+3. Envoyer une pull request courte ; votre binôme relit le contrat, vous relisez ses changements IA/n8n.
+4. Ne modifiez jamais seul les sections 8.1 à 8.7 du cahier complet : elles constituent votre contrat d'intégration.
+5. Ne partagez jamais `.env`, clés privées ou seed phrase dans Git, Discord, capture d'écran ou ticket. Seules les adresses publiques et les hashes de transaction peuvent circuler.
+
+### 4.3 Prochaines actions immédiates (dans cet ordre)
+
+- [x] Créer la branche `feat/phishing-registry`.
+- [x] Installer Hardhat, OpenZeppelin et les outils de test.
+- [x] Implémenter et tester localement `PhishingRegistry`.
+- [x] Configurer localement les clés Owner/Reporter et la clé de vérification, sans les commiter.
+- [x] Déployer et vérifier le contrat sur Amoy ; fournir l'adresse et les scripts JSON au binôme.
+- [x] Valider un flux on-chain : report URL → event → check URL.
+- [ ] Faire relire la pull request `feat/phishing-registry` par le binôme, puis la fusionner vers `main`.
+- [ ] Envoyer au binôme l'adresse du registre, le lien Polygonscan et les commandes `chain:check` du README.
+- [ ] Commencer l'intégration WF1/WF4 : il appelle `check.js` avant l'analyse IA ; vous validez son JSON de sortie contre §8.2.
 
 ## 5. Vos critères d'acceptation
 
