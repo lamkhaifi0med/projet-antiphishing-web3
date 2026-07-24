@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
 import path from "node:path";
 
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+dotenv.config({ path: path.resolve(__dirname, "../.env"), quiet: true });
 
 const ownerPrivateKey = process.env.OWNER_PRIVATE_KEY;
 
