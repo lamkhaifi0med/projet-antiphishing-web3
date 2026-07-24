@@ -19,9 +19,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     amoy: {
-      url:
-        process.env.AMOY_RPC_URL ??
-        "https://polygon-amoy-bor-rpc.publicnode.com",
+      url: process.env.AMOY_RPC_URL ?? "https://polygon-amoy.drpc.org",
       chainId: 80002,
       accounts: ownerPrivateKey ? [ownerPrivateKey] : [],
     },

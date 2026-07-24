@@ -33,13 +33,68 @@ cd n8n && docker compose up -d
 cd contracts && npm install && npx hardhat test
 ```
 
+## Contrat déployé — Polygon Amoy
+
+Le registre `PhishingRegistry` est déployé et vérifié publiquement :
+
+| Élément                    | Valeur                                                                                             |
+| -------------------------- | -------------------------------------------------------------------------------------------------- |
+| Adresse                    | `0x8d51dB4a92c338075360A17AcA005ec282fE1f23`                                                       |
+| Code vérifié               | https://amoy.polygonscan.com/address/0x8d51dB4a92c338075360A17AcA005ec282fE1f23#code               |
+| Transaction de déploiement | https://amoy.polygonscan.com/tx/0x8e2e4e3c73ca2a7a5dd1f35372945c8462c8b6c194db6b36ccc2e93dc46de2dc |
+| Bloc de déploiement        | `43090902`                                                                                         |
+
+L'adresse `Reporter` est autorisée à publier les signalements. L'adresse `Owner` reste réservée au déploiement, à la gestion des reporters et à la correction des faux positifs.
+
+Test bout-en-bout on-chain réalisé avec l'URL réservée `demo-phishing.invalid/wallet-drainer` : https://amoy.polygonscan.com/tx/0x208b9ccdfe1f0daf464321e571b341b280694c4bfc364d590267794c50a33943. Cette entrée est volontairement une donnée de démonstration, pas une URL de phishing réelle.
+
+## Scripts blockchain (intégration n8n)
+
+À la racine, exécuter une fois `npm install`. Tous les scripts renvoient **un JSON sur stdout**, pour une utilisation directe depuis un nœud n8n `Execute Command`.
+
+```bash
+# Vérification sans écriture : à utiliser par WF1 et WF4
+npm run chain:check -- -- --type=url --value=https://blnance-support.xyz/claim
+npm run chain:check -- -- --type=wallet --value=0x000000000000000000000000000000000000dEaD
+
+# Publication (WF3) — uniquement si le score final est ≥ 0.8
+npm run chain:report -- -- --type=url --value=https://blnance-support.xyz/claim --category=fake_airdrop --score=92
+npm run chain:report -- -- --type=wallet --value=0x000000000000000000000000000000000000dEaD --category=wallet_drainer --score=98
+
+# Publication séquentielle à partir d'un fichier JSON contenant [{"type", "value", "category", "score"}]
+npm run chain:batch-report -- -- --file=./reports.json
+
+# Events passés depuis le bloc de déploiement ; ajouter --follow pour écouter les nouveaux
+npm run chain:listen
+npm run chain:listen -- -- --follow
+```
+
+> Avec npm, les trois séparateurs `-- -- --` sont nécessaires pour transmettre des options commençant par `--` au script Node.js. Dans un nœud n8n `Execute Command`, appeler directement `node scripts/check.js --type=url --value=...` évite cette particularité de npm.
+
+Exemple de contenu pour `reports.json` :
+
+```json
+[
+  {
+    "type": "url",
+    "value": "https://blnance-support.xyz/claim",
+    "category": "fake_airdrop",
+    "score": 92
+  }
+]
+```
+
+Catégories autorisées : `fake_exchange`, `wallet_drainer`, `fake_airdrop`, `fake_support`, `ponzi`, `other`. Le score est un entier de `0` à `100` et doit venir du workflow après conversion de la confiance IA.
+
+La normalisation URL appliquée avant `keccak256` suit le cahier des charges : schéma supprimé, domaine en minuscules, préfixe `www.` supprimé, query string/fragment/trailing slash supprimés, path conservé. Ex. `HTTPS://www.Blnance-Support.xyz/claim/?ref=x#top` devient `blnance-support.xyz/claim`.
+
 ## Réseau blockchain
 
 | Paramètre | Valeur                                                                                   |
 | --------- | ---------------------------------------------------------------------------------------- |
 | Réseau    | Polygon Amoy (testnet)                                                                   |
 | Chain ID  | 80002                                                                                    |
-| RPC       | `https://polygon-amoy-bor-rpc.publicnode.com` (backup : `https://polygon-amoy.drpc.org`) |
+| RPC       | `https://polygon-amoy.drpc.org` (backup : `https://polygon-amoy-bor-rpc.publicnode.com`) |
 | Explorer  | https://amoy.polygonscan.com                                                             |
 
 > ⚠️ Testnet uniquement. Aucun fonds réel ne doit transiter par les wallets du projet.
