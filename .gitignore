@@ -18,6 +18,7 @@ contracts/artifacts/
 contracts/typechain-types/
 contracts/coverage/
 contracts/coverage.json
+contracts/slither-report.json
 
 # --- n8n local data ---
 n8n/data/

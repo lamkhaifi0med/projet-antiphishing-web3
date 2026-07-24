@@ -1,0 +1,2 @@
+# Smart-contract static-analysis tooling
+slither-analyzer==0.11.5

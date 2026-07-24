@@ -102,7 +102,22 @@ Concevoir, développer, tester, déployer et sécuriser le smart contract `Phish
 | J36–J38 | Rédiger vos sections du rapport : architecture blockchain, modèle de données, déploiement, sécurité, coût gas, limites.                                   | Brouillon relu par le binôme.                                                               |
 | J39–J40 | Répéter la démo et la soutenance ; expliquer le cycle complet d'une URL jusqu'au event on-chain.                                                          | Démo et rapport final livrés.                                                               |
 
-### 4.2 Routine de travail et règles de synchronisation
+### 4.2 État préliminaire de l'audit du contrat (24/07/2026)
+
+Un premier passage de **Slither 0.11.5** a été exécuté sur le projet Hardhat, avec les dépendances exclues. Résultat : **aucune alerte critique, haute, moyenne ou faible** ; une seule alerte informative `pragma`.
+
+| Contrôle | Résultat | Décision / justification |
+|---|---|---|
+| Versions de pragma | Informationnelle : `PhishingRegistry` utilise `^0.8.24`, OpenZeppelin utilise `^0.8.20` | Acceptée. Les deux plages sont compatibles avec le compilateur Hardhat verrouillé en `0.8.24`. Le pragma du contrat déployé est conservé afin que le dépôt corresponde exactement au code vérifié sur PolygonScan. |
+| Contrôle d'accès | Vérifié par tests | `onlyOwner` protège la gestion des reporters et les suppressions ; `onlyReporter` protège les publications. |
+| Réentrance | Non applicable | Le contrat ne fait aucun appel externe et ne transfère aucun fonds. |
+| DoS / gas | Risque faible | Aucun tableau itéré ni boucle non bornée ; toutes les écritures sont $O(1)$. |
+| Front-running | Risque faible / accepté | Un reporter autorisé peut publier avant un autre, mais il ne modifie ni le verdict stocké ni des fonds. |
+| Faux positifs | Couvert | Le Owner peut désactiver une entrée ; les events conservent l'historique on-chain. |
+
+Le rapport JSON généré localement par Slither est volontairement ignoré par Git (`contracts/slither-report.json`). La version de l'outil est figée dans `contracts/requirements-audit.txt` pour reproduire le scan. L'audit final J25–J31 devra refaire ce scan après l'intégration n8n et compléter les preuves dans le rapport technique.
+
+### 4.3 Routine de travail et règles de synchronisation
 
 1. Avant de commencer : `git switch feat/phishing-registry`, puis `git pull origin main`.
 2. À chaque unité finie : exécuter `npm test` et `npm run coverage`, puis faire un commit atomique.
@@ -110,7 +125,7 @@ Concevoir, développer, tester, déployer et sécuriser le smart contract `Phish
 4. Ne modifiez jamais seul les sections 8.1 à 8.7 du cahier complet : elles constituent votre contrat d'intégration.
 5. Ne partagez jamais `.env`, clés privées ou seed phrase dans Git, Discord, capture d'écran ou ticket. Seules les adresses publiques et les hashes de transaction peuvent circuler.
 
-### 4.3 Prochaines actions immédiates (dans cet ordre)
+### 4.4 Prochaines actions immédiates (dans cet ordre)
 
 - [x] Créer la branche `feat/phishing-registry`.
 - [x] Installer Hardhat, OpenZeppelin et les outils de test.
