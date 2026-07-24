@@ -48,6 +48,8 @@ L'adresse `Reporter` est autorisée à publier les signalements. L'adresse `Owne
 
 Test bout-en-bout on-chain réalisé avec l'URL réservée `demo-phishing.invalid/wallet-drainer` : https://amoy.polygonscan.com/tx/0x208b9ccdfe1f0daf464321e571b341b280694c4bfc364d590267794c50a33943. Cette entrée est volontairement une donnée de démonstration, pas une URL de phishing réelle.
 
+Le cycle de correction d'un faux positif a aussi été validé avec `false-positive.invalid/remove-me` : [signalement](https://amoy.polygonscan.com/tx/0xde03a89b43467363178faf145a0b74bb96a5a599b1f0af875d3c83dae1d4b459) puis [désactivation par Owner](https://amoy.polygonscan.com/tx/0x55cad45e7f376143dbaf67cb53546fef805a5e026d64151419c6cac303ade17c). Cette URL réservée `.invalid` n'est pas une menace réelle.
+
 ## Scripts blockchain (intégration n8n)
 
 À la racine, exécuter une fois `npm install`. Tous les scripts renvoient **un JSON sur stdout**, pour une utilisation directe depuis un nœud n8n `Execute Command`.
@@ -61,6 +63,10 @@ npm run chain:check -- -- --type=wallet --value=0x000000000000000000000000000000
 npm run chain:report -- -- --type=url --value=https://blnance-support.xyz/claim --category=fake_airdrop --score=92
 npm run chain:report -- -- --type=wallet --value=0x000000000000000000000000000000000000dEaD --category=wallet_drainer --score=98
 
+# Correction d'un faux positif — action Owner uniquement, jamais exécutée par n8n
+npm run chain:remove -- -- --type=url --value=https://blnance-support.xyz/claim
+npm run chain:remove -- -- --type=wallet --value=0x000000000000000000000000000000000000dEaD
+
 # Publication séquentielle à partir d'un fichier JSON contenant [{"type", "value", "category", "score"}]
 npm run chain:batch-report -- -- --file=./reports.json
 
@@ -70,6 +76,8 @@ npm run chain:listen -- -- --follow
 ```
 
 > Avec npm, les trois séparateurs `-- -- --` sont nécessaires pour transmettre des options commençant par `--` au script Node.js. Dans un nœud n8n `Execute Command`, appeler directement `node scripts/check.js --type=url --value=...` évite cette particularité de npm.
+
+`chain:remove` est une commande d'administration réservée au Owner. Elle désactive une entrée active et renvoie le hash de transaction ; l'event on-chain conserve l'historique du signalement. Une entrée qui n'est déjà plus blacklistée retourne `not_blacklisted` sans envoyer de transaction.
 
 Exemple de contenu pour `reports.json` :
 

@@ -16,6 +16,9 @@ const AMOY_EXPLORER_URL = "https://amoy.polygonscan.com";
 const REGISTRY_ABI = [
   "function reportURL(bytes32 urlHash, uint8 category, uint8 score)",
   "function reportWallet(address wallet, uint8 category, uint8 score)",
+  "function removeURL(bytes32 urlHash)",
+  "function removeWallet(address wallet)",
+  "function owner() view returns (address)",
   "function isBlacklistedURL(bytes32 urlHash) view returns (bool)",
   "function isBlacklistedWallet(address wallet) view returns (bool)",
   "function getURLEntry(bytes32 urlHash) view returns (tuple(uint8 category, uint8 score, uint40 timestamp, address reporter, bool active))",
@@ -64,6 +67,15 @@ function getReporterRegistry() {
   return {
     registry: getRegistry(provider).connect(reporter),
     reporter,
+  };
+}
+
+function getOwnerRegistry() {
+  const provider = getProvider();
+  const owner = new Wallet(requireEnv("OWNER_PRIVATE_KEY"), provider);
+  return {
+    registry: getRegistry(provider).connect(owner),
+    owner,
   };
 }
 
@@ -224,6 +236,7 @@ module.exports = {
   categoryName,
   contractExplorerUrl,
   getDeploymentBlock,
+  getOwnerRegistry,
   getProvider,
   getRegistry,
   getReporterRegistry,
