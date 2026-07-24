@@ -1,7 +1,7 @@
 # Guide d'intégration pour le binôme — IA & n8n
 
-**Projet :** Anti-Phishing Web3 — IA Générative & Blockchain  
-**Destinataire :** Responsable IA / n8n (Profil B)  
+**Projet :** Anti-Phishing Web3 — IA Générative & Blockchain
+**Destinataire :** Responsable IA / n8n (Profil B)
 **But :** intégrer tes workflows n8n à la blacklist blockchain déjà opérationnelle, sans modifier les interfaces convenues ni exposer de secrets.
 
 ---
@@ -291,7 +291,7 @@ node scripts/remove.js --type=url --value=https://example.com/claim
 
 ### WF1 — Ingestion et déduplication
 
-**Responsable principal :** Profil B  
+**Responsable principal :** Profil B
 **Support blockchain :** Profil A
 
 ```text
@@ -311,7 +311,7 @@ Valider avant toute exécution :
 
 ### WF2 — Analyse IA
 
-**Responsable principal :** Profil B  
+**Responsable principal :** Profil B
 **Support de Profil A :** vérifier les catégories et le score fournis à WF3.
 
 ```text
