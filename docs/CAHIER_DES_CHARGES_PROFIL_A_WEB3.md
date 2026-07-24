@@ -68,7 +68,7 @@ Concevoir, développer, tester, déployer et sécuriser le smart contract `Phish
 | J3   | Initialiser Hardhat TypeScript dans `contracts/` ; installer OpenZeppelin ; écrire la configuration Amoy ; coder le squelette de `PhishingRegistry.sol`.                    | `npm run compile` passe localement.                                                      |
 | J4   | Écrire les tests unitaires : rôles, URL, wallets, doublons, suppressions, scores ; lancer la couverture ; soumettre une PR de revue au binôme.                              | `npm test` vert ; couverture lignes ≥ 90 %.                                              |
 
-**État actuel (24/07/2026) :** J1–J11 sont réalisés sur votre branche : Hardhat est configuré, le contrat existe, 13 tests passent, la couverture est de 100 % lignes / 92,31 % branches, le contrat est déployé et vérifié sur Amoy, et les scripts `check`, `report`, `batchReport` et `listen` ont été validés avec une URL réservée `.invalid`.
+**État actuel (24/07/2026) :** J1–J11 sont réalisés et fusionnés sur `main` : Hardhat est configuré, le contrat existe, 13 tests passent, la couverture est de 100 % lignes / 92,31 % branches, le contrat est déployé et vérifié sur Amoy, et les scripts `check`, `report`, `remove`, `batchReport` et `listen` ont été validés avec des URLs réservées `.invalid`.
 
 #### Bloc B — Finaliser et déployer le registre (J5–J11)
 
@@ -118,7 +118,8 @@ Concevoir, développer, tester, déployer et sécuriser le smart contract `Phish
 - [x] Configurer localement les clés Owner/Reporter et la clé de vérification, sans les commiter.
 - [x] Déployer et vérifier le contrat sur Amoy ; fournir l'adresse et les scripts JSON au binôme.
 - [x] Valider un flux on-chain : report URL → event → check URL.
-- [ ] Faire relire la pull request `feat/phishing-registry` par le binôme, puis la fusionner vers `main`.
+- [x] Fusionner le module blockchain dans `main`.
+- [x] Valider le cycle de faux positif : report URL → remove URL par Owner → check = non blacklisté.
 - [ ] Envoyer au binôme l'adresse du registre, le lien Polygonscan et les commandes `chain:check` du README.
 - [ ] Commencer l'intégration WF1/WF4 : il appelle `check.js` avant l'analyse IA ; vous validez son JSON de sortie contre §8.2.
 
