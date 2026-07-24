@@ -27,9 +27,8 @@ const config: HardhatUserConfig = {
     },
   },
   etherscan: {
-    apiKey: {
-      polygonAmoy: process.env.POLYGONSCAN_API_KEY ?? "",
-    },
+    // A single API key activates Etherscan API V2, which supports Polygon Amoy.
+    apiKey: process.env.POLYGONSCAN_API_KEY ?? "",
   },
 };
 
