@@ -1,0 +1,287 @@
+[
+  {
+    "url": "https://www.binance.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "Binance is a cryptocurrency exchange offering spot and futures trading, staking, and a range of Web3 products. Sign in to access your account dashboard, view your portfolio balance, and manage your trading preferences. New users can create a free account in minutes.",
+    "notes": "Exchange reel bien connu, texte synthetique representatif (pas une citation exacte du site). structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [
+        {
+          "tag": "input",
+          "name": "search",
+          "type": "text",
+          "placeholder": "Search"
+        }
+      ],
+      "externalScriptDomains": [
+        "cdn.jsdelivr.net"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://www.coinbase.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "Coinbase is a secure platform to buy, sell, and manage cryptocurrency. Log in to view your portfolio and transaction history. Coinbase supports a wide range of digital assets and provides tools for both new and experienced investors to track market prices and trade safely.",
+    "notes": "Exchange reel, texte synthetique representatif. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [
+        {
+          "tag": "input",
+          "name": "email",
+          "type": "email",
+          "placeholder": "Email address"
+        }
+      ],
+      "externalScriptDomains": [
+        "www.google-analytics.com"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://uniswap.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "Uniswap is a decentralized trading protocol on Ethereum. Connect a wallet to swap tokens or provide liquidity directly from the interface. As an automated market maker, Uniswap lets anyone trade ERC-20 tokens without relying on a centralized order book or intermediary.",
+    "notes": "Dapp DEX reelle et connue, texte synthetique representatif. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [],
+      "externalScriptDomains": [
+        "www.googletagmanager.com"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://opensea.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "OpenSea is a marketplace for NFTs. Browse collections, connect your wallet, and list or purchase digital items. Explore art, collectibles, domain names, and virtual world assets across multiple blockchains, with tools for creators to mint and sell their own collections.",
+    "notes": "Marketplace NFT reelle et connue, texte synthetique representatif. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [
+        {
+          "tag": "input",
+          "name": "search",
+          "type": "text",
+          "placeholder": "Search items, collections, and accounts"
+        }
+      ],
+      "externalScriptDomains": [
+        "cdn.opensea.io"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://metamask.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "MetaMask is a crypto wallet and gateway to blockchain apps. Download the extension or mobile app to manage your assets. It lets users store keys securely, interact with decentralized applications, and switch between multiple Ethereum-compatible networks from one interface.",
+    "notes": "Site officiel du wallet reel, texte synthetique representatif. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [],
+      "externalScriptDomains": [
+        "www.googletagmanager.com"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://www.kraken.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "Kraken is a cryptocurrency exchange founded in 2011. Trade, stake, and manage digital assets from a single account. Kraken offers advanced charting tools, multiple order types, and dedicated support for both individual traders and institutional clients worldwide.",
+    "notes": "Exchange reel et connu, texte synthetique representatif. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [
+        {
+          "tag": "input",
+          "name": "email",
+          "type": "email",
+          "placeholder": ""
+        }
+      ],
+      "externalScriptDomains": [
+        "assets.kraken.com"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://etherscan.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "Etherscan is the leading block explorer for the Ethereum blockchain. Search for a transaction, address, or token to view on-chain details. Users can track gas prices, verify smart contract source code, and monitor wallet activity in real time without any registration.",
+    "notes": "Explorateur blockchain reel et connu, texte synthetique representatif. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [
+        {
+          "tag": "input",
+          "name": "q",
+          "type": "text",
+          "placeholder": "Search by Address / Txn Hash / Block / Token..."
+        }
+      ],
+      "externalScriptDomains": [
+        "www.google.com"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://aave.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "Aave is a decentralized liquidity protocol. Supply assets to earn interest or borrow against your collateral. Interest rates adjust algorithmically based on market supply and demand, and the protocol supports a range of assets across multiple blockchain networks.",
+    "notes": "Protocole DeFi reel et connu, texte synthetique representatif. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [],
+      "externalScriptDomains": [
+        "www.googletagmanager.com"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://www.ledger.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "Ledger builds hardware wallets to secure cryptocurrency. Set up your device and manage assets through Ledger Live. The companion app lets you check balances, install blockchain apps on the device, and send or receive assets while keeping private keys offline at all times.",
+    "notes": "Fabricant reel de hardware wallet, texte synthetique representatif. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [
+        {
+          "tag": "input",
+          "name": "email",
+          "type": "email",
+          "placeholder": "Subscribe to newsletter"
+        }
+      ],
+      "externalScriptDomains": [
+        "assets.ledger.com"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://compound.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "Compound is an algorithmic, autonomous interest rate protocol. Supply or borrow assets directly from the app. Interest rates are determined by supply and demand for each market, and suppliers earn continuously compounding interest paid directly to their wallet address.",
+    "notes": "Protocole DeFi reel et connu, texte synthetique representatif. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [],
+      "externalScriptDomains": [],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://polygon.technology",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "Polygon is a network of scaling solutions for Ethereum. Explore the ecosystem of dApps built on Polygon. The network aims to provide faster transactions and lower fees while remaining compatible with existing Ethereum tooling, wallets, and smart contracts.",
+    "notes": "Reseau blockchain reel et connu, texte synthetique representatif. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [],
+      "externalScriptDomains": [
+        "www.googletagmanager.com"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://www.circle.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "Circle is the issuer of USDC, a regulated digital dollar stablecoin. Learn about reserves and redemption. Circle publishes monthly attestation reports on USDC reserves and provides infrastructure for businesses to integrate stablecoin payments into their platforms.",
+    "notes": "Emetteur reel de stablecoin, texte synthetique representatif. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [
+        {
+          "tag": "input",
+          "name": "email",
+          "type": "email",
+          "placeholder": ""
+        }
+      ],
+      "externalScriptDomains": [
+        "js.hsforms.net"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://www.kraken.com/security/account-alert",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "We noticed a sign-in from a new device. If this was you, no action is required. If you don't recognize this activity, reset your password from your account settings — we will never ask for your recovery phrase.",
+    "notes": "Cas legitime formule avec une urgence moderee (alerte de securite reelle), pour verifier la resistance aux faux positifs : aucune demande de seed phrase, ton mesure, action via les parametres du compte plutot qu'un lien externe. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [],
+      "externalScriptDomains": [
+        "assets.kraken.com"
+      ],
+      "web3PatternSnippets": []
+    }
+  },
+  {
+    "url": "https://www.ledger.com/academy/phishing-awareness",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "pageTextExcerpt": "Ledger will never ask for your 24-word recovery phrase, by email, phone, or in an app. If anyone asks for it, it is a scam. Learn to recognize common phishing techniques targeting crypto users, including fake support agents, fraudulent emails, and cloned websites impersonating official Ledger communication channels.",
+    "notes": "Page educative reelle qui mentionne seed phrase et phishing dans un contexte defensif : verifie que le modele ne classe pas 'malicious' un contenu legitime qui parle de phishing sans en etre un. structuralDigest synthetique illustratif (meme traitement que pageTextExcerpt : pas une capture reelle).",
+    "structuralDigest": {
+      "formFields": [],
+      "externalScriptDomains": [
+        "assets.ledger.com"
+      ],
+      "web3PatternSnippets": []
+    }
+  }
+]

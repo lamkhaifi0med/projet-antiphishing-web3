@@ -1,0 +1,3062 @@
+{
+  "kucoin.com": {
+    "url": "https://www.kucoin.com",
+    "normalizedUrl": "kucoin.com",
+    "cacheKey": "8b7dc0fc641c7af9e097d923bb0cf41a61c34b65ddde024036c060f23e96fd11",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T13:47:31.912Z",
+    "textLength": 2281,
+    "contentSha256": "42de494d9698dac0269a07cceaec6b47f835cb5caf549463cfff1ae0884b0154"
+  },
+  "okx.com": {
+    "url": "https://www.okx.com",
+    "normalizedUrl": "okx.com",
+    "cacheKey": "b82b7f4dca3f8e6ff806471b33a5cead031c15c12ea78b2ba5bdf990f0aa40b2",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T13:47:32.570Z",
+    "textLength": 5976,
+    "contentSha256": "174d8ee404ed44b68cf82484fe643f820bd9d2e961d9e9bc5fe99fca5ac4f269"
+  },
+  "bybit.com": {
+    "url": "https://www.bybit.com",
+    "normalizedUrl": "bybit.com",
+    "cacheKey": "3578b95088f1755f495262cb9b414d75183c5f052581c457b7e48aab7efaab7f",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:36:22.555Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "gemini.com": {
+    "url": "https://www.gemini.com",
+    "normalizedUrl": "gemini.com",
+    "cacheKey": "8606c168e51fc131e546ad57a19f3297b11e0e5ce83e8e8931b2850811cfa881",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T13:47:43.223Z",
+    "textLength": 3342,
+    "contentSha256": "3e7cb6e2417c55fbcb97e885b23971c50267f7107ef56a1043975223a5ee0ebf"
+  },
+  "crypto.com": {
+    "url": "https://crypto.com",
+    "normalizedUrl": "crypto.com",
+    "cacheKey": "23ba4d0e77611bf8ed217ec097cac4de56d3f0250bcc4703143a6fba0a6a7dfb",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T13:47:43.840Z",
+    "textLength": 11836,
+    "contentSha256": "a588e5c83070916467541ae55532c54c73550003e8af57065706aebcf152314b"
+  },
+  "bitstamp.net": {
+    "url": "https://www.bitstamp.net",
+    "normalizedUrl": "bitstamp.net",
+    "cacheKey": "8e8893368cec79b5a745a160210e0098516047683c86583905e5cb77c517efe5",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T13:47:44.315Z",
+    "textLength": 0,
+    "contentSha256": "c9a51992e896304615b048b9d2052fb702e73a9daa1b81b26cc9bd93690b7480"
+  },
+  "gate.io": {
+    "url": "https://www.gate.io",
+    "normalizedUrl": "gate.io",
+    "cacheKey": "1c9e8bb0732a07f10407842509c680a6e82619959fc175ae97bf0d233ecbb20f",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T13:47:44.502Z",
+    "textLength": 4171,
+    "contentSha256": "3db262c97a0ebd25d4632a94c75ed50b6c2fa7e34310aa1a3862eea31de2b8fc"
+  },
+  "pancakeswap.finance": {
+    "url": "https://pancakeswap.finance",
+    "normalizedUrl": "pancakeswap.finance",
+    "cacheKey": "b82f058161a36852ae558151e8fc57574f779d5a214646ac3177d1cc1635fc3b",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T13:47:45.671Z",
+    "textLength": 11,
+    "contentSha256": "24f858c714d2fb70c192c245bd08a95cfc99bd9a68df5573ec2be7b02e1dab0c"
+  },
+  "curve.fi": {
+    "url": "https://curve.fi",
+    "normalizedUrl": "curve.fi",
+    "cacheKey": "cadf17cb845bd1fcab276dc45194f1c00b4a290d133818b35f62091d65a2fe28",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T13:47:46.053Z",
+    "textLength": 19,
+    "contentSha256": "fa2ae443f21bb4d4c1b4f88ebe2b781b56c5c0042ff7f33149b85be88114e354"
+  },
+  "sushi.com": {
+    "url": "https://www.sushi.com",
+    "normalizedUrl": "sushi.com",
+    "cacheKey": "b250be19773ee28aa0d1581535635e7ad4e0350347ccc7c334c84718ede1e18a",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T13:47:46.854Z",
+    "textLength": 15,
+    "contentSha256": "a91e679b5b21fed79cf85e0b784d9241e9662f54eddf63b682fe53efa0dc9f66"
+  },
+  "app.1inch.io": {
+    "url": "https://app.1inch.io",
+    "normalizedUrl": "app.1inch.io",
+    "cacheKey": "673783329a7e86ab5e66c8595c7f666691a2861fabf829c6bf5b4a6d6aea264c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T13:47:47.571Z",
+    "textLength": 4370,
+    "contentSha256": "b175796a2864a1111eb702d16976260558c3d89278bfa386157bc71a590ec079"
+  },
+  "lido.fi": {
+    "url": "https://lido.fi",
+    "normalizedUrl": "lido.fi",
+    "cacheKey": "c6dc15194cc75d55229314782e61c10a75039fb135b4bcc4f4ab2b9fcda1c111",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:35.605Z",
+    "textLength": 8298,
+    "contentSha256": "eb4c22caf3b3c845ee721badf368e14e758f0aea5409d17f6b20ffa2dab58ac4"
+  },
+  "makerdao.com": {
+    "url": "https://makerdao.com",
+    "normalizedUrl": "makerdao.com",
+    "cacheKey": "42613d39f95cca41349b94b0af6b2103ac650ed85945550f4ee20c8697a02a2a",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:36.745Z",
+    "textLength": 46,
+    "contentSha256": "f692bb090f1e22c76a2340e621d8d49ab8c12049516a2c053ad8487a2b78b035"
+  },
+  "zksync.io": {
+    "url": "https://www.zksync.io",
+    "normalizedUrl": "zksync.io",
+    "cacheKey": "7245abc8d382a41dc8184b99a0a9b3b0336a42247a8c35f90e89f3be457437a8",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:37.576Z",
+    "textLength": 20001,
+    "contentSha256": "a2b1b1775d5d4fecad1fce5f7c71bdb7b34bde60c1585541f14e851a3c41184b"
+  },
+  "arbitrum.io": {
+    "url": "https://arbitrum.io",
+    "normalizedUrl": "arbitrum.io",
+    "cacheKey": "1c0b06e8ecd69e3305006e76ebf259aae2afb67ae50e145f50ffadd5a0e02fdd",
+    "status": "challenged",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:18:38.739Z",
+    "textLength": 58,
+    "contentSha256": "8756afc053d33ffe00063dd0b56ecfaaf9d914e0dda65631c5cca91297b32147"
+  },
+  "optimism.io": {
+    "url": "https://www.optimism.io",
+    "normalizedUrl": "optimism.io",
+    "cacheKey": "3ae975119e37380392a7cbc8a6c3998daefe74c323b6572e9e5706d6db505749",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:39.073Z",
+    "textLength": 5177,
+    "contentSha256": "a57fe9535a09b1b4476c93301650e64fdf296fb91dbbe1310a9e1c12ee2e33d1"
+  },
+  "avax.network": {
+    "url": "https://www.avax.network",
+    "normalizedUrl": "avax.network",
+    "cacheKey": "99abd15d69d9e499fc25907a679c1d98ac14be4992e3b74824cc5ac940eab3e4",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:40.354Z",
+    "textLength": 14829,
+    "contentSha256": "2789c849914720008bb26e8139b40f2134fa333fa2b081c01af539a4eb91aa36"
+  },
+  "solana.com": {
+    "url": "https://solana.com",
+    "normalizedUrl": "solana.com",
+    "cacheKey": "46a8de2dfe47ac062717a00d59c65a13906894ed3958247abb3b9ff4b2e610c8",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:41.132Z",
+    "textLength": 4944,
+    "contentSha256": "4f931b3aa8c48daaeb278b86fae494eb774c8e4f78c566ab85e6e6e1ce3dcfed"
+  },
+  "trezor.io": {
+    "url": "https://www.trezor.io",
+    "normalizedUrl": "trezor.io",
+    "cacheKey": "d3b209dca772febdd4f6fbf6e938bcc43924eea2c6a5e100c3dfb6439e2ba547",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:42.836Z",
+    "textLength": 10062,
+    "contentSha256": "44f4e9e4d623b94fe770e82133f8ec3a6dea4195ec5acf38419e4e43cc552c74"
+  },
+  "trustwallet.com": {
+    "url": "https://trustwallet.com",
+    "normalizedUrl": "trustwallet.com",
+    "cacheKey": "1a70842af8c1feb7133b81e6a160a6a2be45ee057f0eb6d3f7f5126daa202e07",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:44.392Z",
+    "textLength": 7622,
+    "contentSha256": "a1cb00a5e51e05f1e557708c007edd908e72a2203353860dfac7046bf4b283b0"
+  },
+  "blockchain.com": {
+    "url": "https://www.blockchain.com",
+    "normalizedUrl": "blockchain.com",
+    "cacheKey": "562c09e7edbd8623c8a912696dd0c3b0b666e0c1183d6e17b6609f3a73af1c06",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:45.583Z",
+    "textLength": 8129,
+    "contentSha256": "7964da2895d092a0e4afbb70c0cfd878dc44689991aa46e43ce64d4b7108fc75"
+  },
+  "coingecko.com": {
+    "url": "https://www.coingecko.com",
+    "normalizedUrl": "coingecko.com",
+    "cacheKey": "875443366f51aab044b6346785af92f0915bea51cb6e895574d56b866deb11eb",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:47.361Z",
+    "textLength": 20001,
+    "contentSha256": "5249f16e7fa25d90bf61e6d470c3997b31597507c37d1668bc3594315af0b1c7"
+  },
+  "coinmarketcap.com": {
+    "url": "https://coinmarketcap.com",
+    "normalizedUrl": "coinmarketcap.com",
+    "cacheKey": "cbad277e1a459ac563c17aa7626dbf758a5f9ba1ce16b9f4c8300618bfdfc749",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:48.340Z",
+    "textLength": 14341,
+    "contentSha256": "d0da15a4d43688acf68182e7e6ef35973af74db5c760f4704ea8307e72d85f50"
+  },
+  "polkadot.network": {
+    "url": "https://polkadot.network",
+    "normalizedUrl": "polkadot.network",
+    "cacheKey": "84d16e8d975bfa171cff3ac4814ff130be105e860714700fe9c89298668c94f4",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:49.023Z",
+    "textLength": 8,
+    "contentSha256": "5dcf586cb40b2e6ec8d5bc777601c505c65fb9ace1f222e68b35e0e34e6244f7"
+  },
+  "chain.link": {
+    "url": "https://chain.link",
+    "normalizedUrl": "chain.link",
+    "cacheKey": "38ba56044b978421f5c474d12114eba65d2b90b2e0cefd63be877e9d69835e04",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:49.878Z",
+    "textLength": 10483,
+    "contentSha256": "be7db8b44646fff9fdad025fa5b201bf64b372279dde484393446f07e226e60a"
+  },
+  "tether.to": {
+    "url": "https://tether.to",
+    "normalizedUrl": "tether.to",
+    "cacheKey": "5b05d37fb822a1c064058b92d9334ccf147fa10cc2d45d42504b0da36eb9ea45",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:50.869Z",
+    "textLength": 32,
+    "contentSha256": "e70ce3d20bf2d29456e09b2f0c76fbb2d7408148391efdc816b8f4caad612917"
+  },
+  "paxos.com": {
+    "url": "https://www.paxos.com",
+    "normalizedUrl": "paxos.com",
+    "cacheKey": "2c78b3c1df4c19d93b6610906df6243c10874834e3e3e8de88b47f1f5af72596",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:51.415Z",
+    "textLength": 5097,
+    "contentSha256": "ba10369ec3b08daafca4d6400cb854b50dce022dd4cb5aeb3c29867e551d39ee"
+  },
+  "safe.global": {
+    "url": "https://safe.global",
+    "normalizedUrl": "safe.global",
+    "cacheKey": "a24f744b28d73f066bf3203d145765a7bc735e6328168c8b03e476da3ad0d8fe",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:52.555Z",
+    "textLength": 7844,
+    "contentSha256": "1054147177ab6f9aa1b091511a44cefe899d7948eedae1e25b853141a4d419a9"
+  },
+  "dune.com": {
+    "url": "https://dune.com",
+    "normalizedUrl": "dune.com",
+    "cacheKey": "458f7cc135c4506230518f313e169a156ad77c00640f4c584ddf7fa0dc7955e6",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:53.229Z",
+    "textLength": 3486,
+    "contentSha256": "34fa420ca6c4dff1e4e807c879aab67dbd49c1542c75b894ac9661c6ec7f4fbf"
+  },
+  "moonpay.com": {
+    "url": "https://www.moonpay.com",
+    "normalizedUrl": "moonpay.com",
+    "cacheKey": "b2466397b0dfe84829f13c0ebe4b9ab8340482224808cb6e4c0cf9e215becd73",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:54.461Z",
+    "textLength": 9451,
+    "contentSha256": "7b881f0abfeb2e46ee775eea65b55eec2a3b4575fd1ef9f71cd36464ab959b72"
+  },
+  "gnosis.io": {
+    "url": "https://www.gnosis.io",
+    "normalizedUrl": "gnosis.io",
+    "cacheKey": "a830944f5d0adea2ab734f152e86146a46a22ed25b801b8f74b292be4b7cb982",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:55.132Z",
+    "textLength": 3128,
+    "contentSha256": "32426d8d400568102678a031e409a6ba621044e8465df3e411f71a93694b3997"
+  },
+  "blockchain.com/explorer": {
+    "url": "https://www.blockchain.com/explorer",
+    "normalizedUrl": "blockchain.com/explorer",
+    "cacheKey": "d64e3da444c8cc58db3ebdafee02e1f24c2460e6b29a2cb510d7a227465026ac",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:56.360Z",
+    "textLength": 6837,
+    "contentSha256": "059993c4a8055c7cfd52598d94012bff1ccddde4045dd617f515b4905929c8ce"
+  },
+  "accounts.binance.com/en/login": {
+    "url": "https://accounts.binance.com/en/login",
+    "normalizedUrl": "accounts.binance.com/en/login",
+    "cacheKey": "1295b588b2a748184a7cfa581f618451d1eef812331eb6c8ea50fd09de874121",
+    "status": "empty",
+    "httpStatus": 202,
+    "fetchedAt": "2026-07-31T19:18:57.720Z",
+    "textLength": 157,
+    "contentSha256": "8e04081406b3ff8b3949eea5cc87a96716615009c8d83442806f48df97a66b87"
+  },
+  "login.coinbase.com/signin": {
+    "url": "https://login.coinbase.com/signin",
+    "normalizedUrl": "login.coinbase.com/signin",
+    "cacheKey": "04cc96d8b9da67de22f6d4c9c87edd6bf4996523c98aef27ebcd94d14a41cda6",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:58.340Z",
+    "textLength": 69,
+    "contentSha256": "b7522b1ac35d1fb9fc40ddefabb985050a410cfa2a7874f93d2b557381cf3b2b"
+  },
+  "accounts.coinbase.com/signin": {
+    "url": "https://accounts.coinbase.com/signin",
+    "normalizedUrl": "accounts.coinbase.com/signin",
+    "cacheKey": "03f23f2bfd00f1a9839e64b69980328c044502d717efecf4cd26e38089593185",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:58.909Z",
+    "textLength": 16,
+    "contentSha256": "0070652198b0e283cbb5137b96a4fb49dee49c352f7eebca44509f6a2ffa58f2"
+  },
+  "kraken.com/sign-in": {
+    "url": "https://www.kraken.com/sign-in",
+    "normalizedUrl": "kraken.com/sign-in",
+    "cacheKey": "9706a062531ae4d7ce14b95fd652ad62bd00856c53312c69b731f6ae502414e9",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:18:59.684Z",
+    "textLength": 0,
+    "contentSha256": "c9a51992e896304615b048b9d2052fb702e73a9daa1b81b26cc9bd93690b7480"
+  },
+  "binance.us/login": {
+    "url": "https://www.binance.us/login",
+    "normalizedUrl": "binance.us/login",
+    "cacheKey": "e5e075ed5d3faf347906d5b46900749551bf2aaf86ea05410b688de535c8d002",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:19:00.273Z",
+    "textLength": 1009,
+    "contentSha256": "a353bb93e834188dfca9beb470cd928b970792ef2326b99aefdcba02ec46f082"
+  },
+  "support.binance.com": {
+    "url": "https://support.binance.com",
+    "normalizedUrl": "support.binance.com",
+    "cacheKey": "d1e24d3c87165f581a8f06fcd3eb2b19c61f37251c82649da3d6615b2a1957b0",
+    "status": "empty",
+    "httpStatus": 202,
+    "fetchedAt": "2026-07-31T19:19:01.600Z",
+    "textLength": 157,
+    "contentSha256": "8e04081406b3ff8b3949eea5cc87a96716615009c8d83442806f48df97a66b87"
+  },
+  "help.coinbase.com": {
+    "url": "https://help.coinbase.com",
+    "normalizedUrl": "help.coinbase.com",
+    "cacheKey": "87e3e13fb782c5ec17fe547eaa9c18747733d96dc0083b02e2f80e83088058a0",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:19:02.036Z",
+    "textLength": 616,
+    "contentSha256": "c1da28ef0202120ad40378150adee22fc905b2ad1ea919801f5d156ca32668a7"
+  },
+  "support.kraken.com": {
+    "url": "https://support.kraken.com",
+    "normalizedUrl": "support.kraken.com",
+    "cacheKey": "56e64c7e2a8fec53af563a3b213a54838962c6752689797ea299cf9332591379",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:19:03.352Z",
+    "textLength": 20001,
+    "contentSha256": "61db9a760a05f17cb1496b5272d02d3ea798e2deb98b1d389c7c5dffd4ea2a2c"
+  },
+  "robinhood.report": {
+    "url": "https://robinhood.report",
+    "normalizedUrl": "robinhood.report",
+    "cacheKey": "76b824fe219631037c6847a77e8922b06e8b9797f3ab339ff2285e138b542f66",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:34:14.524Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "hyperliquid-dapp-connect-interface-v135.vercel.app": {
+    "url": "https://hyperliquid-dapp-connect-interface-v135.vercel.app",
+    "normalizedUrl": "hyperliquid-dapp-connect-interface-v135.vercel.app",
+    "cacheKey": "d0a5d2282250cfe014ffb70bf6bcfc9aa0f76828bec460c1ca7892a1f970be61",
+    "status": "empty",
+    "httpStatus": 404,
+    "fetchedAt": "2026-07-31T19:34:14.803Z",
+    "textLength": 198,
+    "contentSha256": "bc9d2c730974c94db00ae0cfbf952e50dcdf035247f239c5e4dc57d8fcfa598c"
+  },
+  "register.snapshot-theindex.finance": {
+    "url": "https://register.snapshot-theindex.finance",
+    "normalizedUrl": "register.snapshot-theindex.finance",
+    "cacheKey": "57d0b30feeb5c3300dd83706152d41b88d5ec4bc13f142f37181085022fef18a",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:34:15.327Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "hyperfuondation.xyz": {
+    "url": "https://hyperfuondation.xyz",
+    "normalizedUrl": "hyperfuondation.xyz",
+    "cacheKey": "7fdd7fe59fc75984a0f33b4537ddc1f23e42e06e21bb414ac49f7dc7f62b544b",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:15.962Z",
+    "textLength": 1515,
+    "contentSha256": "f03740171445f6ecbe80f2dd6ba038b939dbdb2ee65859a30e68a16c21fa1602"
+  },
+  "voting-apyxfi.com": {
+    "url": "https://voting-apyxfi.com",
+    "normalizedUrl": "voting-apyxfi.com",
+    "cacheKey": "6a635af042f391a7c411c8465254a0673af8ab828aca16cdcc2560da551c05bc",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:16.762Z",
+    "textLength": 20001,
+    "contentSha256": "b194104bc52d6be5a995e13558ef7b0c323f5fd9fad36c37864f0a6df505f426"
+  },
+  "verification-variational.com": {
+    "url": "https://verification-variational.com",
+    "normalizedUrl": "verification-variational.com",
+    "cacheKey": "7945ec3dc91f1cd72ca767d22aef57e5aadfd6ad737652fb1f24b40e5a9826df",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:34:17.760Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "robinhoodfox.info": {
+    "url": "https://www.robinhoodfox.info",
+    "normalizedUrl": "robinhoodfox.info",
+    "cacheKey": "e2959910aa93505709dca59957a9b036911059641f9278df6a83e3df96a9c329",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:34:18.286Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "repegs-apyxfi.com": {
+    "url": "https://repegs-apyxfi.com",
+    "normalizedUrl": "repegs-apyxfi.com",
+    "cacheKey": "94d194f7e94b0918074c5105b1a59fbdb9f509b74558b6d3174ee21682d262cb",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:18.388Z",
+    "textLength": 20001,
+    "contentSha256": "b194104bc52d6be5a995e13558ef7b0c323f5fd9fad36c37864f0a6df505f426"
+  },
+  "amlservice.click": {
+    "url": "https://amlservice.click",
+    "normalizedUrl": "amlservice.click",
+    "cacheKey": "fed6d55646d50a427fd46c8327a8860e5eaa8adf0557703a6af33466cfc56a56",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:20.052Z",
+    "textLength": 20001,
+    "contentSha256": "a6cb157c86bcc7350e4a51e1391de9bc75e88cb9a6015a95c5ffedb3d2623430"
+  },
+  "afx-snapshot.web.app": {
+    "url": "https://afx-snapshot.web.app",
+    "normalizedUrl": "afx-snapshot.web.app",
+    "cacheKey": "f441374a43ffa1b68bc823f6b21d4210ec9d5d5b1d69f1d8d763456d2af77712",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:21.295Z",
+    "textLength": 3348,
+    "contentSha256": "71b30e61d99c4bc0e3f71c2daa8ef93cff95f74d13201d9b3c3364793f37137c"
+  },
+  "rewards.fiuid.app": {
+    "url": "https://rewards.fiuid.app",
+    "normalizedUrl": "rewards.fiuid.app",
+    "cacheKey": "b3a0ebae76a850c7ec4e26434428ef22f7b9352d2eb90424c10ae29a6cb2f515",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:21.971Z",
+    "textLength": 404,
+    "contentSha256": "cad0e4a44b903f67c183ed027d20683a600fcd3777ce7e9bb284a5e1c574898a"
+  },
+  "chewyswap.live": {
+    "url": "https://chewyswap.live",
+    "normalizedUrl": "chewyswap.live",
+    "cacheKey": "9820c5ed05f6cb1cbb790a99114344b4f5d0b2f02fbdb1e85ebb46edbaa458a8",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:23.650Z",
+    "textLength": 70,
+    "contentSha256": "3e42fe5578289403ab0fd4393b7d7abba7f6d89ae0edb5b09a605076a03d4ada"
+  },
+  "ultimate-appsync-earn.pages.dev": {
+    "url": "https://ultimate-appsync-earn.pages.dev",
+    "normalizedUrl": "ultimate-appsync-earn.pages.dev",
+    "cacheKey": "9826c1390acef540cb1ee9a1817f48a245a9aafbbf0ac843ed0a2435696d6bd2",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:34:24.312Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "freefinances.pages.dev": {
+    "url": "https://freefinances.pages.dev",
+    "normalizedUrl": "freefinances.pages.dev",
+    "cacheKey": "f8229fecb52547880bf54cac31d3bcadaa2c06f4095a7c863e30b1d09d1daa3a",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:24.740Z",
+    "textLength": 56,
+    "contentSha256": "ab79ac5b56574d0a3234cf57e48b6b5bad963b96afb2e22e5f16a512f85e772a"
+  },
+  "exponent-finances.com": {
+    "url": "https://exponent-finances.com",
+    "normalizedUrl": "exponent-finances.com",
+    "cacheKey": "7a9044e2c6580859482773b5639e26e5558be35e5efc0dc3c419e9a43dabdb35",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:25.248Z",
+    "textLength": 781,
+    "contentSha256": "215aafc1118f129da183ae2a676095cd88713eff0767d71a4df3b48f5359846b"
+  },
+  "pumpcoinmax.fun": {
+    "url": "https://pumpcoinmax.fun",
+    "normalizedUrl": "pumpcoinmax.fun",
+    "cacheKey": "804ba46334ba984964fc375e9d6eadbacf77d7e8f501fb6c87bfbfae2f3eab78",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:34:26.729Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "future-zebec.com": {
+    "url": "https://future-zebec.com",
+    "normalizedUrl": "future-zebec.com",
+    "cacheKey": "e9006e426c4d8558897359e917017ed8e9646e2015a21b0977bbf76250a2ff27",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:34:26.839Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "littlepepe.pw": {
+    "url": "https://littlepepe.pw",
+    "normalizedUrl": "littlepepe.pw",
+    "cacheKey": "c5ac487ac3827d8e82e2effb77e368937368682ad646d0ed75bf56fef583c6eb",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:26.914Z",
+    "textLength": 4543,
+    "contentSha256": "943765a0d8888ddac00aba8346826a66ee953abb79f12c1adda7ccac8d727b0a"
+  },
+  "bazecoin-extnsn.framer.ai": {
+    "url": "https://bazecoin-extnsn.framer.ai/",
+    "normalizedUrl": "bazecoin-extnsn.framer.ai",
+    "cacheKey": "03d5bc36e91b80241e8592643f82a1df2bd039a198be8a278dd786118e185df1",
+    "status": "empty",
+    "httpStatus": 404,
+    "fetchedAt": "2026-07-31T19:34:27.799Z",
+    "textLength": 83,
+    "contentSha256": "769a51bf5375f863d8c89785316847e6a2d76d0c53fcdcb117fafb0865c8ef72"
+  },
+  "coinbaseverify.vercel.app": {
+    "url": "https://coinbaseverify.vercel.app/",
+    "normalizedUrl": "coinbaseverify.vercel.app",
+    "cacheKey": "34170c1dfd7f8f0dd7ecdd413b263b0848e3ecaadb69d5f5f1759aecf862a770",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:28.216Z",
+    "textLength": 285,
+    "contentSha256": "5b001b739cd78f013be2d9b72b2381903e444608a1dd7da54c2cdfd9abe0f412"
+  },
+  "amount.coinbases.vip": {
+    "url": "https://amount.coinbases.vip/",
+    "normalizedUrl": "amount.coinbases.vip",
+    "cacheKey": "2f211d1aa43c1bf7d83e9aa50fe73ebc5837b8df3317bc7f6fce508cfe932c08",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:34:28.786Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "caoinbassewillet.gitbook.io": {
+    "url": "https://caoinbassewillet.gitbook.io/",
+    "normalizedUrl": "caoinbassewillet.gitbook.io",
+    "cacheKey": "fb759dcd4e8539580aff9bc35b0e54c551fb0500a5f3c2c1dc6d1113576f4dfe",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:34:28.965Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "investigation-workspace.com": {
+    "url": "https://investigation-workspace.com/",
+    "normalizedUrl": "investigation-workspace.com",
+    "cacheKey": "637452f79e0afb4922cc0602bc81c8ac7afea3e6c683db7166f3c3300d23d260",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:34:30.263Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "coinbase_1_login.godaddysites.com": {
+    "url": "https://coinbase_1_login.godaddysites.com/",
+    "normalizedUrl": "coinbase_1_login.godaddysites.com",
+    "cacheKey": "cc8677623befce721c66f424ec6b408165eb4ba0528114d15c189a7054c9a0bf",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:30.367Z",
+    "textLength": 16,
+    "contentSha256": "60600377ceadc26c418919013b5334a8c12450a1af142ddd62216cb9885d3ad9"
+  },
+  "masakkaktivasyondogrula.duckdns.org": {
+    "url": "https://masakkaktivasyondogrula.duckdns.org/",
+    "normalizedUrl": "masakkaktivasyondogrula.duckdns.org",
+    "cacheKey": "4f7a153db27b41cb48de94cbae6101ad49e0e1279e3eb30b335b0d765a8eba99",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:34:30.803Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "hub-coinbase-wallet-extn.gitbook.io": {
+    "url": "https://hub-coinbase-wallet-extn.gitbook.io/",
+    "normalizedUrl": "hub-coinbase-wallet-extn.gitbook.io",
+    "cacheKey": "2e7e1bac4265e13481839f3b5d16748a04c66c91f8c22199df1fa8c61d9c76f9",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:34:31.003Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "coinbase_x_login.godaddysites.com": {
+    "url": "https://coinbase_x_login.godaddysites.com/",
+    "normalizedUrl": "coinbase_x_login.godaddysites.com",
+    "cacheKey": "7d53f2c9d25a26e1083d504b35231672661288d2cc5e43243000b24407ccfdd7",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:32.037Z",
+    "textLength": 16,
+    "contentSha256": "60600377ceadc26c418919013b5334a8c12450a1af142ddd62216cb9885d3ad9"
+  },
+  "coinbase_prologin_log.godaddysites.com": {
+    "url": "https://coinbase_prologin_log.godaddysites.com/",
+    "normalizedUrl": "coinbase_prologin_log.godaddysites.com",
+    "cacheKey": "95eee1bdac4565b1c52fbf51d78d4a5fb04cdd69928ddd0be5f80411d5882934",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:32.548Z",
+    "textLength": 129,
+    "contentSha256": "d0057806a9b303bc07aca07326dd635ed8efc7ba85501cff6c5c2f1648ea5bf6"
+  },
+  "coinbase_v_login.godaddysites.com": {
+    "url": "https://coinbase_v_login.godaddysites.com/",
+    "normalizedUrl": "coinbase_v_login.godaddysites.com",
+    "cacheKey": "a68cf9c01488975787c5293e98c9187c6b8d08bc97b8b5e7bdfae47510490526",
+    "status": "empty",
+    "httpStatus": 404,
+    "fetchedAt": "2026-07-31T19:34:33.347Z",
+    "textLength": 124,
+    "contentSha256": "5c71ad8941a94b1e9248064d8ba5d3cfff92891e8255c2326f29b680e6bef619"
+  },
+  "140bae.senes.at/bncearn": {
+    "url": "https://140bae.senes.at/bncearn/",
+    "normalizedUrl": "140bae.senes.at/bncearn",
+    "cacheKey": "9adc26a94baa7d05a6880c2bf5542cd9e013162542230fdbd3d1bc3e604351c7",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:34.178Z",
+    "textLength": 316,
+    "contentSha256": "83755bef540e2aa233c4314de2268d0b38d105924f6e66ec6d687e1dee71b59f"
+  },
+  "preview-coinbase.com": {
+    "url": "https://preview-coinbase.com/",
+    "normalizedUrl": "preview-coinbase.com",
+    "cacheKey": "bbb144075b5bdd02282c9f14286b1f042632dc94640526321bb004fd0e7cc8a3",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:34:34.674Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "secure-base.app": {
+    "url": "https://secure-base.app/",
+    "normalizedUrl": "secure-base.app",
+    "cacheKey": "7f98b1dc1b122974157dc8a25e070dc4cf5e98165571e07ae78ebc020430fca6",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:34.807Z",
+    "textLength": 86,
+    "contentSha256": "c2c88e929d72812f20914124901253407efbe0962df381176ebb66150616c2b0"
+  },
+  "coinbase-referral-code.vercel.app": {
+    "url": "https://coinbase-referral-code.vercel.app/",
+    "normalizedUrl": "coinbase-referral-code.vercel.app",
+    "cacheKey": "3c10144ef28514e3b0046a3da7602b058054551fe2e31c6b903a0593981f738a",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:34:35.211Z",
+    "textLength": 20001,
+    "contentSha256": "b5f5ecb17363ae44118d3b59979ccde9be9730701ac8c7320a82bdc4b481722b"
+  },
+  "infoverbindung.de/bnc/pages/index.php": {
+    "url": "https://infoverbindung.de/bnc/pages/index.php",
+    "normalizedUrl": "infoverbindung.de/bnc/pages/index.php",
+    "cacheKey": "ebacf524e8be5cafb1688c0b7ae1effff7faf72f4b1e4460357bc75b20f4b96b",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:34:35.904Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "sadmatanza.com/css/Msk/MetaMask": {
+    "url": "http://sadmatanza.com/css/Msk/MetaMask/",
+    "normalizedUrl": "sadmatanza.com/css/Msk/MetaMask",
+    "cacheKey": "fe274c68d4255a1229bec778bb67f6392c1264dbf386fd01e8ffb2cddd5c22b0",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:34:36.030Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "nav-portal-in-base.daftpage.com": {
+    "url": "https://nav-portal-in-base.daftpage.com/",
+    "normalizedUrl": "nav-portal-in-base.daftpage.com",
+    "cacheKey": "2fc26a0a0c6ea0267f4af5480c42242d614d00ca36ee2c15b75848cbd7a5f79f",
+    "status": "empty",
+    "httpStatus": 402,
+    "fetchedAt": "2026-07-31T19:34:37.344Z",
+    "textLength": 94,
+    "contentSha256": "a642f8d9becffc1ddb63b5b18b577be9fcb2dbebd6712c7d1726bad7726ac46c"
+  },
+  "xn--myetherwallt-leb.com": {
+    "url": "https://xn--myetherwallt-leb.com",
+    "normalizedUrl": "xn--myetherwallt-leb.com",
+    "cacheKey": "7746b11b5311ed8b1631c69b0620f7c4727f70962fb96e79707d090b00ae1bd4",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:35:25.960Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "myelherwallel.com": {
+    "url": "https://myelherwallel.com",
+    "normalizedUrl": "myelherwallel.com",
+    "cacheKey": "468fafc21bd9441f6f98470c4e0c996c76f7eb8d9791c33e64e794e440335ebc",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:35:26.070Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "coindash.ru": {
+    "url": "https://coindash.ru",
+    "normalizedUrl": "coindash.ru",
+    "cacheKey": "59c5230761c3bf48552e237769b911b6ed68e93ccf27ce7a8d9f61cffa392b52",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:35:26.300Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "etherswap.org": {
+    "url": "https://etherswap.org",
+    "normalizedUrl": "etherswap.org",
+    "cacheKey": "8122505ac98e08bbe4572c7ae9eec411a64bdf9905bdf0a1a5998a23fc376477",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:35:26.484Z",
+    "textLength": 0,
+    "contentSha256": "c9a51992e896304615b048b9d2052fb702e73a9daa1b81b26cc9bd93690b7480"
+  },
+  "district-0x.io": {
+    "url": "https://district-0x.io",
+    "normalizedUrl": "district-0x.io",
+    "cacheKey": "a35865ec32cf12b9760fd71dcb49ab05b0e1100a8d44423779a7e24d97a4dd4e",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:35:27.141Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "blocklichan.info": {
+    "url": "https://blocklichan.info",
+    "normalizedUrl": "blocklichan.info",
+    "cacheKey": "7453f0310d2c19f016e3d7b91127460eb63cfc2590124d87921d990b5af03927",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:35:27.301Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "secure-myetherwallet.com": {
+    "url": "https://secure-myetherwallet.com",
+    "normalizedUrl": "secure-myetherwallet.com",
+    "cacheKey": "261ddcb83c36fda9a6bfa292df8f2ae3cd389c40cfef5dd90d027886151a8e32",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:35:27.440Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "myetherwallet.top": {
+    "url": "https://myetherwallet.top",
+    "normalizedUrl": "myetherwallet.top",
+    "cacheKey": "3729a3efeba8c8c507c46de8cdc239a0d8b0ae02205d4e2fd4a001ee06e06fb9",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:35:27.661Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "bitcoin-wallet.net": {
+    "url": "https://bitcoin-wallet.net",
+    "normalizedUrl": "bitcoin-wallet.net",
+    "cacheKey": "a7107d5fe1d2ae4c62a0efcf984744c0023fdadae2ec44b92b9c7227a20006b6",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:35:28.432Z",
+    "textLength": 0,
+    "contentSha256": "c9a51992e896304615b048b9d2052fb702e73a9daa1b81b26cc9bd93690b7480"
+  },
+  "myetherwallet.biz": {
+    "url": "https://myetherwallet.biz",
+    "normalizedUrl": "myetherwallet.biz",
+    "cacheKey": "f645d5937d3126a73bf6947afc671c953b8228c071d4a5d40a528390aaf583fd",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:35:29.249Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "support.metamask.io": {
+    "url": "https://support.metamask.io",
+    "normalizedUrl": "support.metamask.io",
+    "cacheKey": "99c42e608d77171182117833c21f67d185929c9c2979ba8bc020edf15af2d726",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:32.781Z",
+    "textLength": 1419,
+    "contentSha256": "b5c7d821d415179af64b685cd25eb33d3fbbb47e4615401a04ef8f360c0895db"
+  },
+  "blog.uniswap.org/uni": {
+    "url": "https://blog.uniswap.org/uni",
+    "normalizedUrl": "blog.uniswap.org/uni",
+    "cacheKey": "ccb347c01ac5cdc2a78278172e01048569af64d96fecdaeda4a0ee544e4a76fd",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:33.313Z",
+    "textLength": 10005,
+    "contentSha256": "ab94ad2324140200648621b7127fb936738d8d6504b41c0e334364f41ecd1492"
+  },
+  "arbitrum.foundation/story": {
+    "url": "https://arbitrum.foundation/story",
+    "normalizedUrl": "arbitrum.foundation/story",
+    "cacheKey": "2ed7b6526351b070fde50a6183c5dffbb0542a4a9e70b9955b0459ffe5f42060",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:34.296Z",
+    "textLength": 1996,
+    "contentSha256": "1c0940d92268fb2922d4c2ab1798fd38e1da05616839e1ecaeabb63ee8e07ed7"
+  },
+  "app.optimism.io/airdrops/5": {
+    "url": "https://app.optimism.io/airdrops/5",
+    "normalizedUrl": "app.optimism.io/airdrops/5",
+    "cacheKey": "1f480071e3f657dd69d95901be8f841369b0b750a7dc63cd7d7a13c321c7489b",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:34.802Z",
+    "textLength": 65,
+    "contentSha256": "1a737153c1217fc4829b90963a7e136e68d38852921607c0ca13cb3445b13aec"
+  },
+  "app.uniswap.org/swap": {
+    "url": "https://app.uniswap.org/swap",
+    "normalizedUrl": "app.uniswap.org/swap",
+    "cacheKey": "dca7951b97c85abd121a480eab3b6a5241ac9a43d34c45ebb8ee6582248bac7e",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:35.673Z",
+    "textLength": 64,
+    "contentSha256": "3b1dbe91fb0564105687a5d9dfdbb14434940bb47c956e86954846d2ab6e6cc3"
+  },
+  "opensea.io/account": {
+    "url": "https://opensea.io/account",
+    "normalizedUrl": "opensea.io/account",
+    "cacheKey": "2eacfee663bb3f11ded91c0baa60090048c88c916f0a7e758993d3d87144ee1c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:36.119Z",
+    "textLength": 343,
+    "contentSha256": "fd2700301a92f92df451de8db115baabe7a4731912464c8b6b17d22c3d5b47a3"
+  },
+  "app.aave.com": {
+    "url": "https://app.aave.com",
+    "normalizedUrl": "app.aave.com",
+    "cacheKey": "98fa01aeb79a10d1ce0f88b1e9116612693dcaa3a3effc0089b2fa158267b42a",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:37.604Z",
+    "textLength": 37,
+    "contentSha256": "c910d608ac3c640eb297ceec9cb531805b4e76b3c8c2a005462366c458695363"
+  },
+  "bitget.com": {
+    "url": "https://bitget.com",
+    "normalizedUrl": "bitget.com",
+    "cacheKey": "a57f31c787c2cfd8270f22133767b9c8aade6ccb1bef6239a323e0d98582f167",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:38.015Z",
+    "textLength": 5007,
+    "contentSha256": "0d59f1da2a0bc420713e176ea9c22302777b738eb4e6a59578875ce1b8278652"
+  },
+  "mexc.com": {
+    "url": "https://mexc.com",
+    "normalizedUrl": "mexc.com",
+    "cacheKey": "2e7bf94e7aaffcf0a2bfed671604b80a7ae7f9ab531132e4ea6361e5e338e1b1",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:39.947Z",
+    "textLength": 20001,
+    "contentSha256": "12955113904aa4a0f92d94ff52202f287c28ce3d577c39c52d5cb655e8743cc1"
+  },
+  "htx.com": {
+    "url": "https://htx.com",
+    "normalizedUrl": "htx.com",
+    "cacheKey": "3f91d06128a841d8abc7288b53c5e6e1e02124f47034addf958787ae1c380e6d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:42.241Z",
+    "textLength": 1530,
+    "contentSha256": "94f84ee183c18b101d7504f955229a0f668b021883dff63d3b5b1683e0101a87"
+  },
+  "bitfinex.com": {
+    "url": "https://bitfinex.com",
+    "normalizedUrl": "bitfinex.com",
+    "cacheKey": "04f7f253175c942d7a166dd685600802e12e39d262da995c28e927056e51e38b",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:44.787Z",
+    "textLength": 3191,
+    "contentSha256": "0e33790bb7395ef4937d9f6bc8c52e7ad463a0cf8f67aebbaec3bc69c1b893e4"
+  },
+  "bitmex.com": {
+    "url": "https://bitmex.com",
+    "normalizedUrl": "bitmex.com",
+    "cacheKey": "b879f5f586c1555962d8f5f646d42c7566ea09449eee85b8e929293baeed77e1",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:45.902Z",
+    "textLength": 4162,
+    "contentSha256": "f0f9d5316358a1c6c44fa2f1baa09bb4c41ffebc4f5b59f2615437fab0604b3f"
+  },
+  "deribit.com": {
+    "url": "https://deribit.com",
+    "normalizedUrl": "deribit.com",
+    "cacheKey": "621c1d7bf9f5a360f2042a6db82b4e9ece6bc079d3ed599c813d5673149d160a",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:47.576Z",
+    "textLength": 15355,
+    "contentSha256": "60d753dde693e5c9fc304f965e77b1454a617fedff495bd6fc1f072355710d69"
+  },
+  "poloniex.com": {
+    "url": "https://poloniex.com",
+    "normalizedUrl": "poloniex.com",
+    "cacheKey": "6675b7b667ebe8910c12a089f3e02e6fda2006845859740ae2271c3acf571790",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:48.966Z",
+    "textLength": 51,
+    "contentSha256": "8c0b121d1560bcdda04ded259c47e1b48144be3c180aa63e093565a5764ef12b"
+  },
+  "upbit.com": {
+    "url": "https://upbit.com",
+    "normalizedUrl": "upbit.com",
+    "cacheKey": "cab77ba7b3e683a04d2d1fee8b8df7a382fe32b1b689957e393b4a0ea95d7360",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:36:50.402Z",
+    "textLength": 10,
+    "contentSha256": "b94746639049432d82c6072c8093e72fa8a1973109372ab6e3a4991624304e9a"
+  },
+  "bithumb.com": {
+    "url": "https://bithumb.com",
+    "normalizedUrl": "bithumb.com",
+    "cacheKey": "4bb63919ff7c278ca759dc9c350210a30ed107f92b4e343e6f68958793a38977",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:36:52.006Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "coincheck.com": {
+    "url": "https://coincheck.com",
+    "normalizedUrl": "coincheck.com",
+    "cacheKey": "a7b478d5ebb9f6dbde1f04d9998a5a9aaa519ac6c68bc14d95772bb7fc29b1d8",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:03.280Z",
+    "textLength": 6591,
+    "contentSha256": "219e03010539d1d6e0a5a967664fe4ec167676343d90a2845772cc35f6aeda00"
+  },
+  "bitflyer.com": {
+    "url": "https://bitflyer.com",
+    "normalizedUrl": "bitflyer.com",
+    "cacheKey": "9a698ddfa216a55b64767baabb97b9ebd2f4d7ed4785494958fd7ae313bb2724",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:37:05.115Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "luno.com": {
+    "url": "https://luno.com",
+    "normalizedUrl": "luno.com",
+    "cacheKey": "d30ef16a47e1c88a656338b147395ef711a88826f2eeea08a76629ec2dbf914f",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:37:05.772Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "wazirx.com": {
+    "url": "https://wazirx.com",
+    "normalizedUrl": "wazirx.com",
+    "cacheKey": "5beb9363943e285384ff5856b7c6c5858d569e76057446a346a261a7f1a17110",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:06.202Z",
+    "textLength": 130,
+    "contentSha256": "7adb9f12cccc5d6236839d0178c2ab29f9562935517f8cd9a30cf4737dd57c0d"
+  },
+  "coindcx.com": {
+    "url": "https://coindcx.com",
+    "normalizedUrl": "coindcx.com",
+    "cacheKey": "33ac7523b2cb5e192663fb97479516ceae2f965482d1ce4a7b53bfa7c335ac87",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:37:07.035Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "cex.io": {
+    "url": "https://cex.io",
+    "normalizedUrl": "cex.io",
+    "cacheKey": "68b89b6b42803b374638e27c57e95c86d1c048654331328ebe98cd4ab8c1fb08",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:07.498Z",
+    "textLength": 17911,
+    "contentSha256": "186458f0093ac996506533af771e254febcedc394a6652a11f991d9afc49f445"
+  },
+  "lbank.com": {
+    "url": "https://lbank.com",
+    "normalizedUrl": "lbank.com",
+    "cacheKey": "2d43be17e6c5f11c722a84f28dfb776aa467a9938aafd37152b6556b0273f92d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:08.401Z",
+    "textLength": 3436,
+    "contentSha256": "a62dc0bcc1100cc796330d4d01bcd7946ba40f974807dbd18017688bcede7da5"
+  },
+  "xt.com": {
+    "url": "https://xt.com",
+    "normalizedUrl": "xt.com",
+    "cacheKey": "58fc6c4d8c7d7d333d5ad7b7904730bd925e78a32b15427adcea7779981cd2ae",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:09.921Z",
+    "textLength": 1197,
+    "contentSha256": "c5f2dd361d2f4a13771aa41fe931103e62cb97d48e23303a120958fe5ba317f6"
+  },
+  "bingx.com": {
+    "url": "https://bingx.com",
+    "normalizedUrl": "bingx.com",
+    "cacheKey": "8b1a334e7e9cf0673a625409229b8e70a4e63062c6c1551e5ac448046240bc4c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:13.036Z",
+    "textLength": 4719,
+    "contentSha256": "69414a2846f06fc9913b0e5fcc9d8cdd6a14acc00438f1992e283a7038e6ade7"
+  },
+  "phemex.com": {
+    "url": "https://phemex.com",
+    "normalizedUrl": "phemex.com",
+    "cacheKey": "67be937755a9f7db32fc96328209f0a2d33bd95fcea8883ff682fb5bcf7dec7d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:14.228Z",
+    "textLength": 8556,
+    "contentSha256": "6e8e35be409fd0edc619fa58f117d73ef5e3e7a76fedc899e8684ae92ec2cf42"
+  },
+  "whitebit.com": {
+    "url": "https://whitebit.com",
+    "normalizedUrl": "whitebit.com",
+    "cacheKey": "5642baf3e7740591be638facaf1a10e1217d3b01e41c4c2bafc7c84abf8b930c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:16.489Z",
+    "textLength": 6644,
+    "contentSha256": "edcc10c498cac115b214b908f31aef6b6dd247d11914707f040ce8a38a60407b"
+  },
+  "bitrue.com": {
+    "url": "https://bitrue.com",
+    "normalizedUrl": "bitrue.com",
+    "cacheKey": "d3e2e89d19dd65a63d5aba1bd1f6169d3dbe11e1744fee5c5b23384f2adab33c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:17.242Z",
+    "textLength": 8702,
+    "contentSha256": "f73d98d4d242b47316f3bf3dbc296ac0287612bf591e391bfb254e996c25f9f4"
+  },
+  "probit.com": {
+    "url": "https://probit.com",
+    "normalizedUrl": "probit.com",
+    "cacheKey": "7db1177842d8c371736dd7bf6e3c2123585b54bb8ab57458abae6c8ef6ade185",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:20.770Z",
+    "textLength": 4318,
+    "contentSha256": "4270fd0caa22c69480df9fa5eead429862348a79440826c285a2be7da6af92d5"
+  },
+  "ascendex.com": {
+    "url": "https://ascendex.com",
+    "normalizedUrl": "ascendex.com",
+    "cacheKey": "7b18c740643f4df801d0a4dfbfaab0760cba18f663619b04764b7a5b8a449c6e",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:23.332Z",
+    "textLength": 5090,
+    "contentSha256": "7f2af8732d5dde14d6509ffb01c6afab46eea5cdd5e655f6d65aeb757daf941a"
+  },
+  "bitpanda.com": {
+    "url": "https://bitpanda.com",
+    "normalizedUrl": "bitpanda.com",
+    "cacheKey": "e0720b9ad15596c356aab5deb83146fe9b29d6e9e374f778f98a2448cf2d88b4",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:24.485Z",
+    "textLength": 6800,
+    "contentSha256": "c1fe41dc09961094b9e10ad56344b3d009bb7b184e2f9a23bd485a37604fb202"
+  },
+  "coinmama.com": {
+    "url": "https://coinmama.com",
+    "normalizedUrl": "coinmama.com",
+    "cacheKey": "5fcab8283e204369b6f0c754353bb8b06da8cffca319ca61ffc425bd84282326",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:26.036Z",
+    "textLength": 4138,
+    "contentSha256": "29248c51ba90d9f06e4264cf55611b76a70f756dc15a6f1e79111e70c5c2aa1e"
+  },
+  "paxful.com": {
+    "url": "https://paxful.com",
+    "normalizedUrl": "paxful.com",
+    "cacheKey": "daf13635e36d255cd9ba2c18aacb52f6d95a5ddab16cf43cce2ab28be9fe61d1",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:37:27.235Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "river.com": {
+    "url": "https://river.com",
+    "normalizedUrl": "river.com",
+    "cacheKey": "7cb629ead58735aaa86b72f6e3926989dd54eafe6ce7eab180006d10bd809308",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:27.774Z",
+    "textLength": 3890,
+    "contentSha256": "740d508724f4a6e1b9c2a5edc99cb784a5db4843463c24bea1a92901d0929944"
+  },
+  "swanbitcoin.com": {
+    "url": "https://swanbitcoin.com",
+    "normalizedUrl": "swanbitcoin.com",
+    "cacheKey": "bc3d2d4ad065c4bcac450c53976843a449a62d2b022d27c619719e94dc1b985f",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:28.437Z",
+    "textLength": 12132,
+    "contentSha256": "64cd39ee014fbd205e519d1757db97aa3391784b963e63849bf6fd691fc87db8"
+  },
+  "strike.me": {
+    "url": "https://strike.me",
+    "normalizedUrl": "strike.me",
+    "cacheKey": "b40090577ae206f647da29c98f87266004b0dc5df89431aa901dd2cede7075d0",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:30.036Z",
+    "textLength": 2510,
+    "contentSha256": "1acc17c90c2c547e32730d360a0faef3d1e10cef7355a8680f49a58391a88278"
+  },
+  "ethereum.org": {
+    "url": "https://ethereum.org",
+    "normalizedUrl": "ethereum.org",
+    "cacheKey": "174eee2e4551f2b0830de03507bf8e17b465e306991a0c13742dee4eccffb1fe",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:31.495Z",
+    "textLength": 5789,
+    "contentSha256": "9b2bf9d0202132b32b95ee7b54c720887ecced026c70c5bc69691e86ec9b61a2"
+  },
+  "bitcoin.org": {
+    "url": "https://bitcoin.org",
+    "normalizedUrl": "bitcoin.org",
+    "cacheKey": "8be89b7a3de917c8b5716895cded78271879aab18fccd37bdff3d4a8360f4781",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:32.867Z",
+    "textLength": 2888,
+    "contentSha256": "5166710510f3cef9ea8f05f011b2b9926638f48ed90bcd3d3d871050f8046aba"
+  },
+  "cardano.org": {
+    "url": "https://cardano.org",
+    "normalizedUrl": "cardano.org",
+    "cacheKey": "553cb250349f59cf2f860317a5da01c6cc86135afbf7ae497d2100919fe83c63",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:33.716Z",
+    "textLength": 6682,
+    "contentSha256": "3b1cf40fe88ec942e73681e4d918c08a6a47031c94b713867f17ca30046f47f3"
+  },
+  "near.org": {
+    "url": "https://near.org",
+    "normalizedUrl": "near.org",
+    "cacheKey": "7bffa786530bbe466ef7774b7f892f536800e1b9d4866ea0d10374b97aa4d561",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:34.368Z",
+    "textLength": 4556,
+    "contentSha256": "32c33c05e1d94da165aba0ba40ea0eeecfbf7637e038451b3c420c024e5c9657"
+  },
+  "algorand.com": {
+    "url": "https://algorand.com",
+    "normalizedUrl": "algorand.com",
+    "cacheKey": "028cb7678e2c9712ebcd1c4f49619a091eb4e14b263c922c422a658a42c5d116",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:35.354Z",
+    "textLength": 17281,
+    "contentSha256": "f8d88609996984e64db730e8ccf4d84d4429760dfb6f85745334e44411138c28"
+  },
+  "tezos.com": {
+    "url": "https://tezos.com",
+    "normalizedUrl": "tezos.com",
+    "cacheKey": "ba9c3b59e6847b419c43f7df92ff9ac645d4efdb905178857d98612af41369bd",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:36.637Z",
+    "textLength": 4388,
+    "contentSha256": "d17b1978e0959caa83106e3cad14b9d079afe38f4ccdf01bbe54d85c8b2e3459"
+  },
+  "tron.network": {
+    "url": "https://tron.network",
+    "normalizedUrl": "tron.network",
+    "cacheKey": "4824f3b000ea8adba8de84bf5bb47bd6afd9c9ce48c9839accf18a3baec1a0c1",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:38.608Z",
+    "textLength": 305,
+    "contentSha256": "130dee1a32b97ee023de3691e3a9dcee9742c3032eec405bed078b2220c27f07"
+  },
+  "eos.io": {
+    "url": "https://eos.io",
+    "normalizedUrl": "eos.io",
+    "cacheKey": "4e518c71d9da3bab2cc2f1a69dbeb23aa1b5a224c939049101c6f235e4c76bfa",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:37:39.143Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "cronos.org": {
+    "url": "https://cronos.org",
+    "normalizedUrl": "cronos.org",
+    "cacheKey": "57db824b7ddf37018ec405b0a2001012c28aebea0acc23e5d5d6a9b58227a385",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:39.330Z",
+    "textLength": 1707,
+    "contentSha256": "e532205bced28bf4703da72e45fb58e43bc4170fdeff22f22247e5003275e3a6"
+  },
+  "fantom.foundation": {
+    "url": "https://fantom.foundation",
+    "normalizedUrl": "fantom.foundation",
+    "cacheKey": "5a613db5c9132edf2e400cf769dc57823a6d7d4dab86bec1979a7a24aa8b6da1",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:40.376Z",
+    "textLength": 3693,
+    "contentSha256": "a3cb607ad5acb8cdba862a4ac12351c71355b6072cab524b6c68bf5c937fb7f9"
+  },
+  "harmony.one": {
+    "url": "https://harmony.one",
+    "normalizedUrl": "harmony.one",
+    "cacheKey": "956c15ab382c1b8ba50c78b579ff30edc16ec5bbda9b6eab25a9bbd6d7d6c83a",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:41.362Z",
+    "textLength": 23,
+    "contentSha256": "d1a642b0584e39aede07c65ee3eeb57f65d02f27798b39ba7d50e82291701cb5"
+  },
+  "celo.org": {
+    "url": "https://celo.org",
+    "normalizedUrl": "celo.org",
+    "cacheKey": "8549372f82291635721b0df8642c9b987cae0e74a7ba796a20f187dbb8bb10a6",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:42.120Z",
+    "textLength": 17757,
+    "contentSha256": "7c403c1facdce337ee6fc92159d236f5ede8cd58508f3decd2929f8350240a49"
+  },
+  "multiversx.com": {
+    "url": "https://multiversx.com",
+    "normalizedUrl": "multiversx.com",
+    "cacheKey": "8c803ec08c6a2094d9f932eb2b6515d3581a5f1c3b32a5b6b53b9e9e9c2c3466",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:43.872Z",
+    "textLength": 6270,
+    "contentSha256": "eb86ad8351569483e2253a1115f9806ad0c8c90b5ed0feb618656b8089f82ee5"
+  },
+  "hedera.com": {
+    "url": "https://hedera.com",
+    "normalizedUrl": "hedera.com",
+    "cacheKey": "504ba985e7032c822fe3b754ea76c0ed5c7ddb85a25d5b41100f82c807fc7d3d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:46.605Z",
+    "textLength": 11176,
+    "contentSha256": "c569c252d8273667958569b9f50628a05e4d465c6fdf6cf151b7d30fcc59a1e0"
+  },
+  "aptosfoundation.org": {
+    "url": "https://aptosfoundation.org",
+    "normalizedUrl": "aptosfoundation.org",
+    "cacheKey": "aaa6b0fb13687430496f22d146e09a68d43f737686b54b63a0f084863d24a849",
+    "status": "ok",
+    "httpStatus": 429,
+    "fetchedAt": "2026-07-31T19:37:47.437Z",
+    "textLength": 276,
+    "contentSha256": "7b19c2495c900c0cf69136b35e04e5d0aa526a7636375e783eebc7c9bc165d05"
+  },
+  "sui.io": {
+    "url": "https://sui.io",
+    "normalizedUrl": "sui.io",
+    "cacheKey": "1f213108d09116f3c031cfc3fd20f39afb90fcd7f2f0f174e05ea4fdbcf3203e",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:47.806Z",
+    "textLength": 9223,
+    "contentSha256": "3ef5607999b3bdeb36dc6bb2677d7ad0af2d65df9e12c84d30434e7710b6904a"
+  },
+  "sei.io": {
+    "url": "https://sei.io",
+    "normalizedUrl": "sei.io",
+    "cacheKey": "5deb65e17a6d75f45c03bf1e91249dd4234019bd475bce1846a7c7952de73d9b",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:49.242Z",
+    "textLength": 4315,
+    "contentSha256": "fb52748ea59f3d0fc9676c96f738aa9ae27c73db9650795b34f2197c5cc2ee68"
+  },
+  "base.org": {
+    "url": "https://base.org",
+    "normalizedUrl": "base.org",
+    "cacheKey": "661b1b21d43be4d1714f74c73b4caedc6958490e5d5756345fabd262af6cc75d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:50.478Z",
+    "textLength": 2252,
+    "contentSha256": "2608a8d98bc3d910ff6ceb8db7960fe38c701858b81ba24a9b6d220928307e58"
+  },
+  "starknet.io": {
+    "url": "https://starknet.io",
+    "normalizedUrl": "starknet.io",
+    "cacheKey": "ae249073fd85561f564e3c3c1af148005b191a31f89a32ebc34a7cd420868ba6",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:51.711Z",
+    "textLength": 5953,
+    "contentSha256": "c97a24a578b02672904011f726d071bc72a3b6b7b25bfbaf3703e05c952741f6"
+  },
+  "scroll.io": {
+    "url": "https://scroll.io",
+    "normalizedUrl": "scroll.io",
+    "cacheKey": "41cca0bd2671c559a97351d1402fce71f6df5a9330ac33980cc54c11ea8f4136",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:53.445Z",
+    "textLength": 42,
+    "contentSha256": "d06b05c47462e8df5aada0156077c27438529ee7e8d7da6a0b4809fa5da6b6de"
+  },
+  "linea.build": {
+    "url": "https://linea.build",
+    "normalizedUrl": "linea.build",
+    "cacheKey": "5187f5a17cdd748f73ac9bcb51e31fc87a52c1265a9f312a41e4128066135224",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:54.045Z",
+    "textLength": 3403,
+    "contentSha256": "e6ec53b360d3f395306f3e2345590c7ca69b0236ccb294ba0a32aa8e1372b28a"
+  },
+  "mantle.xyz": {
+    "url": "https://mantle.xyz",
+    "normalizedUrl": "mantle.xyz",
+    "cacheKey": "2bcfd5957f9cb7057b02fcab5902148da57c3dcdf0d1c18170d6855224be3e86",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:55.427Z",
+    "textLength": 3073,
+    "contentSha256": "3d1d3837a5c372ffe0c5f7a09c155e1b344cf9ae9a4b01b0c9f6614d621b2766"
+  },
+  "blast.io": {
+    "url": "https://blast.io",
+    "normalizedUrl": "blast.io",
+    "cacheKey": "0d6505f1f82e33eb55926d46b155d3588e0d2ee12f7bc94a459fc5a529b916b0",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:56.472Z",
+    "textLength": 115,
+    "contentSha256": "dbb35cd9012ae1ebc3faffe0790eeaf42b4a282f94d7104f7689772d83065c0b"
+  },
+  "cosmos.network": {
+    "url": "https://cosmos.network",
+    "normalizedUrl": "cosmos.network",
+    "cacheKey": "c5b9a6bf63355fd2f629fac91dc7532aaddf32fbcbd3a01599a3d6a86b9ff06f",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:57.631Z",
+    "textLength": 17223,
+    "contentSha256": "7475eae2fe9657337a300b5951b565cc1c0b73aea4d1c8c9017e391293f8e049"
+  },
+  "injective.com": {
+    "url": "https://injective.com",
+    "normalizedUrl": "injective.com",
+    "cacheKey": "9fd0065b8b232da8977e3ac28e7ee2a0241e7a12616e8f43c0ff2bcee0676d5a",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:37:58.808Z",
+    "textLength": 9237,
+    "contentSha256": "6e3f0daca991fc76d5ca836937e8bd0d6d4567c24560d730054cdd71ce163ac2"
+  },
+  "kava.io": {
+    "url": "https://kava.io",
+    "normalizedUrl": "kava.io",
+    "cacheKey": "1fa8da6b0661b9d6b9700b22f12a94f6847893162eb12ba8c41ca78925b4fbea",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:00.201Z",
+    "textLength": 2691,
+    "contentSha256": "0993c3364deedfdaefec86e93981491dee8fef6edf8b7cabbf1bb8efee3b83f1"
+  },
+  "thorchain.org": {
+    "url": "https://thorchain.org",
+    "normalizedUrl": "thorchain.org",
+    "cacheKey": "0e12727688079abb31e1515da6f10c20387ed2dddb036565bfb4ccb3e8079f57",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:00.657Z",
+    "textLength": 6081,
+    "contentSha256": "7aa34c23e9cd519d48cd2d0c8abb3f36c8be59fd18ea7531ae33de7936797762"
+  },
+  "moonbeam.network": {
+    "url": "https://moonbeam.network",
+    "normalizedUrl": "moonbeam.network",
+    "cacheKey": "804277684f85ebeee4f8243db120a4621c3517ba9b9d0dbf3bf01391f0d15e11",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:01.200Z",
+    "textLength": 9454,
+    "contentSha256": "1afa1b196183d25724354c6d0a4ebf45928fa5374f0ce6021aa7a3af2179f561"
+  },
+  "astar.network": {
+    "url": "https://astar.network",
+    "normalizedUrl": "astar.network",
+    "cacheKey": "5b7503c78a60e4e1e652dd22c2575e2e7273ac4336bda0e6d64d0809851e7bfe",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:01.840Z",
+    "textLength": 5178,
+    "contentSha256": "deb9411d5acc4529f3aae9ae5e30ae8fed32e0ba742bc59c3a3a9fa0a735c66d"
+  },
+  "klaytn.foundation": {
+    "url": "https://klaytn.foundation",
+    "normalizedUrl": "klaytn.foundation",
+    "cacheKey": "0e3acfc52f849c20bc33d324211296fd6bc1d653a61532a6e15bbc4a3d6beea0",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:02.448Z",
+    "textLength": 7332,
+    "contentSha256": "7fa485182a53721719ad698c8bb1ef74b3e43bb33ad7ee0fdd8b3228288b6c37"
+  },
+  "roninchain.com": {
+    "url": "https://roninchain.com",
+    "normalizedUrl": "roninchain.com",
+    "cacheKey": "42de56bdd4b97bbe1ac7af17d1cf5381f323f98ae2497f4025020cfdee212a6a",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:05.310Z",
+    "textLength": 2070,
+    "contentSha256": "8b1b4c8324801457e7c05204216fc95869d9344e3039eb74ecacc4df7300393e"
+  },
+  "metis.io": {
+    "url": "https://metis.io",
+    "normalizedUrl": "metis.io",
+    "cacheKey": "56340b097050556cf1a3c0d1689d2389a5e537403b5f2fe44b63e5c2b92201d1",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:07.512Z",
+    "textLength": 5537,
+    "contentSha256": "e4d1c1fa81b1e67462e966e60378e2f9bd34f523c656659f4c849342f42a7476"
+  },
+  "boba.network": {
+    "url": "https://boba.network",
+    "normalizedUrl": "boba.network",
+    "cacheKey": "34be220d3ce8c42d28ac90ec004977dd7a13f1926b99d6118d67c9154e68d23c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:09.001Z",
+    "textLength": 1954,
+    "contentSha256": "1ce5835df2783b3d17bfe300ccb6a401a984fd12d9a7ff60d5dbeb3dca9d0c4c"
+  },
+  "immutable.com": {
+    "url": "https://immutable.com",
+    "normalizedUrl": "immutable.com",
+    "cacheKey": "cda80bd762a750c14c7bbda857aaae0087b46e8a1ea842582d74949073842e05",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:09.548Z",
+    "textLength": 11124,
+    "contentSha256": "257b941be240fd3f58aa9615c2b89adff3fed147c94a1b432ce4f5072bfa6733"
+  },
+  "fuse.io": {
+    "url": "https://fuse.io",
+    "normalizedUrl": "fuse.io",
+    "cacheKey": "da9b04d102941f0e4bef1376f40ff8f1d8e9fcb3592bf7ea18973d33c3aab1fa",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:11.274Z",
+    "textLength": 5397,
+    "contentSha256": "38697d5d4efc28d59cc6bdbe7cf0f87e4053c2592aa5c2ebc13a59170411c904"
+  },
+  "balancer.fi": {
+    "url": "https://balancer.fi",
+    "normalizedUrl": "balancer.fi",
+    "cacheKey": "f59e128bb0f3931b735f296a6d942fecdee730982c26af85331b35b11c797c2d",
+    "status": "ok",
+    "httpStatus": 429,
+    "fetchedAt": "2026-07-31T19:38:12.790Z",
+    "textLength": 276,
+    "contentSha256": "9a937709f23492b96d389ab140e9940bb1db7aa6ef45344e5092c96a2701cfea"
+  },
+  "yearn.fi": {
+    "url": "https://yearn.fi",
+    "normalizedUrl": "yearn.fi",
+    "cacheKey": "e41763f0eace4908d62367e566a84de706a4e1176e50982f13e37c3c9e7500e2",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:13.234Z",
+    "textLength": 1696,
+    "contentSha256": "56cb455f99d26946cf7682117fff8c5dd9a8d3fccb877c6ae860c19517186d38"
+  },
+  "convexfinance.com": {
+    "url": "https://convexfinance.com",
+    "normalizedUrl": "convexfinance.com",
+    "cacheKey": "b3589e8eff31674692bc661c2049f351b67ded0d97e954dd82cf29573dfad5d0",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:13.773Z",
+    "textLength": 1826,
+    "contentSha256": "7a5c6514176f81fc2cb5c0695371e37793df6d8a2bb00e321548990794d53a64"
+  },
+  "frax.finance": {
+    "url": "https://frax.finance",
+    "normalizedUrl": "frax.finance",
+    "cacheKey": "5398fefc10b86ea5cfd649fe70f1385421b28022f8105551ededecdf97e0764c",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:15.134Z",
+    "textLength": 8,
+    "contentSha256": "baa6d98d7ba7f00f2fd342c50755df56ff4198978d0b4b699f422823efad865e"
+  },
+  "synthetix.io": {
+    "url": "https://synthetix.io",
+    "normalizedUrl": "synthetix.io",
+    "cacheKey": "3d84289aec909c4f8dfeed7798e37453c6bbaa3becb1845a851ce8b6d93bd0be",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:15.969Z",
+    "textLength": 7137,
+    "contentSha256": "277947bda46fce27a9ef5a382194b7db0955aafa3461117b465b303828d144ca"
+  },
+  "dydx.exchange": {
+    "url": "https://dydx.exchange",
+    "normalizedUrl": "dydx.exchange",
+    "cacheKey": "89d57237e39eed8f6f68664c985e7a6870ac596fe549d9ec600d536e0a2bfb25",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:16.692Z",
+    "textLength": 8898,
+    "contentSha256": "1c809334cacca4accf57262e739cc0ddea0387da9e8d4b0432243e408e7a0dda"
+  },
+  "gmx.io": {
+    "url": "https://gmx.io",
+    "normalizedUrl": "gmx.io",
+    "cacheKey": "11b998200c4c927d8e9e7a85afee12c7a01149109af58356b595dd7b341a26d1",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:18.651Z",
+    "textLength": 85,
+    "contentSha256": "c8a7d9f74a74baeaa53d1829d35829af6bdb85154039c27383a26e25506f937b"
+  },
+  "rocketpool.net": {
+    "url": "https://rocketpool.net",
+    "normalizedUrl": "rocketpool.net",
+    "cacheKey": "1c22d9332d98f970a0ed626c96885994c1f952ba7568d2609637b240cfdb1ce8",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:19.043Z",
+    "textLength": 303,
+    "contentSha256": "658d3fa989f2475b0070c4b3c4ae17e44f592eddf84b281db5d65aea13bcf9b4"
+  },
+  "instadapp.io": {
+    "url": "https://instadapp.io",
+    "normalizedUrl": "instadapp.io",
+    "cacheKey": "4da58838acc8bc032a9a6925a7b96491fec052cbeea5c598d5d587a81ac88b65",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:19.445Z",
+    "textLength": 754,
+    "contentSha256": "e92759b63ada023e31e1aa33ce23393c9a0acf59027966ab9b904ea4a7418812"
+  },
+  "venus.io": {
+    "url": "https://venus.io",
+    "normalizedUrl": "venus.io",
+    "cacheKey": "c519fc0daa6e1ab40375016d295cb14f646480da88b62eed0e9420f0960deeb9",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:20.315Z",
+    "textLength": 61,
+    "contentSha256": "c98241f9fa974fa48eece1f679a4892a3ff49ced3a4a2ddf6fad31d0fec0e808"
+  },
+  "traderjoexyz.com": {
+    "url": "https://traderjoexyz.com",
+    "normalizedUrl": "traderjoexyz.com",
+    "cacheKey": "81266ffbca6adb398151fd3472d0e1098f9732298b9a1d7f477bd292728810d0",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:38:20.889Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "osmosis.zone": {
+    "url": "https://osmosis.zone",
+    "normalizedUrl": "osmosis.zone",
+    "cacheKey": "18969e01300ff4daa05840513b482fe0441700bdad6e8459423bea322849fa9b",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:21.712Z",
+    "textLength": 11403,
+    "contentSha256": "fb2c5772a6dbbe0e0fb23d13d2d0523083617e608beb78b84beb35cbb336f778"
+  },
+  "raydium.io": {
+    "url": "https://raydium.io",
+    "normalizedUrl": "raydium.io",
+    "cacheKey": "a14c407823c5b25ad8677e2a962105a4c1ae0f7ad900bb7e5b1cdb2115b1842b",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:23.737Z",
+    "textLength": 12,
+    "contentSha256": "a5d4b450f0f614cc1fb94df54ba178c57eafe809fe701f8b095231cf43bcf882"
+  },
+  "orca.so": {
+    "url": "https://orca.so",
+    "normalizedUrl": "orca.so",
+    "cacheKey": "5d169eef6f1f0ae1355d4f32fff1090f1d68297c991269207e294afa366bce56",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:24.466Z",
+    "textLength": 2643,
+    "contentSha256": "0aba091c2710d6491e6a6e02311705226584b5516c7d0aaefd1d576fe29a4af5"
+  },
+  "jup.ag": {
+    "url": "https://jup.ag",
+    "normalizedUrl": "jup.ag",
+    "cacheKey": "c3702e1b31283bd1dd8c492a6e29d5edb7fd99d3555fff87ad7f489f5412855b",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:25.676Z",
+    "textLength": 975,
+    "contentSha256": "c3bd9c7032a660e7fd92b45b3622cf346beef027206d1ecc418f4b735792c0de"
+  },
+  "paraswap.io": {
+    "url": "https://paraswap.io",
+    "normalizedUrl": "paraswap.io",
+    "cacheKey": "7569cb4306504851243e55b0936dc6859f3b8b1fce9296e490c13e53da4405ed",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:26.298Z",
+    "textLength": 7623,
+    "contentSha256": "90f15cf5e25e9882455ed592c8196cf9c9643d3d80e953a0008340eeb690cd5f"
+  },
+  "0x.org": {
+    "url": "https://0x.org",
+    "normalizedUrl": "0x.org",
+    "cacheKey": "8360518b4ebdac0bdd4ad65ac90b5fdc243ad7a55ca4566401c17e0e6353288d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:28.471Z",
+    "textLength": 9401,
+    "contentSha256": "4f6b604a3f6067bb12639941209579ad07ba079acb27b1fefdd7dc200dbd79a0"
+  },
+  "kyber.network": {
+    "url": "https://kyber.network",
+    "normalizedUrl": "kyber.network",
+    "cacheKey": "908887fde339dcc33f3b8706f343c326f08f07b87620b11b6c81e962efdbd406",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:29.282Z",
+    "textLength": 5507,
+    "contentSha256": "25cce09642f6ca204bef9405f255cbf3225475b65d309deed48b0d8854490e04"
+  },
+  "spookyswap.finance": {
+    "url": "https://spookyswap.finance",
+    "normalizedUrl": "spookyswap.finance",
+    "cacheKey": "a74ff8ddeafcd0000d5fca40d58400aacbca9aaea1b6acaa5dca699e88185b5a",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:31.212Z",
+    "textLength": 3259,
+    "contentSha256": "53e0c0d3d2a273e7b4219fd70ea18469e9e9ba25f09e3f1f72e3ffd282b34583"
+  },
+  "quickswap.exchange": {
+    "url": "https://quickswap.exchange",
+    "normalizedUrl": "quickswap.exchange",
+    "cacheKey": "22b9af7f8a1f09bd9bdc325028fea01423660004c8d8bce4fd25ead5de3e31f7",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:33.601Z",
+    "textLength": 2185,
+    "contentSha256": "ad9ea0aa776a48275bb8ce86580f60bf2d1d08d3097978d57fa209ec2edf0858"
+  },
+  "velodrome.finance": {
+    "url": "https://velodrome.finance",
+    "normalizedUrl": "velodrome.finance",
+    "cacheKey": "1f099db4271903c5e36cbbf488353082f4a1dd4328236a556948510d6470375c",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:34.081Z",
+    "textLength": 17,
+    "contentSha256": "397980cf0f4b7ac9bacd1463eaa93f5a2e7942509b192c8a9060f81a2bfd3c1d"
+  },
+  "camelot.exchange": {
+    "url": "https://camelot.exchange",
+    "normalizedUrl": "camelot.exchange",
+    "cacheKey": "8be5a890a96b1767fe8bf765237e68e643e5014a39ca63255a40146c21bc4ed7",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:34.496Z",
+    "textLength": 323,
+    "contentSha256": "f518b322d71af93a9ed6cb16ade592fec947bbafd5215c8fee6ce498356a9cee"
+  },
+  "notional.finance": {
+    "url": "https://notional.finance",
+    "normalizedUrl": "notional.finance",
+    "cacheKey": "c483512db8fce2666a35bb67e878e6730663e0525dd959c7182a840e5f99b1d9",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:34.966Z",
+    "textLength": 54,
+    "contentSha256": "e14baa7a810cd267bd95cde3ae48872976e08cee0f28cc3ae75199eb67e90617"
+  },
+  "maple.finance": {
+    "url": "https://maple.finance",
+    "normalizedUrl": "maple.finance",
+    "cacheKey": "006d10403c25a8b936e598095c91ed2365cbd85676ff3cf30e4facfbcca4db6d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:35.463Z",
+    "textLength": 4832,
+    "contentSha256": "3cedf55518ad8e03a55135990f020c32d33da61be7e5d22495cda37813e342fb"
+  },
+  "goldfinch.finance": {
+    "url": "https://goldfinch.finance",
+    "normalizedUrl": "goldfinch.finance",
+    "cacheKey": "a754907f8292a87729c457d7aa3a4aa0a4c5f141d1e2475f8de7d07aa8bb9d65",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:36.236Z",
+    "textLength": 3459,
+    "contentSha256": "df9d54748c38f44c6d856bd9d3e790fe4e4859555aea0a854ac3076d058569b1"
+  },
+  "centrifuge.io": {
+    "url": "https://centrifuge.io",
+    "normalizedUrl": "centrifuge.io",
+    "cacheKey": "15368f0fbe4a0ba35cacf248510669a4b61a8e0fedd30f08683072c706d1c433",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:37.156Z",
+    "textLength": 8403,
+    "contentSha256": "89468dd96b64a477a13d00b8a9a83e7e8ef1c7764438bfd8c7472ae7678f05bd"
+  },
+  "ondo.finance": {
+    "url": "https://ondo.finance",
+    "normalizedUrl": "ondo.finance",
+    "cacheKey": "635d451867c9edad876de7a132683b053447a7ec0cebe431d118f4a0f795157a",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:37.714Z",
+    "textLength": 6039,
+    "contentSha256": "ab586f3650a2103089cbb478cb323eee68ca8df31968f58e28a7134daf7b72b0"
+  },
+  "polymarket.com": {
+    "url": "https://polymarket.com",
+    "normalizedUrl": "polymarket.com",
+    "cacheKey": "ffde3fcd54ae6ec3a51b2ecc4b3f91f532c192e5792df95bd9b4a7ac90c431d9",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:38.997Z",
+    "textLength": 18078,
+    "contentSha256": "67b17e98f36d665c826ac122aa028b73865b82189dfb4cfb8274054b419ff035"
+  },
+  "phantom.app": {
+    "url": "https://phantom.app",
+    "normalizedUrl": "phantom.app",
+    "cacheKey": "92e9a568311a3a0b5b49d3eb5d8f0748a3f377016063c1df412495cef12d5ae0",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:40.053Z",
+    "textLength": 2074,
+    "contentSha256": "8ce9b10c5a1f5105aff6626aa4283c4e781c8107b30278cc76072204d3981979"
+  },
+  "rabby.io": {
+    "url": "https://rabby.io",
+    "normalizedUrl": "rabby.io",
+    "cacheKey": "9cc6b8cd5846d18cfeec899855ee2ba6932089b9c8357ad0ef6e5c77d2b23336",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:41.018Z",
+    "textLength": 100,
+    "contentSha256": "bc2508f206e25ea3281abd94d534fe551b0959f1e6ae16b18949669098aa6e84"
+  },
+  "rainbow.me": {
+    "url": "https://rainbow.me",
+    "normalizedUrl": "rainbow.me",
+    "cacheKey": "06686391e144d0f3d6626f4b3ca0fc39770a9c3c0d75db472d1cd7c275fab033",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:42.285Z",
+    "textLength": 4937,
+    "contentSha256": "76e7fbb6401a8116da02929b65a9ff0953c236fcd76b6d087175c4f81c5a0f82"
+  },
+  "exodus.com": {
+    "url": "https://exodus.com",
+    "normalizedUrl": "exodus.com",
+    "cacheKey": "7bd5cf3292f7dc5dcb3ae9d4697907accfc0296526dab0023810a8cac5c87914",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:43.542Z",
+    "textLength": 7586,
+    "contentSha256": "64b52f6c4c2074619e00799b7df9eb889d9c0c1b11f0dc8ba0b9cca4938e5a42"
+  },
+  "argent.xyz": {
+    "url": "https://argent.xyz",
+    "normalizedUrl": "argent.xyz",
+    "cacheKey": "b03bc9f01e9857d78b4431a8af680fb4771a072ad7590d943457651f61e716bb",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:38:44.855Z",
+    "textLength": 69,
+    "contentSha256": "530918e92a4d304e020d90e823d239761206d5035115227bf9eeb0bd64a8e2a6"
+  },
+  "imtoken.com": {
+    "url": "https://imtoken.com",
+    "normalizedUrl": "imtoken.com",
+    "cacheKey": "ff6a27ba7adde8af41b0cdbb354a7b433520f044d84c79adbdbf43634b5cb42b",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:38:50.014Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "tokenpocket.pro": {
+    "url": "https://tokenpocket.pro",
+    "normalizedUrl": "tokenpocket.pro",
+    "cacheKey": "20579d786517d949701fbed9144c04bb2ddd525d4485086de93874cc4b397c4c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:00.234Z",
+    "textLength": 4574,
+    "contentSha256": "b95fc185f0c2bcb423ad4f91e0650cf3f3d386197de581dc463702b116d4e4d3"
+  },
+  "zerion.io": {
+    "url": "https://zerion.io",
+    "normalizedUrl": "zerion.io",
+    "cacheKey": "5dba1fcc01095de92c3da34c5cf6a669963cb017faaf2582701654906950ab95",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:01.936Z",
+    "textLength": 5782,
+    "contentSha256": "b021eb154b00b2caa5462c82f89c0f26628e0b44a247cba8916c829513d2df50"
+  },
+  "zengo.com": {
+    "url": "https://zengo.com",
+    "normalizedUrl": "zengo.com",
+    "cacheKey": "5a7b7110ec4c5b6330a94e1bfc3dd00fa110c75c7f2449534379ff02ed1d9e65",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:39:03.200Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "bitkeep.com": {
+    "url": "https://bitkeep.com",
+    "normalizedUrl": "bitkeep.com",
+    "cacheKey": "d92aa1f7b580a7dcb5bc5d7e0e6716c5b87c0068b0b58ec670e365ab7ffbd1da",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:03.688Z",
+    "textLength": 2133,
+    "contentSha256": "e09d9f9361c33e7a1284d98b2b75f6ddfb60b0b84a28c801b12a800bb1f2624a"
+  },
+  "frame.sh": {
+    "url": "https://frame.sh",
+    "normalizedUrl": "frame.sh",
+    "cacheKey": "bac68ee32d7067283cb9f25e0c565233baf3c6915dd0e220eed6c59dc45fcb0a",
+    "status": "skipped",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:05.325Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "coin98.com": {
+    "url": "https://coin98.com",
+    "normalizedUrl": "coin98.com",
+    "cacheKey": "56cbab7184e8306807fdd37233e6a05c20cbbac68622691ea5cf998d182c932c",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:06.896Z",
+    "textLength": 43,
+    "contentSha256": "83b3b660720e8dadaf8a2766630dd8331d02829e3594c324301b019a17171707"
+  },
+  "walletconnect.com": {
+    "url": "https://walletconnect.com",
+    "normalizedUrl": "walletconnect.com",
+    "cacheKey": "8d6fea43cccc2a593538d73cca81bf6d32d936b3872928731ccbcbf722c5e3dd",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:08.540Z",
+    "textLength": 5719,
+    "contentSha256": "4da202dd40e97a75edae098107c62b762b6332300fe14b0f232e599c27e75df4"
+  },
+  "onto.app": {
+    "url": "https://onto.app",
+    "normalizedUrl": "onto.app",
+    "cacheKey": "648249f967c8916ad25b6d81d938fbdc4ffe775ec4ba824fbe28a650b3dc2908",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:09.563Z",
+    "textLength": 3257,
+    "contentSha256": "6ba989d33549042fd182b670789a17a9742875cd41f295f8dacbada1107cefcd"
+  },
+  "mathwallet.org": {
+    "url": "https://mathwallet.org",
+    "normalizedUrl": "mathwallet.org",
+    "cacheKey": "1aa36f558e34ded854decdb1146fb155dc594fe894430bc9ac5cae14a148dee7",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:11.152Z",
+    "textLength": 63,
+    "contentSha256": "60569f9b32c562db5bfeebb784e4f26366bfba278fcb28362511da820e4ada95"
+  },
+  "blur.io": {
+    "url": "https://blur.io",
+    "normalizedUrl": "blur.io",
+    "cacheKey": "8ca92920b52e795225d1c701ecbcc2487609ce75449ef4f0808a74e89b9211ca",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:11.759Z",
+    "textLength": 2318,
+    "contentSha256": "c4d39ea94fa383164adfa56a292f01961db03a60f1188eca802132d7c9d22c03"
+  },
+  "looksrare.org": {
+    "url": "https://looksrare.org",
+    "normalizedUrl": "looksrare.org",
+    "cacheKey": "b382c9aa927ef5b4551364a069bd3e117f4616a1bbf1acdbf8885c4c40940835",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:39:12.651Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "magiceden.io": {
+    "url": "https://magiceden.io",
+    "normalizedUrl": "magiceden.io",
+    "cacheKey": "977947c74451b6d42ab19b6ebf8cabc4e884a9c78bd9f8de43475bc6f0ba5d7e",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:13.141Z",
+    "textLength": 2867,
+    "contentSha256": "81127d548f472ae185b7df06e82fa390ae72c183737cf6f73dc199f85d48e731"
+  },
+  "rarible.com": {
+    "url": "https://rarible.com",
+    "normalizedUrl": "rarible.com",
+    "cacheKey": "dff431d08ec726789b898f3113013c1c0c8ef1b43f9f9cdf477313816e85117b",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:14.362Z",
+    "textLength": 20001,
+    "contentSha256": "c3690d5e4aa620a9376cc83b62a4d001697afd6e9859524bb9518b8a4146e184"
+  },
+  "foundation.app": {
+    "url": "https://foundation.app",
+    "normalizedUrl": "foundation.app",
+    "cacheKey": "36c58de75adf12fc13a64028dd608c1bf69741b18055fa4a07c3ac0dac068d50",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:16.168Z",
+    "textLength": 4747,
+    "contentSha256": "21fd574ae7bce374e0664a980a9150fe9896c2b9d8824dd567c3a339684d14ff"
+  },
+  "superrare.com": {
+    "url": "https://superrare.com",
+    "normalizedUrl": "superrare.com",
+    "cacheKey": "858a706d435ac2fa9561c2cdbdb12efc56a3409ebf0671a98aa1b14c5477ba60",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:17.196Z",
+    "textLength": 1058,
+    "contentSha256": "8d74ced6c86db9c5aa0bd5f5a0aad3cf347f05d090f9e8396a6702161be4ff2f"
+  },
+  "zora.co": {
+    "url": "https://zora.co",
+    "normalizedUrl": "zora.co",
+    "cacheKey": "ff618d9147b9216028c25c390e0e6675cf117f98286d27b2c81d2c17b8104531",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:18.736Z",
+    "textLength": 44,
+    "contentSha256": "69736a6f8f581164fc119a6ce95beadc8b487269119421c109acd6d33e0ae7b1"
+  },
+  "x2y2.io": {
+    "url": "https://x2y2.io",
+    "normalizedUrl": "x2y2.io",
+    "cacheKey": "b5a16d6f732425cb2a0b957455a89ca21151c359cf89632e501517d850fa5c3a",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:20.259Z",
+    "textLength": 4852,
+    "contentSha256": "2fe8c84d115d86b9d7a97e904aeff61e9840c00f91978479e09f318eb663a160"
+  },
+  "element.market": {
+    "url": "https://element.market",
+    "normalizedUrl": "element.market",
+    "cacheKey": "d7587f3dc01265166bdad55fa0f8e958806d2a59fbcc2b5d814d926c145998b1",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:22.445Z",
+    "textLength": 653,
+    "contentSha256": "67afc70744099c9c6c264d7ea453419c783fabf979b9ae84e397368178bff1ff"
+  },
+  "sound.xyz": {
+    "url": "https://sound.xyz",
+    "normalizedUrl": "sound.xyz",
+    "cacheKey": "bfd0aec1ae454b7acca67b2f0b107118cc54faba81faca037b75de37b64941ab",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:24.902Z",
+    "textLength": 1509,
+    "contentSha256": "840c6ea2a63aae48529da2d3cb1a2fcf348299f55a70869cd3ee8432e795441b"
+  },
+  "manifold.xyz": {
+    "url": "https://manifold.xyz",
+    "normalizedUrl": "manifold.xyz",
+    "cacheKey": "0d4bdb4b82c13f8376986831b3c619dbe4ef1aed4b232e364d4e4c85656df4d6",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:26.536Z",
+    "textLength": 1317,
+    "contentSha256": "f5c11340d33f2a56af91a2b4cb9462b24592ea23b01523fa7d5c9e4d7ed2934c"
+  },
+  "pyth.network": {
+    "url": "https://pyth.network",
+    "normalizedUrl": "pyth.network",
+    "cacheKey": "c26ff7c18543bf00cb27a344db12f13001ff0eaffb0f02c88a5efa6ea9d87c5f",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:28.066Z",
+    "textLength": 20001,
+    "contentSha256": "ede2eba5a54b2e025f3fbd8d77f32dfbe89b2efd9dcfb7ce6db76157fc645b19"
+  },
+  "bandprotocol.com": {
+    "url": "https://bandprotocol.com",
+    "normalizedUrl": "bandprotocol.com",
+    "cacheKey": "c0f82370a7cc6d3a7546b14242ea167dc3c6ec5d5540da0e399f1a098aaf26d2",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:31.185Z",
+    "textLength": 937,
+    "contentSha256": "921b1b03465f11392d768f3ced411a53a1214c09e333b0f2d9c348d320b08970"
+  },
+  "thegraph.com": {
+    "url": "https://thegraph.com",
+    "normalizedUrl": "thegraph.com",
+    "cacheKey": "f05df5dca265606f8249856dd34b94e5650eca0ccf4c002801ff5f8899c2e935",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:32.798Z",
+    "textLength": 3756,
+    "contentSha256": "3203da118f85c6a738603ee04f90d1170cb3e144736ad2abf98e9780951a64e1"
+  },
+  "alchemy.com": {
+    "url": "https://alchemy.com",
+    "normalizedUrl": "alchemy.com",
+    "cacheKey": "774bb9619adc69193c3ab53f37877633985f850884b9d2771a4564de18d85391",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:36.049Z",
+    "textLength": 9516,
+    "contentSha256": "52324f454fb618adf5a3c21ab29f31046a754e0cc6dd228f9e7bc8361fd1d474"
+  },
+  "infura.io": {
+    "url": "https://infura.io",
+    "normalizedUrl": "infura.io",
+    "cacheKey": "699b7898f75a31128c0ec579fe0d7803a847a366a8904d6810ec896b04122880",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:38.945Z",
+    "textLength": 2184,
+    "contentSha256": "b8e013ed711a11924b97f29a566bf928ba89995e8ec751367955c82120480aef"
+  },
+  "quicknode.com": {
+    "url": "https://quicknode.com",
+    "normalizedUrl": "quicknode.com",
+    "cacheKey": "0cd7b7ca2e1ae686d1eaec49167447c30c6c52a0513b499d1118999311b281cc",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:40.472Z",
+    "textLength": 14217,
+    "contentSha256": "9e5ad6bf192088a915dd5d5915df431d7ef0d507c8762fe91a2ddc52fa001003"
+  },
+  "moralis.io": {
+    "url": "https://moralis.io",
+    "normalizedUrl": "moralis.io",
+    "cacheKey": "e7a3d487b0fa12355ab78c0168f27ac818dfa3d2fb4b29b9db4c07a8aef9efe9",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:43.533Z",
+    "textLength": 17681,
+    "contentSha256": "596e5527d58dac852f6c7d7b7068c9d6b4372548b78834e22bb8d1e23f7bb683"
+  },
+  "bscscan.com": {
+    "url": "https://bscscan.com",
+    "normalizedUrl": "bscscan.com",
+    "cacheKey": "cec0ff848075b7bbee66c92147cfb1b50888d75e4f23892d9a38e949854fad4d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:46.671Z",
+    "textLength": 4928,
+    "contentSha256": "dd0b3efcf9d0b6c3ffcdf4ac70d1479bcb6f565d6dbd441d291e82e51ba8712d"
+  },
+  "arbiscan.io": {
+    "url": "https://arbiscan.io",
+    "normalizedUrl": "arbiscan.io",
+    "cacheKey": "379675838da7157efa1b839016b71fdded0d73cac6a1932b44c1e43e94b84f69",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:48.678Z",
+    "textLength": 6061,
+    "contentSha256": "43fecfe79c7c3901b5bcd974dd5cb057aabe1313c103e2ab98600e25b0531969"
+  },
+  "snowtrace.io": {
+    "url": "https://snowtrace.io",
+    "normalizedUrl": "snowtrace.io",
+    "cacheKey": "2693a624582e1438830a86e3a99c369490a0e4fa430843579066e52c6a67e7ef",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:39:49.833Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "ftmscan.com": {
+    "url": "https://ftmscan.com",
+    "normalizedUrl": "ftmscan.com",
+    "cacheKey": "672c9b923171508e4db0e965f6524d7ac704b9572a0e65cf8fc945f8a568c178",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:39:51.954Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "ankr.com": {
+    "url": "https://ankr.com",
+    "normalizedUrl": "ankr.com",
+    "cacheKey": "5abe4d49cbfe40a58fdcda9e825bf9769b3e51e7e6a5a2d0871b7fce3ed3fadf",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:52.248Z",
+    "textLength": 3237,
+    "contentSha256": "ef0837f8d8b523dd27d19394ef76b789a4b3a467db059a34e6714feae93ee5d2"
+  },
+  "getblock.io": {
+    "url": "https://getblock.io",
+    "normalizedUrl": "getblock.io",
+    "cacheKey": "adf650370ca123902bc3d8969c7b982c253db7952ae770892fe68ccd7fae59a7",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:54.077Z",
+    "textLength": 9089,
+    "contentSha256": "637a886946306654565118818757f12d458e50a8ddb3b835153a58eca18903fb"
+  },
+  "chainstack.com": {
+    "url": "https://chainstack.com",
+    "normalizedUrl": "chainstack.com",
+    "cacheKey": "bd9bd7fc053183ab1ad827d85e28614890a845ceebd1c21305437c5cf2425be5",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:54.998Z",
+    "textLength": 9995,
+    "contentSha256": "4b5629c65c87fdea544faad849330035365015722ecc9d971055789b5ea42c8f"
+  },
+  "defillama.com": {
+    "url": "https://defillama.com",
+    "normalizedUrl": "defillama.com",
+    "cacheKey": "06d6418d385f205ee5ad9a2522d0a513160d0faee0b9baa1eb505b1593201117",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:55.818Z",
+    "textLength": 20001,
+    "contentSha256": "97d89232418d0d7d8b05645257683bbe301281d6f7a8095ea9df5ccd744b7a0d"
+  },
+  "nansen.ai": {
+    "url": "https://nansen.ai",
+    "normalizedUrl": "nansen.ai",
+    "cacheKey": "8fe242f9c0ff58391e8bfacb8cc9759c83b366347bf5faaddc14451327768dc8",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:57.007Z",
+    "textLength": 5999,
+    "contentSha256": "6e9a1f97ce5158f87b71ebebc881a607af712ed46c9b666e94bb8487b320e01a"
+  },
+  "glassnode.com": {
+    "url": "https://glassnode.com",
+    "normalizedUrl": "glassnode.com",
+    "cacheKey": "deae1652a423a04e684eb2f63c06f287ed15446dbbfc58036ea4d55350c8ddce",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:39:58.887Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "messari.io": {
+    "url": "https://messari.io",
+    "normalizedUrl": "messari.io",
+    "cacheKey": "47208001333f879d529703b52095da834b66d4bed0bca630e8a074066c791dc8",
+    "status": "ok",
+    "httpStatus": 429,
+    "fetchedAt": "2026-07-31T19:39:59.390Z",
+    "textLength": 276,
+    "contentSha256": "eba286bb392b0bc6f6700aedf621b262051520f51e38aec048d03a8c181363a0"
+  },
+  "dappradar.com": {
+    "url": "https://dappradar.com",
+    "normalizedUrl": "dappradar.com",
+    "cacheKey": "687d5acea0a8b2a5617e337219192d6e9336f595710d573326d0c50d7011590f",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:39:59.905Z",
+    "textLength": 8683,
+    "contentSha256": "3fe6f23d02a979c643e0411a6d12e885f34a6eca4d40f22f54a6def9bf954a0d"
+  },
+  "tokenterminal.com": {
+    "url": "https://tokenterminal.com",
+    "normalizedUrl": "tokenterminal.com",
+    "cacheKey": "794ef98b9dcefbf3f7711a4a2ea0a6e37419b3e5421a4fc370c9333ce0aa9350",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:00.661Z",
+    "textLength": 20001,
+    "contentSha256": "49b4fc3ae920a02269310e042db3ed244a47f3c2dc4ee654f3af5060a074c610"
+  },
+  "coincodex.com": {
+    "url": "https://coincodex.com",
+    "normalizedUrl": "coincodex.com",
+    "cacheKey": "0a22c2aa337c66c99fd5f410c403cd6944e52e6916f0678922858c285327ff0c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:02.499Z",
+    "textLength": 3669,
+    "contentSha256": "6f24e9d6d4a03124e0eb7915f48eb175b36a91f7a7cab704dcadeecfe9089fd3"
+  },
+  "cryptocompare.com": {
+    "url": "https://cryptocompare.com",
+    "normalizedUrl": "cryptocompare.com",
+    "cacheKey": "f9c494fb39c1e5cbbb2feff173877af2da1411fd572f8c75b2b1cf2eee34ba4e",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:40:03.544Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "coinpaprika.com": {
+    "url": "https://coinpaprika.com",
+    "normalizedUrl": "coinpaprika.com",
+    "cacheKey": "1c33bc87c5a49af8773f97c06d1a38bf2d02708a75f178fa236c0521012dac4c",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:40:13.699Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "livecoinwatch.com": {
+    "url": "https://livecoinwatch.com",
+    "normalizedUrl": "livecoinwatch.com",
+    "cacheKey": "4f3389bb9622e27fcaa75f7fbb20f3e2aa2bf0dd16dfc53e19d57da6ccb4cdd2",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:14.708Z",
+    "textLength": 5557,
+    "contentSha256": "1690207c421f24b1287870ccd76125a0b8a93ecff94dddf69debdc3144192d5f"
+  },
+  "arkhamintelligence.com": {
+    "url": "https://arkhamintelligence.com",
+    "normalizedUrl": "arkhamintelligence.com",
+    "cacheKey": "44a22fbdb3b07c9933ea1b0a9501e1cf9cced3b3d4de49d63234203c36e82964",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:40:17.275Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "certik.com": {
+    "url": "https://certik.com",
+    "normalizedUrl": "certik.com",
+    "cacheKey": "20daafa5087a404b372e26bb63b2fb30ac09c990ae7c5c7e684b995001ad567b",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:17.657Z",
+    "textLength": 20001,
+    "contentSha256": "e1c433746e23d8d189382ad93c74c5f8fc003502a7d4bac5c053a653c4e46fc6"
+  },
+  "peckshield.com": {
+    "url": "https://peckshield.com",
+    "normalizedUrl": "peckshield.com",
+    "cacheKey": "50455441a5296fbd1007be5bf641494492c33d7c577b88b98cc3b3fbc927354e",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:19.589Z",
+    "textLength": 172,
+    "contentSha256": "cd9c63669a7ecec681257d8a5a9e86022cc33571f836f55663781b2b0f90eef7"
+  },
+  "slowmist.com": {
+    "url": "https://slowmist.com",
+    "normalizedUrl": "slowmist.com",
+    "cacheKey": "18d4612a6b9519bedfaa355c06f735313476f31b39603a8b1beae660cbf5706b",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:20.720Z",
+    "textLength": 8466,
+    "contentSha256": "12cf8f97fd1d8ea40b303a45c0fc9034edf0a793ea50d6aaef30c2875c128aa1"
+  },
+  "chainalysis.com": {
+    "url": "https://chainalysis.com",
+    "normalizedUrl": "chainalysis.com",
+    "cacheKey": "e8e26a4719c35223da8f143c77fcaf063391a3d68cce912d889e2457427d3fa4",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:23.177Z",
+    "textLength": 7427,
+    "contentSha256": "4c49fe6acb0d36b0b80ee91b4c0e734ee69f16ce3eb2c8a277493fb6100c4f96"
+  },
+  "elliptic.co": {
+    "url": "https://elliptic.co",
+    "normalizedUrl": "elliptic.co",
+    "cacheKey": "e386d21cd48bf132f0be33f84c7f0c3cc1f8a664548fe2c3383d88085923c681",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:24.689Z",
+    "textLength": 10472,
+    "contentSha256": "e63fc936e150f778992a85022f73e99e6e8b2669fe3991e2f9be09b532c76c75"
+  },
+  "trmlabs.com": {
+    "url": "https://trmlabs.com",
+    "normalizedUrl": "trmlabs.com",
+    "cacheKey": "420fca1f6f86287bc1e902ad8f9c877357dfb64b51651e81e52b4d8a4684e78b",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:26.478Z",
+    "textLength": 9969,
+    "contentSha256": "ec91b77fdfbca6a65057065e1a2e6d32d2f7d0c7d766f648f6e4edbcf53b19b8"
+  },
+  "bitgo.com": {
+    "url": "https://bitgo.com",
+    "normalizedUrl": "bitgo.com",
+    "cacheKey": "0763b04286187eacb08fdc250d2aeda908e377f80af36dfb1a5d506b9d1d6b60",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:28.077Z",
+    "textLength": 11306,
+    "contentSha256": "2e5f8e62e64964cb3163254649efb06235c27aaea5944260c7648b6b3c8aaad9"
+  },
+  "anchorage.com": {
+    "url": "https://anchorage.com",
+    "normalizedUrl": "anchorage.com",
+    "cacheKey": "deb0cf7ed8e3e88ce764746652a650a5dc04abb55581579f3ad9b8def4ee949d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:30.186Z",
+    "textLength": 9746,
+    "contentSha256": "a51b53f37409a5d0cc1ed7c91506f3cb425a14d1454c97440ea9e30935338835"
+  },
+  "copper.co": {
+    "url": "https://copper.co",
+    "normalizedUrl": "copper.co",
+    "cacheKey": "0000d83faad6a4297e0a1e007c827ba9a1dc9f2cba418d8678695fb438fce0ec",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:31.746Z",
+    "textLength": 3612,
+    "contentSha256": "c9ad8f7952c5d7a2b3c8e3620396bd64df3af56426731263b31e00b07a3e3084"
+  },
+  "fireblocks.com": {
+    "url": "https://fireblocks.com",
+    "normalizedUrl": "fireblocks.com",
+    "cacheKey": "db2a2bfb2c7cd047332c23025b2d42021208662d4d3a417a2a6e6a6f7dfc9e6b",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:32.792Z",
+    "textLength": 7242,
+    "contentSha256": "84d48f7a215c459b7406d30f0c1d8222612f654256e5a596473848b409ec0978"
+  },
+  "wormhole.com": {
+    "url": "https://wormhole.com",
+    "normalizedUrl": "wormhole.com",
+    "cacheKey": "4520ea880376395f134c5c69118e05f9cbd2668d6f5654f0c5990a1c4fb9d64c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:34.957Z",
+    "textLength": 20001,
+    "contentSha256": "eb678470256d01e2982e5a12a489a880b5982b5cdb8d27c9ea979f3d92a244bd"
+  },
+  "layerzero.network": {
+    "url": "https://layerzero.network",
+    "normalizedUrl": "layerzero.network",
+    "cacheKey": "731b7d78e88479f183bca6e2091a0b157e4515400cc2a59e1b8c4cb8de77f1d9",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:36.148Z",
+    "textLength": 3265,
+    "contentSha256": "52458df0aea7bf8494c076d4be486993d6bb333900fab9acc32de8e32d0c90a3"
+  },
+  "across.to": {
+    "url": "https://across.to",
+    "normalizedUrl": "across.to",
+    "cacheKey": "936a7fee55bd333c29463d7cad7e08cd97ed715d629cb5032315297393b710ca",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:37.292Z",
+    "textLength": 6790,
+    "contentSha256": "bb3d0cbf8fb22d6851fd0725266d06292dbe4068f5ff6e5845ce6c3fa867a24f"
+  },
+  "hop.exchange": {
+    "url": "https://hop.exchange",
+    "normalizedUrl": "hop.exchange",
+    "cacheKey": "e524f33d56e7a25b76da3426c220bd21630cf0afada93817c4e9146241e3c434",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:38.154Z",
+    "textLength": 87,
+    "contentSha256": "0e945bdbfc762b4dd23321420712094a9f50ac343ee50d7601a7e5e8ffda8538"
+  },
+  "synapseprotocol.com": {
+    "url": "https://synapseprotocol.com",
+    "normalizedUrl": "synapseprotocol.com",
+    "cacheKey": "685b8fa9875fe23099902a10bd6ff36bc528d3512614abb8338fdcce475c1ae5",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:39.027Z",
+    "textLength": 3840,
+    "contentSha256": "25f43677c7722d42ba60ed25db53bc9e30c439f538791de8c0a89b7849f97ab4"
+  },
+  "stargate.finance": {
+    "url": "https://stargate.finance",
+    "normalizedUrl": "stargate.finance",
+    "cacheKey": "acadf6730786da7e2ab11ed5234d645da5ba0f9b108e770127bd227792d990ab",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:40.726Z",
+    "textLength": 372,
+    "contentSha256": "daef3e71b47a23d715abf3cf322ee9a1c924b24bbee0ea8b17f15ea6d6fd4ece"
+  },
+  "debridge.finance": {
+    "url": "https://debridge.finance",
+    "normalizedUrl": "debridge.finance",
+    "cacheKey": "b806dd3641c98665b96844bfca64fd48d73ad0c119712649e3d2b63a95bb00b5",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:41.585Z",
+    "textLength": 3178,
+    "contentSha256": "9963c6cd3b1e7689f2888560bcac7cdfbcdd0386aed6b1cf2f1ada3949534873"
+  },
+  "portalbridge.com": {
+    "url": "https://portalbridge.com",
+    "normalizedUrl": "portalbridge.com",
+    "cacheKey": "bc5e85b4675d50f2ce3007556ff17a37a588e9e9ebb7de6cb8a7715aa1a802b8",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:42.681Z",
+    "textLength": 55,
+    "contentSha256": "8400e737b3bbdfd3090282fb33c4ba51053f449a2452766c6422625c2f34d5e7"
+  },
+  "ramp.network": {
+    "url": "https://ramp.network",
+    "normalizedUrl": "ramp.network",
+    "cacheKey": "6333580a2d0c2e3e6a940491ee35de08c142f798ebcebaaa42da54806d982e96",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:46.770Z",
+    "textLength": 15184,
+    "contentSha256": "14ab0676b4cce08e61695751db2c992ccd6a7645cc97a1ca94a9030b7471fc6f"
+  },
+  "transak.com": {
+    "url": "https://transak.com",
+    "normalizedUrl": "transak.com",
+    "cacheKey": "4c71929d8bfebd0dcdc7d8c3bd55c2666d799f680eca1ed9c477b7559c0e13cc",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:40:48.218Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "simplex.com": {
+    "url": "https://simplex.com",
+    "normalizedUrl": "simplex.com",
+    "cacheKey": "dec59a040930e70e74825f3b44fc9087a14242830e978d15b82c3f1a14678cf0",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:48.627Z",
+    "textLength": 12955,
+    "contentSha256": "9ae7f50dfd2574c28303351346592291aff8355e50b9437ac4649ebd0ea2bfd8"
+  },
+  "coinlist.co": {
+    "url": "https://coinlist.co",
+    "normalizedUrl": "coinlist.co",
+    "cacheKey": "44b24d007de769a33a5bbd2d75450bc21ebc75422f5a0c7540361f4712721bb7",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:50.305Z",
+    "textLength": 3575,
+    "contentSha256": "6a5440c2312a0e901121ffcd758d6a195629a6f1d58c331530c408cbec514ac9"
+  },
+  "polkastarter.com": {
+    "url": "https://polkastarter.com",
+    "normalizedUrl": "polkastarter.com",
+    "cacheKey": "d137a29b86c43c876ef849052185cef0b5fdc831a95809b60d5f5801cf99dc18",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:51.022Z",
+    "textLength": 3621,
+    "contentSha256": "47e723d0f958e2dd231d38ed925a1197597c17cce068568633cd40b75f524dd0"
+  },
+  "daomaker.com": {
+    "url": "https://daomaker.com",
+    "normalizedUrl": "daomaker.com",
+    "cacheKey": "718d39875fe31c7dbc767103a5341b5952419cdd375adef4a0b38a1c0d33e631",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:51.532Z",
+    "textLength": 375,
+    "contentSha256": "a5d59662b78421174a28220d6abccead288b0bac4b7e02f75419d408b3da68e0"
+  },
+  "snapshot.org": {
+    "url": "https://snapshot.org",
+    "normalizedUrl": "snapshot.org",
+    "cacheKey": "77bbeec7f9933b49d47a6fb83b3b30785e27edecf64c1fe20da079597d674053",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:52.977Z",
+    "textLength": 8,
+    "contentSha256": "b3735f036fc062965fde3c91748254ec453daa98e3c372538f2610a065c860cd"
+  },
+  "tally.xyz": {
+    "url": "https://tally.xyz",
+    "normalizedUrl": "tally.xyz",
+    "cacheKey": "c80391b1acfdc41a24eb93dc4f045deadcc71283b982ba46603c850504bdbcc9",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:53.512Z",
+    "textLength": 737,
+    "contentSha256": "14f34bfb61397d7ac947da5a91825ddf28f2026dc82b1ac47cf7f17f5e1da920"
+  },
+  "boardroom.io": {
+    "url": "https://boardroom.io",
+    "normalizedUrl": "boardroom.io",
+    "cacheKey": "86b43314f72eaa647bc1f36132714ae371c28d17a228d2635264853be6a33c9d",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:55.110Z",
+    "textLength": 56,
+    "contentSha256": "43213e9a93d796949a2b7eef78e762e49bc13ab5642439320fce39c354f73553"
+  },
+  "ens.domains": {
+    "url": "https://ens.domains",
+    "normalizedUrl": "ens.domains",
+    "cacheKey": "a6e2721ae36d39422d52ec329f3d94fbf79d9fa8fce95890ddd3c4a16bc497fd",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:55.822Z",
+    "textLength": 2676,
+    "contentSha256": "a8c1f8dc73a0ad06fbe5d2956ba0bef27b0dbf70b87b942d500237e3e60a95ec"
+  },
+  "worldcoin.org": {
+    "url": "https://worldcoin.org",
+    "normalizedUrl": "worldcoin.org",
+    "cacheKey": "995a03d04e8235e770d0eeaf6fb3fcf1af1403372851e65459af5fda8c618be3",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:56.535Z",
+    "textLength": 3913,
+    "contentSha256": "500c3b85657f63255709927c82807f4259612f82a7d9b5ed0c3b1736d28f1e03"
+  },
+  "warpcast.com": {
+    "url": "https://warpcast.com",
+    "normalizedUrl": "warpcast.com",
+    "cacheKey": "d842aa0aa4025b91265ef72e1d4fd0a50f56f7dc2d2155d6e64950393003789d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:58.393Z",
+    "textLength": 558,
+    "contentSha256": "f42c84b04de84672d9217dc1ad86fb1e1b8006ee7e4d80b558d879010dedc2d7"
+  },
+  "lens.xyz": {
+    "url": "https://lens.xyz",
+    "normalizedUrl": "lens.xyz",
+    "cacheKey": "e83cab61f517cbd3ec24d9eb94962d24195459f808b1afd7dc0a99cb620afe27",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:40:59.416Z",
+    "textLength": 2067,
+    "contentSha256": "a2d33f997b95a8c93f2b932262e48d127911f2c32c3290e46b4f257ee07f1e56"
+  },
+  "sandbox.game": {
+    "url": "https://sandbox.game",
+    "normalizedUrl": "sandbox.game",
+    "cacheKey": "14aff848407f80b1d5a40bc8be87df30d122a90d4dc291f8cff1300345fac1b6",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:41:00.344Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "decentraland.org": {
+    "url": "https://decentraland.org",
+    "normalizedUrl": "decentraland.org",
+    "cacheKey": "3421c3bc0fa01d29c86aea13e0d43c42c20f7b59070b591ce775b4c9f7175fe8",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:01.283Z",
+    "textLength": 142,
+    "contentSha256": "163f029e399000c7b786c959be93c55a942af5d251d55c964c8cf5b8cdb485e8"
+  },
+  "axieinfinity.com": {
+    "url": "https://axieinfinity.com",
+    "normalizedUrl": "axieinfinity.com",
+    "cacheKey": "f2d2167f27e8cba1c658770f19ac128e85fa5cea192e98c5acb6de259df57051",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:41:01.979Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "illuvium.io": {
+    "url": "https://illuvium.io",
+    "normalizedUrl": "illuvium.io",
+    "cacheKey": "5f1a5129da7d6ad661b92dd0edbe7eb05294c984410d9b9ec187f3566e619768",
+    "status": "ok",
+    "httpStatus": 429,
+    "fetchedAt": "2026-07-31T19:41:02.472Z",
+    "textLength": 276,
+    "contentSha256": "f3fcf7cd3fcd2a0d671b1d2bb1861ce0ee7b32f1ee97395802899d5ea06d68fc"
+  },
+  "coindesk.com": {
+    "url": "https://coindesk.com",
+    "normalizedUrl": "coindesk.com",
+    "cacheKey": "3464338d208443b2f6848df4be20c3cb24105fdf1f34acce552a025d7f40f962",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:02.880Z",
+    "textLength": 10331,
+    "contentSha256": "9542650bcabe8309f1b046233264fbba6a6b1c1f07ff7f80b5008dc89202344c"
+  },
+  "cointelegraph.com": {
+    "url": "https://cointelegraph.com",
+    "normalizedUrl": "cointelegraph.com",
+    "cacheKey": "61dd892a4a1f2959fd254f1a43cfcc8cbc9554395cc5f58b20b54deba2f42cd6",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:05.173Z",
+    "textLength": 8455,
+    "contentSha256": "8df61581ed5e5b2c87f9f286faec46bee4d7aac66f39c19d768c3bd4133231de"
+  },
+  "decrypt.co": {
+    "url": "https://decrypt.co",
+    "normalizedUrl": "decrypt.co",
+    "cacheKey": "d7e1567e6019bf01798fced462907ceec284a7012c2f5b8eb9533c01fc54b20c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:06.986Z",
+    "textLength": 17689,
+    "contentSha256": "413a6a5de40e4907748e48530ff8bd4c35d415784b3276339adc820b1e274c35"
+  },
+  "theblock.co": {
+    "url": "https://theblock.co",
+    "normalizedUrl": "theblock.co",
+    "cacheKey": "e5371a23f4a5d056dc5f696f0510dceed804b9534327e2059f531a17db976e5e",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:07.762Z",
+    "textLength": 4023,
+    "contentSha256": "1d6bf8077a78fe79ac3c4cb805bd2601d5085add22c153fa49d0275c2f5cf21b"
+  },
+  "bitcoinmagazine.com": {
+    "url": "https://bitcoinmagazine.com",
+    "normalizedUrl": "bitcoinmagazine.com",
+    "cacheKey": "5d9f53c4f852c130f539ec4c2bf99f66aaffa4618e1753e4bcca2f5132234fb9",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:09.530Z",
+    "textLength": 15766,
+    "contentSha256": "883702458150b1c771e1ad78f0135f486ac030800ba65c08fa13cfd141bef003"
+  },
+  "cryptoslate.com": {
+    "url": "https://cryptoslate.com",
+    "normalizedUrl": "cryptoslate.com",
+    "cacheKey": "319c88b87755da6926024571540629de5ce11bd9e746e1c17c200042df4f7107",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:41:11.401Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "newsbtc.com": {
+    "url": "https://newsbtc.com",
+    "normalizedUrl": "newsbtc.com",
+    "cacheKey": "9b21ecfabd920ef8d3301d2a770d0f438e092180089e3ac34093e476f541ba5a",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:12.061Z",
+    "textLength": 20001,
+    "contentSha256": "5a8b51a7b31d0b0b114a132f7bfda55ac4080b1c8632bf82a2b49fc8cc416247"
+  },
+  "zilliqa.com": {
+    "url": "https://zilliqa.com",
+    "normalizedUrl": "zilliqa.com",
+    "cacheKey": "9cc0d9bda07c2fd6b652beeb62263ff9a4477e45f5d6a98229b431b804cc5471",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:15.502Z",
+    "textLength": 2892,
+    "contentSha256": "8fdc02cbbbf820e320aa23bbcf6fa6fbdc5339ed36006ff35d2fbe439065493b"
+  },
+  "waves.tech": {
+    "url": "https://waves.tech",
+    "normalizedUrl": "waves.tech",
+    "cacheKey": "32aba3c7c1094737004a984c73d6d3ee36e55c98e08220ae41aeaea157c9b699",
+    "status": "ok",
+    "httpStatus": 201,
+    "fetchedAt": "2026-07-31T19:41:18.165Z",
+    "textLength": 2106,
+    "contentSha256": "ddfca24f11f89e113a3fcf3e5f646f8dfe595896897a55cf4d7b68d5d8f7bb0f"
+  },
+  "stellar.org": {
+    "url": "https://stellar.org",
+    "normalizedUrl": "stellar.org",
+    "cacheKey": "6e946a32469001f0984a4fe7df1225e1f0a81df2aac45df886dda2baf4981094",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:23.265Z",
+    "textLength": 5313,
+    "contentSha256": "c36b5eb097ee4ae194d6e9eeb1ede8435ff5488c5b1bc504aff495b07de4dae3"
+  },
+  "ripple.com": {
+    "url": "https://ripple.com",
+    "normalizedUrl": "ripple.com",
+    "cacheKey": "c0a355cc8d2621a334755ae3c551960826d0f226cf1155fc2a953f80e59b5d09",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:25.402Z",
+    "textLength": 3874,
+    "contentSha256": "304495257e34d3e3b385f93477c9241320176bcd8917cbc6f965deac1808def9"
+  },
+  "litecoin.org": {
+    "url": "https://litecoin.org",
+    "normalizedUrl": "litecoin.org",
+    "cacheKey": "73fa06026db6a6128df6232fe8ed5d087a07843e84f8597831a677acf65fc23b",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:26.155Z",
+    "textLength": 37,
+    "contentSha256": "9f1fe2439d0193f0de0f170bd2de3d509311b82e0bd65660a08bf9fd2316fd52"
+  },
+  "dogecoin.com": {
+    "url": "https://dogecoin.com",
+    "normalizedUrl": "dogecoin.com",
+    "cacheKey": "b0de680fbd303308a893db9282c83ec4587267ed8cb5822a0085be20e7c731bb",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:26.642Z",
+    "textLength": 6499,
+    "contentSha256": "a8d79adcbb540b0b605e9ac79342df6e8957254fc3abf03fbe89b5f1bbcf7e35"
+  },
+  "monero.org": {
+    "url": "https://monero.org",
+    "normalizedUrl": "monero.org",
+    "cacheKey": "2480edef8f4a1e24402d4d80b3dd8e7fd70b044ddf56b0121b9fe47d07d06b0e",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:41:27.369Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "dash.org": {
+    "url": "https://dash.org",
+    "normalizedUrl": "dash.org",
+    "cacheKey": "8badb3a7da64f3cda42a8541708ab6459d0a5aeb71dd33c28092ddbc56322510",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:37.570Z",
+    "textLength": 4783,
+    "contentSha256": "11984b02f33f5566d00e6534ba6343863a8cf41ec49b589a01589eaf72816006"
+  },
+  "zcash.foundation": {
+    "url": "https://zcash.foundation",
+    "normalizedUrl": "zcash.foundation",
+    "cacheKey": "ef3aca056a9d20643c079953ef2ff4d57961b6396adc19bc626039b9a4dab196",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:41:39.139Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "benqi.fi": {
+    "url": "https://benqi.fi",
+    "normalizedUrl": "benqi.fi",
+    "cacheKey": "631c8b7fcbc5716cda4e758666facd9c0a21c769efa00e63bde8f8fb20373985",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:49.239Z",
+    "textLength": 1435,
+    "contentSha256": "685368e1055719e122f37fa0e66bc6b7f9140b83d384fd144d68ff32abc73ebd"
+  },
+  "alchemix.fi": {
+    "url": "https://alchemix.fi",
+    "normalizedUrl": "alchemix.fi",
+    "cacheKey": "9679460c171c41642e7134e5ba169f4319d316eb201f3a6cf4d7028a6b726300",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:49.977Z",
+    "textLength": 58,
+    "contentSha256": "fda2a8a70e1ba649d51caf082266c20a01ca68254867e06a1513c8055f1d8a30"
+  },
+  "ribbon.finance": {
+    "url": "https://ribbon.finance",
+    "normalizedUrl": "ribbon.finance",
+    "cacheKey": "ba810450ca3114830f11f5b6ff103917d8742793674ebf6d93897a49c723cc9b",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:50.499Z",
+    "textLength": 56,
+    "contentSha256": "7eb5903a52b221555f9037b1c89421d35487993d533afe72b0f01c45d7da87be"
+  },
+  "opyn.co": {
+    "url": "https://opyn.co",
+    "normalizedUrl": "opyn.co",
+    "cacheKey": "5cf207e7130aa1a5ebbe45b881ab3317a7e25e1d9dc6b198beb092a41dad9d6c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:51.255Z",
+    "textLength": 2683,
+    "contentSha256": "458e4740accb080f3670ba70628138725441d00b2fa054a119290ba8dd81971f"
+  },
+  "covalenthq.com": {
+    "url": "https://covalenthq.com",
+    "normalizedUrl": "covalenthq.com",
+    "cacheKey": "21c0a5e5f2d7931b8551d10a425d81fa329ad31b6b48394d8927da2a4728b993",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:52.972Z",
+    "textLength": 60,
+    "contentSha256": "29fcfd6040ab08c6ec97c9de2be2b03a2424c74f9d7bd3500c5b260e9cdbb184"
+  },
+  "tenderly.co": {
+    "url": "https://tenderly.co",
+    "normalizedUrl": "tenderly.co",
+    "cacheKey": "c6892889137ed06bbc33c2a9b1f5fc49ed59a292069dce626bfa106f3992e306",
+    "status": "ok",
+    "httpStatus": 429,
+    "fetchedAt": "2026-07-31T19:41:54.395Z",
+    "textLength": 276,
+    "contentSha256": "9f85baed62099268d6ca4b218a0fb15a31ab1ccd29fd0cf1171abb8af1aaf0b3"
+  },
+  "flipsidecrypto.xyz": {
+    "url": "https://flipsidecrypto.xyz",
+    "normalizedUrl": "flipsidecrypto.xyz",
+    "cacheKey": "38296ba45c4c60282843254f4230ba2c1ad7e43a3230e6f79c8e2ca7c760dbe2",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:54.801Z",
+    "textLength": 12022,
+    "contentSha256": "a16eb78fdf655b9b04502051e01c4f515bce10350ee60bad97dd136c92ba9224"
+  },
+  "niftygateway.com": {
+    "url": "https://niftygateway.com",
+    "normalizedUrl": "niftygateway.com",
+    "cacheKey": "a884fbd2fa8ca7e41593b51812f8f6a9a8ed48e802b64b69f56985c216c3121d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:57.013Z",
+    "textLength": 565,
+    "contentSha256": "b251fb254816afa0192561c083a313a4e90a0865c354eb08fe763733f15c3b6b"
+  },
+  "async.art": {
+    "url": "https://async.art",
+    "normalizedUrl": "async.art",
+    "cacheKey": "4020d71f6e1e52bbd5993adbfbc9850adc415d75b574d3a1bb0edaade662f1b1",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:58.473Z",
+    "textLength": 24,
+    "contentSha256": "58686cb22f7cda615f8e51ebf3885d2408ecdcf1708a3d9c23b3d3c1de57e634"
+  },
+  "taiko.xyz": {
+    "url": "https://taiko.xyz",
+    "normalizedUrl": "taiko.xyz",
+    "cacheKey": "a02c9ddd1ca40f32e2a1c2009942fad905608b9d47132e8c5a42b6a88e69ee89",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:59.109Z",
+    "textLength": 2239,
+    "contentSha256": "0a214a8a16a12611eaf4a28094cfd3fe93acafb324caab2122d84a18ee4e3f29"
+  },
+  "manta.network": {
+    "url": "https://manta.network",
+    "normalizedUrl": "manta.network",
+    "cacheKey": "996b46b4b00dc4a13c0ee22e102558e162f1c167e94cf390699378270167b24c",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:41:59.732Z",
+    "textLength": 3230,
+    "contentSha256": "de3ba5208b429730aecb077960a28ea1a6a006e32df865ccdf2bfa8b5ff7bcb9"
+  },
+  "okcoin.com": {
+    "url": "https://okcoin.com",
+    "normalizedUrl": "okcoin.com",
+    "cacheKey": "6a9ffdfc48f65c1e9af71cb50297c2476a6ce0f51b16ee95df0997dadac7ee98",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:42:00.437Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "bitso.com": {
+    "url": "https://bitso.com",
+    "normalizedUrl": "bitso.com",
+    "cacheKey": "1ae9b605d0e6cdee25fae4cf1ca39bea5a86e4c28f45e46ee8df257436998f04",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:42:10.549Z",
+    "textLength": 6048,
+    "contentSha256": "8ec22a02868a4d7dac29709aa3cec5215d3c70832f7884e81b6258cd323d8602"
+  },
+  "bitvavo.com": {
+    "url": "https://bitvavo.com",
+    "normalizedUrl": "bitvavo.com",
+    "cacheKey": "df4a6f9f1d624483bb3c0c6b305db220bbf0dc2650dd3a5f18b859f665bf0754",
+    "status": "refused",
+    "httpStatus": 403,
+    "fetchedAt": "2026-07-31T19:42:11.434Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "unstoppabledomains.com": {
+    "url": "https://unstoppabledomains.com",
+    "normalizedUrl": "unstoppabledomains.com",
+    "cacheKey": "b06cf9487b10a7ce8b4af2cd74ce83e4b2ea6fb4cd668dbd181127aedd7589cc",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:42:11.814Z",
+    "textLength": 81,
+    "contentSha256": "9d7f5870e4b67c8b78debf3e4b314138ddc0baf401ae70b755eff6c467304a19"
+  },
+  "aragon.org": {
+    "url": "https://aragon.org",
+    "normalizedUrl": "aragon.org",
+    "cacheKey": "3f095d92afacf7e341f4351c1284abda130a443a921bd736fd13e7ce3a357e7d",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:42:12.507Z",
+    "textLength": 5036,
+    "contentSha256": "559b9501da3d20c9e8af81fbfc38727174e9583aa522638e8bc5aa435cece264"
+  },
+  "superfluid.finance": {
+    "url": "https://superfluid.finance",
+    "normalizedUrl": "superfluid.finance",
+    "cacheKey": "cfbfecb7ec667cefbc3969630771e5e492d59223dc461178fc377845c419307e",
+    "status": "dead",
+    "httpStatus": null,
+    "fetchedAt": "2026-07-31T19:42:13.501Z",
+    "textLength": null,
+    "contentSha256": null
+  },
+  "gitcoin.co": {
+    "url": "https://gitcoin.co",
+    "normalizedUrl": "gitcoin.co",
+    "cacheKey": "3d7f4d1555a74472443bd81bfe51ad10ddd58ab4fb1824f6aefca4d344a00b39",
+    "status": "ok",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:42:13.639Z",
+    "textLength": 20001,
+    "contentSha256": "01f0aa954fd9be224296cd1bcaa7b8df96001b06de39866881d57dd66600f45a"
+  },
+  "juicebox.money": {
+    "url": "https://juicebox.money",
+    "normalizedUrl": "juicebox.money",
+    "cacheKey": "badee2b9067a91153a7309b568e12adac74e5bd235192cd04207ff9ce61fd599",
+    "status": "empty",
+    "httpStatus": 200,
+    "fetchedAt": "2026-07-31T19:42:14.384Z",
+    "textLength": 26,
+    "contentSha256": "6a9f10b444d58894ae43cb2e82479e5faa67209adcc9dfd1d9656e1907be4445"
+  }
+}

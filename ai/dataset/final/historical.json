@@ -1,0 +1,102 @@
+[
+  {
+    "url": "https://xn--myetherwallt-leb.com",
+    "label": "phishing",
+    "category": "wallet_drainer",
+    "source": "CryptoScamDB",
+    "collectedAt": "2026-07-31",
+    "sourceRef": "CryptoScamDB/blacklist@2208d2e99a2395242d10e068537a3429397f45d0 (data/urls.yaml)",
+    "categoryConfidence": "unverified",
+    "notes": "Depot non maintenu depuis le 2022-06-28 (~4 ans), contenu ~2017-2018. Homoglyphe punycode MyEtherWallet. -> ecarte du jeu de mesure officielle, promu vers final/historical.json (illustration de patterns uniquement)."
+  },
+  {
+    "url": "https://myelherwallel.com",
+    "label": "phishing",
+    "category": "wallet_drainer",
+    "source": "CryptoScamDB",
+    "collectedAt": "2026-07-31",
+    "sourceRef": "CryptoScamDB/blacklist@2208d2e99a2395242d10e068537a3429397f45d0 (data/urls.yaml)",
+    "categoryConfidence": "unverified",
+    "notes": "Depot stale (dernier commit 2022-06-28). Adresse ETH de collecte reportee par la source."
+  },
+  {
+    "url": "https://coindash.ru",
+    "label": "phishing",
+    "category": "other",
+    "source": "CryptoScamDB",
+    "collectedAt": "2026-07-31",
+    "sourceRef": "CryptoScamDB/blacklist@2208d2e99a2395242d10e068537a3429397f45d0 (data/urls.yaml)",
+    "categoryConfidence": "unverified",
+    "notes": "Depot stale (dernier commit 2022-06-28). Lie a l'incident Coindash."
+  },
+  {
+    "url": "https://etherswap.org",
+    "label": "phishing",
+    "category": "wallet_drainer",
+    "source": "CryptoScamDB",
+    "collectedAt": "2026-07-31",
+    "sourceRef": "CryptoScamDB/blacklist@2208d2e99a2395242d10e068537a3429397f45d0 (data/urls.yaml)",
+    "categoryConfidence": "unverified",
+    "notes": "Depot stale (dernier commit 2022-06-28). Adresse ETH de collecte reportee."
+  },
+  {
+    "url": "https://district-0x.io",
+    "label": "phishing",
+    "category": "other",
+    "source": "CryptoScamDB",
+    "collectedAt": "2026-07-31",
+    "sourceRef": "CryptoScamDB/blacklist@2208d2e99a2395242d10e068537a3429397f45d0 (data/urls.yaml)",
+    "categoryConfidence": "unverified",
+    "notes": "Depot stale (dernier commit 2022-06-28). Faux site d'ICO."
+  },
+  {
+    "url": "https://blocklichan.info",
+    "label": "phishing",
+    "category": "fake_exchange",
+    "source": "CryptoScamDB",
+    "collectedAt": "2026-07-31",
+    "sourceRef": "CryptoScamDB/blacklist@2208d2e99a2395242d10e068537a3429397f45d0 (data/urls.yaml)",
+    "categoryConfidence": "unverified",
+    "notes": "Depot stale (dernier commit 2022-06-28). Typosquat de blockchain.info."
+  },
+  {
+    "url": "https://secure-myetherwallet.com",
+    "label": "phishing",
+    "category": "wallet_drainer",
+    "source": "CryptoScamDB",
+    "collectedAt": "2026-07-31",
+    "sourceRef": "CryptoScamDB/blacklist@2208d2e99a2395242d10e068537a3429397f45d0 (data/urls.yaml)",
+    "categoryConfidence": "unverified",
+    "notes": "Depot stale (dernier commit 2022-06-28). 'confirmed phishing, blacklisted' selon la source."
+  },
+  {
+    "url": "https://myetherwallet.top",
+    "label": "phishing",
+    "category": "fake_support",
+    "source": "CryptoScamDB",
+    "collectedAt": "2026-07-31",
+    "sourceRef": "CryptoScamDB/blacklist@2208d2e99a2395242d10e068537a3429397f45d0 (data/urls.yaml)",
+    "categoryConfidence": "unverified",
+    "notes": "Depot stale (dernier commit 2022-06-28). Volet 'tech support' mentionne par la source."
+  },
+  {
+    "url": "https://bitcoin-wallet.net",
+    "label": "phishing",
+    "category": "wallet_drainer",
+    "source": "CryptoScamDB",
+    "collectedAt": "2026-07-31",
+    "sourceRef": "CryptoScamDB/blacklist@2208d2e99a2395242d10e068537a3429397f45d0 (data/urls.yaml)",
+    "categoryConfidence": "unverified",
+    "notes": "Depot stale (dernier commit 2022-06-28). Signale via bitcointalk selon la source."
+  },
+  {
+    "url": "https://myetherwallet.biz",
+    "label": "phishing",
+    "category": "wallet_drainer",
+    "source": "CryptoScamDB",
+    "collectedAt": "2026-07-31",
+    "sourceRef": "CryptoScamDB/blacklist@2208d2e99a2395242d10e068537a3429397f45d0 (data/urls.yaml)",
+    "categoryConfidence": "unverified",
+    "notes": "Depot stale (dernier commit 2022-06-28). Operation scambot selon la source."
+  }
+]

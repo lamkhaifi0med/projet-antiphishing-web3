@@ -1,0 +1,2602 @@
+[
+  {
+    "url": "https://www.kucoin.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Exchange reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.okx.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Exchange reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.bybit.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Exchange reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.gemini.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Exchange reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://crypto.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Exchange/plateforme reelle et connue.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.bitstamp.net",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Exchange reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.gate.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Exchange reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://pancakeswap.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Dapp DEX reelle et connue (BNB Chain).",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://curve.fi",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Protocole DeFi reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.sushi.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Dapp DEX reelle et connue.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://app.1inch.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Agregateur DEX reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://lido.fi",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Protocole de staking liquide reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://makerdao.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Protocole DeFi reel et connu (DAI).",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.zksync.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Reseau L2 Ethereum reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://arbitrum.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Reseau L2 Ethereum reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.optimism.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Reseau L2 Ethereum reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.avax.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Reseau blockchain reel et connu (Avalanche).",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://solana.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Reseau blockchain reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.trezor.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Fabricant reel de hardware wallet.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://trustwallet.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Wallet mobile reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.blockchain.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Wallet/exchange reel et connu (domaine officiel, a ne pas confondre avec les typosquats du jeu phishing).",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.coingecko.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Agregateur de donnees de marche reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://coinmarketcap.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Agregateur de donnees de marche reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://polkadot.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Reseau blockchain reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://chain.link",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Protocole d'oracles reel et connu (Chainlink).",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://tether.to",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Emetteur reel de stablecoin (USDT).",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.paxos.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Emetteur/infrastructure reel de stablecoin.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://safe.global",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Wallet multisig reel et connu (ex-Gnosis Safe).",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://dune.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Plateforme d'analytics on-chain reelle et connue.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.moonpay.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Rampe on/off reelle et connue.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.gnosis.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Organisation DAO/DeFi reelle et connue.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://www.blockchain.com/explorer",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "notes": "Explorateur blockchain reel et connu.",
+    "sourceRef": null,
+    "categoryConfidence": null
+  },
+  {
+    "url": "https://accounts.binance.com/en/login",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: login] Page de connexion reelle Binance (verifiee via recherche web). Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://login.coinbase.com/signin",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: login] Page de connexion reelle Coinbase (verifiee via recherche web). Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://accounts.coinbase.com/signin",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: login] Page de connexion reelle Coinbase, sous-domaine accounts (verifiee via recherche web). Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://www.kraken.com/sign-in",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: login] Page de connexion reelle Kraken. Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://www.binance.us/login",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: login] Page de connexion reelle Binance.US (verifiee via recherche web). Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://support.binance.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: support] Support officiel reel Binance. Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://help.coinbase.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: support] Support officiel reel Coinbase (verifie via recherche web). Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://support.kraken.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: support] Support officiel reel Kraken. Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://support.metamask.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: support] Support officiel reel MetaMask (verifie via recherche web). Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://blog.uniswap.org/uni",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: airdrop-announcement] Annonce officielle reelle de l'airdrop UNI (2020), verifiee via recherche web. Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://arbitrum.foundation/story",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: airdrop-announcement] Page officielle reelle sur l'eligibilite/airdrop ARB, verifiee via recherche web. Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://app.optimism.io/airdrops/5",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: airdrop-announcement] Page officielle reelle de claim airdrop Optimism (#5), verifiee via recherche web. Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://app.uniswap.org/swap",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: wallet-connect] Interface dapp reelle avec bouton de connexion wallet (Uniswap). Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://opensea.io/account",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: wallet-connect] Page de compte reelle necessitant la connexion d'un wallet (OpenSea). Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://app.aave.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "[Type structurel: wallet-connect] Interface dapp reelle avec connexion wallet (Aave). Ajoute pour controler le confondant \"page d'accueil = legitime\" (voir README)."
+  },
+  {
+    "url": "https://bitget.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://mexc.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://htx.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bitfinex.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bitmex.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://deribit.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://poloniex.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://upbit.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bithumb.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://coincheck.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bitflyer.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://luno.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://wazirx.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://coindcx.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://cex.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://lbank.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://xt.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bingx.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://phemex.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://whitebit.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bitrue.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://probit.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://ascendex.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bitpanda.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://coinmama.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://paxful.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://river.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://swanbitcoin.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://strike.me",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://ethereum.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bitcoin.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://cardano.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://near.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://algorand.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://tezos.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://tron.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://eos.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://cronos.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://fantom.foundation",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://harmony.one",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://celo.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://multiversx.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://hedera.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://aptosfoundation.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://sui.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://sei.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://base.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://starknet.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://scroll.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://linea.build",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://mantle.xyz",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://blast.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://cosmos.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://injective.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://kava.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://thorchain.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://moonbeam.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://astar.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://klaytn.foundation",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://roninchain.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://metis.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://boba.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://immutable.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://fuse.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://balancer.fi",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://yearn.fi",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://convexfinance.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://frax.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://synthetix.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://dydx.exchange",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://gmx.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://rocketpool.net",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://instadapp.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://venus.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://traderjoexyz.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://osmosis.zone",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://raydium.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://orca.so",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://jup.ag",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://paraswap.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://0x.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://kyber.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://spookyswap.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://quickswap.exchange",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://velodrome.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://camelot.exchange",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://notional.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://maple.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://goldfinch.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://centrifuge.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://ondo.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://polymarket.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://phantom.app",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://rabby.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://rainbow.me",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://exodus.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://argent.xyz",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://imtoken.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://tokenpocket.pro",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://zerion.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://zengo.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bitkeep.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://frame.sh",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://coin98.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://walletconnect.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://onto.app",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://mathwallet.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://blur.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://looksrare.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://magiceden.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://rarible.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://foundation.app",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://superrare.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://zora.co",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://x2y2.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://element.market",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://sound.xyz",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://manifold.xyz",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://pyth.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bandprotocol.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://thegraph.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://alchemy.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://infura.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://quicknode.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://moralis.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bscscan.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://arbiscan.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://snowtrace.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://ftmscan.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://ankr.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://getblock.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://chainstack.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://defillama.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://nansen.ai",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://glassnode.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://messari.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://dappradar.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://tokenterminal.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://coincodex.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://cryptocompare.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://coinpaprika.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://livecoinwatch.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://arkhamintelligence.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://certik.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://peckshield.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://slowmist.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://chainalysis.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://elliptic.co",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://trmlabs.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bitgo.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://anchorage.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://copper.co",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://fireblocks.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://wormhole.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://layerzero.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://across.to",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://hop.exchange",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://synapseprotocol.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://stargate.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://debridge.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://portalbridge.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://ramp.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://transak.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://simplex.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://coinlist.co",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://polkastarter.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://daomaker.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://snapshot.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://tally.xyz",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://boardroom.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://ens.domains",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://worldcoin.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://warpcast.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://lens.xyz",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://sandbox.game",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://decentraland.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://axieinfinity.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://illuvium.io",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (exchange/L1-L2/DeFi/wallet/NFT/infra Web3). Compilation manuelle a partir de connaissances generales, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://coindesk.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://cointelegraph.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://decrypt.co",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://theblock.co",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bitcoinmagazine.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://cryptoslate.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://newsbtc.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://zilliqa.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://waves.tech",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://stellar.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://ripple.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://litecoin.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://dogecoin.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://monero.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://dash.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://zcash.foundation",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://benqi.fi",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://alchemix.fi",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://ribbon.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://opyn.co",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://covalenthq.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://tenderly.co",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://flipsidecrypto.xyz",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://niftygateway.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://async.art",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://taiko.xyz",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://manta.network",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://okcoin.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bitso.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://bitvavo.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://unstoppabledomains.com",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://aragon.org",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://superfluid.finance",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://gitcoin.co",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  },
+  {
+    "url": "https://juicebox.money",
+    "label": "legitimate",
+    "category": null,
+    "source": "manual-well-known",
+    "collectedAt": "2026-07-31",
+    "sourceRef": null,
+    "categoryConfidence": null,
+    "notes": "Site public reel connu (media crypto/L1/DeFi/infra/exchange Web3). Compilation manuelle, pas un export Tranco litteral (voir README)."
+  }
+]
