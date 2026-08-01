@@ -23,6 +23,11 @@ contracts/slither-report.json
 # --- n8n local data ---
 n8n/data/
 
+# --- Cache capture-pages (contenu extrait de vraies pages, y compris de
+# phishing) : reste hors Git par decision explicite (option C). Voir
+# ai/dataset/final/cache-index.json (verse) pour la traçabilite/verification.
+ai/dataset/final/.cache/
+
 # --- Python (ai eval scripts if any) ---
 __pycache__/
 *.pyc

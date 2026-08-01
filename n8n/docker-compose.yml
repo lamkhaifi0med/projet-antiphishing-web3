@@ -1,0 +1,45 @@
+# Déploiement n8n local (Phase 0 du plan Profil B — RF-S4, DP-7).
+# Self-hosted, local uniquement, gratuit. Pas de workflow ici : infrastructure seulement.
+#
+# Démarrage (depuis ce dossier) :
+#   docker compose up -d
+# Les variables sont lues automatiquement depuis n8n/.env (voir n8n/README.md).
+
+services:
+  n8n:
+    # Tag "latest" pour démarrer : épingler une version précise (voir README)
+    # dès que l'environnement est stabilisé, pour la reproductibilité (RNF-4).
+    image: n8nio/n8n:latest
+    container_name: anti-phishing-n8n
+    restart: unless-stopped
+    ports:
+      # Lié à 127.0.0.1 uniquement : jamais 0.0.0.0, n8n ne doit pas être
+      # joignable depuis le réseau local ou Internet (RF-S4).
+      - "127.0.0.1:5678:5678"
+    environment:
+      # Échoue bruyamment au démarrage si la clé n'est pas définie, plutôt
+      # que de démarrer avec une clé vide (n8n en générerait une aléatoire
+      # et rendrait illisibles les credentials déjà enregistrés au redémarrage
+      # suivant).
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY:?manquante - voir n8n/README.md}
+      - GENERIC_TIMEZONE=Africa/Casablanca
+      - TZ=Africa/Casablanca
+      # Télémétrie / diagnostics désactivés.
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_VERSION_NOTIFICATIONS_ENABLED=false
+      - N8N_HIRING_BANNER_ENABLED=false
+      - N8N_PERSONALIZATION_ENABLED=false
+    volumes:
+      # Volume nommé : persiste la base interne n8n (workflows, credentials
+      # chiffrés, exécutions) entre deux redémarrages du conteneur.
+      - n8n_data:/home/node/.n8n
+      # Chemin séparé (pas imbriqué sous /home/node/.n8n, qui est déjà le
+      # point de montage du volume nommé) pour l'export manuel des workflows
+      # en JSON à versionner — évite les refus de permission que provoque
+      # souvent un bind mount Windows imbriqué dans un volume nommé sur
+      # Docker Desktop.
+      - ./workflows:/export
+
+volumes:
+  n8n_data:
+    name: anti_phishing_n8n_data
