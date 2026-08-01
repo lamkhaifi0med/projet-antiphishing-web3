@@ -10,16 +10,16 @@
 
 Le module blockchain est terminé et fusionné dans la branche `main`.
 
-| Élément | Statut | Détail |
-|---|---|---|
-| Smart contract `PhishingRegistry` | Prêt | Blacklist d'URLs hachées et d'adresses wallet |
-| Réseau | Prêt | Polygon Amoy testnet — Chain ID `80002` |
-| Contrat public | Déployé et vérifié | `0x8d51dB4a92c338075360A17AcA005ec282fE1f23` |
-| Code source public | Vérifié | https://amoy.polygonscan.com/address/0x8d51dB4a92c338075360A17AcA005ec282fE1f23#code |
-| Permissions | Prêtes | Owner = administration ; Reporter = publication des signalements |
-| Scripts Node.js | Prêts | `check`, `report`, `batchReport`, `listen`, `remove` |
-| Tests smart contract | Prêts | 13 tests, 100 % couverture lignes, 92,31 % branches |
-| Audit initial | Prêt | Slither : 0 alerte critique / haute / moyenne / faible |
+| Élément                           | Statut             | Détail                                                                               |
+| --------------------------------- | ------------------ | ------------------------------------------------------------------------------------ |
+| Smart contract `PhishingRegistry` | Prêt               | Blacklist d'URLs hachées et d'adresses wallet                                        |
+| Réseau                            | Prêt               | Polygon Amoy testnet — Chain ID `80002`                                              |
+| Contrat public                    | Déployé et vérifié | `0x8d51dB4a92c338075360A17AcA005ec282fE1f23`                                         |
+| Code source public                | Vérifié            | https://amoy.polygonscan.com/address/0x8d51dB4a92c338075360A17AcA005ec282fE1f23#code |
+| Permissions                       | Prêtes             | Owner = administration ; Reporter = publication des signalements                     |
+| Scripts Node.js                   | Prêts              | `check`, `report`, `batchReport`, `listen`, `remove`                                 |
+| Tests smart contract              | Prêts              | 13 tests, 100 % couverture lignes, 92,31 % branches                                  |
+| Audit initial                     | Prêt               | Slither : 0 alerte critique / haute / moyenne / faible                               |
 
 **Ne redéploie pas le contrat.** Tous les workflows doivent utiliser l'adresse ci-dessus.
 
@@ -52,12 +52,12 @@ REGISTRY_DEPLOYMENT_BLOCK=43090902
 
 ### Secrets : règles strictes
 
-| Besoin | Secret requis ? | Règle |
-|---|---:|---|
-| WF1 déduplication | Non | Lecture blockchain seulement |
-| WF4 endpoint `/check` | Non | Lecture blockchain seulement |
-| WF3 publication on-chain | Oui : `REPORTER_PRIVATE_KEY` | Configurer uniquement dans un credential n8n chiffré ou un `.env` local non versionné |
-| Administration / suppression d'un faux positif | Oui : `OWNER_PRIVATE_KEY` | Réservé à Profil A ; ne jamais mettre cette clé dans n8n |
+| Besoin                                         |              Secret requis ? | Règle                                                                                 |
+| ---------------------------------------------- | ---------------------------: | ------------------------------------------------------------------------------------- |
+| WF1 déduplication                              |                          Non | Lecture blockchain seulement                                                          |
+| WF4 endpoint `/check`                          |                          Non | Lecture blockchain seulement                                                          |
+| WF3 publication on-chain                       | Oui : `REPORTER_PRIVATE_KEY` | Configurer uniquement dans un credential n8n chiffré ou un `.env` local non versionné |
+| Administration / suppression d'un faux positif |    Oui : `OWNER_PRIVATE_KEY` | Réservé à Profil A ; ne jamais mettre cette clé dans n8n                              |
 
 Ne jamais envoyer une clé privée dans GitHub, Discord, un fichier `.txt`, un workflow exporté, une capture d'écran ou un message.
 
@@ -88,13 +88,13 @@ other
 Correspondance on-chain :
 
 | Catégorie IA/n8n | Enum Solidity |
-|---|---:|
-| `fake_exchange` | `0` |
-| `wallet_drainer` | `1` |
-| `fake_airdrop` | `2` |
-| `fake_support` | `3` |
-| `ponzi` | `4` |
-| `other` | `5` |
+| ---------------- | ------------: |
+| `fake_exchange`  |           `0` |
+| `wallet_drainer` |           `1` |
+| `fake_airdrop`   |           `2` |
+| `fake_support`   |           `3` |
+| `ponzi`          |           `4` |
+| `other`          |           `5` |
 
 Les valeurs comme `scam`, `phishing`, `drainer`, `legitimate` ou `unknown` ne doivent **jamais** être envoyées à `report.js`.
 
@@ -107,15 +107,13 @@ Ton module IA doit retourner ce schéma :
   "verdict": "malicious",
   "confidence": 0.94,
   "category": "wallet_drainer",
-  "indicators": [
-    "Formulaire demandant la seed phrase",
-    "Domaine typosquatté"
-  ],
+  "indicators": ["Formulaire demandant la seed phrase", "Domaine typosquatté"],
   "explanation": "Explication courte de la menace."
 }
 ```
 
 Contraintes :
+
 - `verdict` : `malicious`, `suspicious` ou `legitimate`
 - `confidence` : nombre entre `0` et `1`
 - `category` : une des six catégories blockchain ci-dessus si `verdict = malicious`
@@ -134,17 +132,17 @@ Puis, avant la blockchain :
 scoreOnChain = Math.round(scoreFinal * 100)
 ```
 
-| Condition | Action n8n |
-|---|---|
-| `verdict = malicious` ET `scoreFinal >= 0.80` | Appeler `report.js` puis envoyer l'alerte Discord |
-| `scoreFinal` entre `0.50` et `0.79` | Canal Discord de revue manuelle ; pas de transaction |
-| `scoreFinal < 0.50` ou `verdict = legitimate` | Journaliser seulement ; pas de transaction |
+| Condition                                     | Action n8n                                           |
+| --------------------------------------------- | ---------------------------------------------------- |
+| `verdict = malicious` ET `scoreFinal >= 0.80` | Appeler `report.js` puis envoyer l'alerte Discord    |
+| `scoreFinal` entre `0.50` et `0.79`           | Canal Discord de revue manuelle ; pas de transaction |
+| `scoreFinal < 0.50` ou `verdict = legitimate` | Journaliser seulement ; pas de transaction           |
 
 ---
 
 ## 4. Règle obligatoire de normalisation des URLs
 
-**Toujours donner l'URL brute complète au script `check.js` ou `report.js`.** Le script applique lui-même la normalisation et le hash `keccak256`. Ne calcule pas un hash différent dans n8n.
+**Toujours transmettre l'URL brute complète au bridge interne `check` ou `report`.** Le bridge passe cette valeur aux scripts, qui appliquent eux-mêmes la normalisation et le hash `keccak256`. Ne calcule pas un hash différent dans n8n.
 
 Règles appliquées par le script :
 
@@ -170,9 +168,9 @@ Cette règle garantit qu'une URL avec des majuscules ou paramètres différents 
 
 ## 5. Scripts disponibles et formats JSON
 
-Les commandes suivantes s'exécutent depuis la **racine du dépôt**.
+Les commandes suivantes s'exécutent manuellement depuis la **racine du dépôt**.
 
-> Dans n8n, il vaut mieux appeler directement `node scripts/...` que `npm run ...`, afin d'éviter les séparateurs supplémentaires de npm.
+> Dans n8n, n'appelle pas un node `Execute Command` avec une valeur brute venant d'un webhook. Les workflows utilisent un bridge interne authentifié qui valide les données et lance les scripts avec `spawn` ou `execFile`, `shell: false` et des arguments séparés. Cela évite toute injection de commande.
 
 ### 5.1 Vérifier une URL ou un wallet — `check.js`
 
@@ -297,13 +295,14 @@ node scripts/remove.js --type=url --value=https://example.com/claim
 ```text
 Webhook / formulaire
 → validation de type et valeur
-→ appel check.js
+→ appel du bridge interne `check`
 → blacklisted ?
    ├─ oui : répondre 409 + résultat existant, ne pas appeler l'IA
    └─ non : continuer vers WF2
 ```
 
 Valider avant toute exécution :
+
 - `type` est uniquement `url` ou `wallet` ;
 - une URL a un protocole HTTP(S) ;
 - un wallet est une adresse EVM valide ;
@@ -330,10 +329,10 @@ URL/wallet non blacklisté
 ```text
 Verdict IA malicious + score final >= 0.80
 → valider category et scoreOnChain (0–100)
-→ appeler report.js avec REPORTER_PRIVATE_KEY
+→ appeler le bridge interne `report` avec REPORTER_PRIVATE_KEY au runtime
 → attendre le JSON result
 → si reported : stocker txHash + alerte Discord
-→ si already_blacklisted : appeler check.js puis alerter avec le txHash historique
+→ si already_blacklisted : appeler le bridge `check` puis alerter avec le txHash historique
 → si error : retry (3 fois avec backoff) ; notifier l'échec sans marquer l'entrée comme publiée
 ```
 
@@ -346,7 +345,7 @@ Verdict IA malicious + score final >= 0.80
 ```text
 GET /check?type=url&value=...
 → validation
-→ check.js
+→ bridge interne `check`
 → filtrer les champs internes
 → réponse JSON publique
 ```
@@ -359,16 +358,16 @@ La réponse publique doit respecter la section 5.1 de ce document et §8.2 du ca
 
 Utiliser exclusivement des domaines réservés `.invalid`, jamais un site phishing réel.
 
-| Test | Commande / entrée | Résultat attendu |
-|---|---|---|
-| URL saine | `https://safe-example.invalid/not-listed` | `{ "blacklisted": false }` |
-| URL déjà blacklistée | `https://demo-phishing.invalid/wallet-drainer` | `blacklisted: true`, catégorie `other`, score `100` |
-| Normalisation | `HTTPS://www.DEMO-PHISHING.invalid/wallet-drainer/?x=1#top` | Même résultat que l'URL blacklistée |
-| Mauvais type | `type=email` | erreur contrôlée, aucune transaction |
-| URL invalide | `value=not-a-url` | erreur contrôlée, aucune transaction |
-| Mauvaise catégorie | `category=scam` | erreur contrôlée, aucune transaction |
-| Score invalide | `score=101` | erreur contrôlée, aucune transaction |
-| Doublon pendant WF3 | publier deux fois la même URL | seconde réponse : `already_blacklisted`, pas de nouvelle transaction |
+| Test                 | Commande / entrée                                           | Résultat attendu                                                     |
+| -------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------- |
+| URL saine            | `https://safe-example.invalid/not-listed`                   | `{ "blacklisted": false }`                                           |
+| URL déjà blacklistée | `https://demo-phishing.invalid/wallet-drainer`              | `blacklisted: true`, catégorie `other`, score `100`                  |
+| Normalisation        | `HTTPS://www.DEMO-PHISHING.invalid/wallet-drainer/?x=1#top` | Même résultat que l'URL blacklistée                                  |
+| Mauvais type         | `type=email`                                                | erreur contrôlée, aucune transaction                                 |
+| URL invalide         | `value=not-a-url`                                           | erreur contrôlée, aucune transaction                                 |
+| Mauvaise catégorie   | `category=scam`                                             | erreur contrôlée, aucune transaction                                 |
+| Score invalide       | `score=101`                                                 | erreur contrôlée, aucune transaction                                 |
+| Doublon pendant WF3  | publier deux fois la même URL                               | seconde réponse : `already_blacklisted`, pas de nouvelle transaction |
 
 ---
 
@@ -376,11 +375,12 @@ Utiliser exclusivement des domaines réservés `.invalid`, jamais un site phishi
 
 1. **Owner ≠ Reporter** : n8n ne doit jamais posséder `OWNER_PRIVATE_KEY`.
 2. La clé Reporter est uniquement nécessaire pour WF3 ; WF1/WF4 fonctionnent sans clé privée.
-3. N'interpole pas une URL brute dans une commande shell sans validation stricte et échappement. Une valeur malveillante peut produire une injection de commande.
+3. N'interpole jamais une URL brute dans une commande shell. Le bridge interne valide les champs et exécute les scripts avec `shell: false` et des arguments séparés.
 4. Ne jamais exposer les champs internes (`reporter`, `urlHash`, `active`) dans l'endpoint public WF4.
 5. En cas d'erreur RPC ou transaction, ne jamais annoncer la blacklist comme publiée avant d'avoir reçu le `txHash` et la confirmation du script.
 6. Toute modification des interfaces §8.1–§8.7 du cahier des charges doit être discutée avant d'être codée.
 7. Si la clé Reporter est suspectée compromise : arrêter WF3, contacter Profil A ; le Owner révoquera cette adresse et autorisera un nouveau Reporter.
+8. Le fetch d'une URL doit appliquer les protections SSRF : blocage des adresses privées/loopback/link-local, contrôle DNS et revalidation des redirections.
 
 ---
 
