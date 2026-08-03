@@ -63,13 +63,13 @@ Le cycle de correction d'un faux positif a aussi été validé avec `false-posit
 
 n8n n'exécute jamais directement un shell blockchain et ne monte pas les scripts de l'hôte. Il appelle un service `chain-bridge` interne authentifié, qui valide des schémas JSON fermés puis lance les scripts avec `spawn` et `shell: false`. Seule la clé Reporter testnet entre dans ce conteneur ; la clé Owner reste hors de n8n.
 
-| Composant | Rôle | État |
-| --- | --- | --- |
-| `PhishingRegistry` | Registre on-chain vérifiable des URLs et wallets actifs | Déployé et vérifié |
-| Chain bridge | Frontière sécurisée entre n8n, les clés et les scripts ethers.js | Implémenté et testé |
-| WF3 | Décision, publication/recheck/retry, cycle persistant et alertes Discord | Implémenté, `active: false` |
-| WF4 | `GET /check`, lecture seule on-chain et réponse publique filtrée | Implémenté, `active: false` |
-| WF1 / WF2 | Ingestion, déduplication, capture et analyse IA | À intégrer par Profil B |
+| Composant          | Rôle                                                                     | État                        |
+| ------------------ | ------------------------------------------------------------------------ | --------------------------- |
+| `PhishingRegistry` | Registre on-chain vérifiable des URLs et wallets actifs                  | Déployé et vérifié          |
+| Chain bridge       | Frontière sécurisée entre n8n, les clés et les scripts ethers.js         | Implémenté et testé         |
+| WF3                | Décision, publication/recheck/retry, cycle persistant et alertes Discord | Implémenté, `active: false` |
+| WF4                | `GET /check`, lecture seule on-chain et réponse publique filtrée         | Implémenté, `active: false` |
+| WF1 / WF2          | Ingestion, déduplication, capture et analyse IA                          | À intégrer par Profil B     |
 
 WF3 applique les seuils suivants : verdict `malicious` avec `scoreFinal ≥ 0,80` → publication ; `suspicious` ou `malicious` entre `0,50` et `0,79` → revue manuelle ; `legitimate` ou score inférieur à `0,50` → journalisation sans transaction.
 
