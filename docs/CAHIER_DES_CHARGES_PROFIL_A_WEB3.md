@@ -106,14 +106,14 @@ Concevoir, développer, tester, déployer et sécuriser le smart contract `Phish
 
 Un premier passage de **Slither 0.11.5** a été exécuté sur le projet Hardhat, avec les dépendances exclues. Résultat : **aucune alerte critique, haute, moyenne ou faible** ; une seule alerte informative `pragma`.
 
-| Contrôle | Résultat | Décision / justification |
-|---|---|---|
+| Contrôle           | Résultat                                                                                | Décision / justification                                                                                                                                                                                           |
+| ------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Versions de pragma | Informationnelle : `PhishingRegistry` utilise `^0.8.24`, OpenZeppelin utilise `^0.8.20` | Acceptée. Les deux plages sont compatibles avec le compilateur Hardhat verrouillé en `0.8.24`. Le pragma du contrat déployé est conservé afin que le dépôt corresponde exactement au code vérifié sur PolygonScan. |
-| Contrôle d'accès | Vérifié par tests | `onlyOwner` protège la gestion des reporters et les suppressions ; `onlyReporter` protège les publications. |
-| Réentrance | Non applicable | Le contrat ne fait aucun appel externe et ne transfère aucun fonds. |
-| DoS / gas | Risque faible | Aucun tableau itéré ni boucle non bornée ; toutes les écritures sont $O(1)$. |
-| Front-running | Risque faible / accepté | Un reporter autorisé peut publier avant un autre, mais il ne modifie ni le verdict stocké ni des fonds. |
-| Faux positifs | Couvert | Le Owner peut désactiver une entrée ; les events conservent l'historique on-chain. |
+| Contrôle d'accès   | Vérifié par tests                                                                       | `onlyOwner` protège la gestion des reporters et les suppressions ; `onlyReporter` protège les publications.                                                                                                        |
+| Réentrance         | Non applicable                                                                          | Le contrat ne fait aucun appel externe et ne transfère aucun fonds.                                                                                                                                                |
+| DoS / gas          | Risque faible                                                                           | Aucun tableau itéré ni boucle non bornée ; toutes les écritures sont $O(1)$.                                                                                                                                       |
+| Front-running      | Risque faible / accepté                                                                 | Un reporter autorisé peut publier avant un autre, mais il ne modifie ni le verdict stocké ni des fonds.                                                                                                            |
+| Faux positifs      | Couvert                                                                                 | Le Owner peut désactiver une entrée ; les events conservent l'historique on-chain.                                                                                                                                 |
 
 Le rapport JSON généré localement par Slither est volontairement ignoré par Git (`contracts/slither-report.json`). La version de l'outil est figée dans `contracts/requirements-audit.txt` pour reproduire le scan. L'audit final J25–J31 devra refaire ce scan après l'intégration n8n et compléter les preuves dans le rapport technique.
 

@@ -9,7 +9,9 @@ const {
   toUtf8Bytes,
 } = require("ethers");
 
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+if (process.env.SKIP_PROJECT_DOTENV !== "1") {
+  dotenv.config({ path: path.resolve(__dirname, "../../.env"), quiet: true });
+}
 
 const AMOY_EXPLORER_URL = "https://amoy.polygonscan.com";
 
@@ -152,7 +154,18 @@ function categoryName(categoryId) {
 }
 
 function normalizeScore(value) {
-  const score = Number(value);
+  let score;
+  if (typeof value === "number") {
+    score = value;
+  } else if (
+    typeof value === "string" &&
+    /^(0|[1-9]\d{0,2})$/.test(value.trim())
+  ) {
+    score = Number(value.trim());
+  } else {
+    throw new Error("Score must be an integer from 0 to 100.");
+  }
+
   if (!Number.isInteger(score) || score < 0 || score > 100) {
     throw new Error("Score must be an integer from 0 to 100.");
   }

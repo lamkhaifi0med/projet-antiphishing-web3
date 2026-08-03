@@ -9,41 +9,67 @@ const {
   txExplorerUrl,
 } = require("./registry");
 
-async function submitReport({ type, value, category, score }) {
+function alreadyBlacklistedResult(base, entry) {
+  return {
+    status: "already_blacklisted",
+    ...base,
+    ...toEntryJson(entry),
+  };
+}
+
+async function reconcileFailedReport({ error, readEntry, base }) {
+  let current;
+  try {
+    current = await readEntry();
+  } catch {
+    // Preserve the publication error: a failed reconciliation must not
+    // replace it with a less useful secondary read error.
+    throw error;
+  }
+
+  if (current.active) {
+    return alreadyBlacklistedResult(base, current);
+  }
+  throw error;
+}
+
+async function submitReport(
+  { type, value, category, score },
+  { getReporterRegistryImpl = getReporterRegistry } = {},
+) {
   const normalizedType = String(type ?? "")
     .trim()
     .toLowerCase();
   const normalizedCategory = normalizeCategory(category);
   const normalizedScore = normalizeScore(score);
-  const { registry, reporter } = getReporterRegistry();
+  const { registry, reporter } = getReporterRegistryImpl();
 
   if (normalizedType === "url") {
     const normalizedValue = normalizeUrl(value);
     const urlHash = hashNormalizedUrl(normalizedValue);
-    const existing = await registry.getURLEntry(urlHash);
+    const readEntry = () => registry.getURLEntry(urlHash);
+    const base = { type: "url", normalizedValue, urlHash };
+    const existing = await readEntry();
 
     if (existing.active) {
-      return {
-        status: "already_blacklisted",
-        type: "url",
-        normalizedValue,
-        urlHash,
-        ...toEntryJson(existing),
-      };
+      return alreadyBlacklistedResult(base, existing);
     }
 
-    const transaction = await registry.reportURL(
-      urlHash,
-      normalizedCategory.id,
-      normalizedScore,
-    );
-    await transaction.wait();
+    let transaction;
+    try {
+      transaction = await registry.reportURL(
+        urlHash,
+        normalizedCategory.id,
+        normalizedScore,
+      );
+      await transaction.wait();
+    } catch (error) {
+      return reconcileFailedReport({ error, readEntry, base });
+    }
 
     return {
       status: "reported",
-      type: "url",
-      normalizedValue,
-      urlHash,
+      ...base,
       category: normalizedCategory.name,
       score: normalizedScore,
       reporter: reporter.address,
@@ -54,28 +80,29 @@ async function submitReport({ type, value, category, score }) {
 
   if (normalizedType === "wallet") {
     const normalizedValue = normalizeWallet(value);
-    const existing = await registry.getWalletEntry(normalizedValue);
+    const readEntry = () => registry.getWalletEntry(normalizedValue);
+    const base = { type: "wallet", normalizedValue };
+    const existing = await readEntry();
 
     if (existing.active) {
-      return {
-        status: "already_blacklisted",
-        type: "wallet",
-        normalizedValue,
-        ...toEntryJson(existing),
-      };
+      return alreadyBlacklistedResult(base, existing);
     }
 
-    const transaction = await registry.reportWallet(
-      normalizedValue,
-      normalizedCategory.id,
-      normalizedScore,
-    );
-    await transaction.wait();
+    let transaction;
+    try {
+      transaction = await registry.reportWallet(
+        normalizedValue,
+        normalizedCategory.id,
+        normalizedScore,
+      );
+      await transaction.wait();
+    } catch (error) {
+      return reconcileFailedReport({ error, readEntry, base });
+    }
 
     return {
       status: "reported",
-      type: "wallet",
-      normalizedValue,
+      ...base,
       category: normalizedCategory.name,
       score: normalizedScore,
       reporter: reporter.address,
@@ -87,4 +114,8 @@ async function submitReport({ type, value, category, score }) {
   throw new Error("type must be either url or wallet.");
 }
 
-module.exports = { submitReport };
+module.exports = {
+  alreadyBlacklistedResult,
+  reconcileFailedReport,
+  submitReport,
+};

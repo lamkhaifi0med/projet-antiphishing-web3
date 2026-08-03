@@ -1,0 +1,205 @@
+{
+  "id": "anti-phishing-wf4-check",
+  "name": "WF4 - Public Blockchain Check",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none"
+  },
+  "nodes": [
+    {
+      "id": "wf4-public-check-webhook",
+      "name": "Public Check Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-600, 0],
+      "webhookId": "8d7a2e65-621b-4a31-91c9-7f313fc77d71",
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "check",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "wf4-validate-query",
+      "name": "Validate Public Query",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-380, 0],
+      "parameters": {
+        "jsCode": "const query = $json.query;\nconst invalid = (code, message) => [{ json: { valid: false, statusCode: 400, response: { error: { code, message } } } }];\n\nif (!query || typeof query !== 'object' || Array.isArray(query)) {\n  return invalid('INVALID_QUERY', 'Query parameters type and value are required.');\n}\n\nconst unknown = Object.keys(query).filter((key) => !['type', 'value'].includes(key));\nif (unknown.length > 0) {\n  return invalid('UNKNOWN_QUERY_PARAMETER', 'Only type and value query parameters are accepted.');\n}\n\nif (query.type !== 'url' && query.type !== 'wallet') {\n  return invalid('INVALID_TYPE', 'type must be exactly url or wallet.');\n}\nif (typeof query.value !== 'string' || !query.value.trim()) {\n  return invalid('INVALID_VALUE', 'value must be a non-empty string.');\n}\n\nconst value = query.value.trim();\nif (/[\\u0000-\\u001f\\u007f]/.test(value)) {\n  return invalid('INVALID_VALUE', 'value must not contain control characters.');\n}\n\nif (query.type === 'url') {\n  if (value.length > 2048) {\n    return invalid('INVALID_URL', 'URL exceeds the 2048-character limit.');\n  }\n  try {\n    const parsed = new URL(value);\n    if (!['http:', 'https:'].includes(parsed.protocol) || parsed.username || parsed.password || !parsed.hostname) {\n      return invalid('INVALID_URL', 'A credential-free HTTP(S) URL is required.');\n    }\n  } catch {\n    return invalid('INVALID_URL', 'A valid HTTP(S) URL is required.');\n  }\n} else if (!/^0x[0-9a-fA-F]{40}$/.test(value)) {\n  return invalid('INVALID_WALLET', 'A valid EVM wallet address is required.');\n}\n\nreturn [{ json: { valid: true, type: query.type, value } }];"
+      }
+    },
+    {
+      "id": "wf4-query-valid",
+      "name": "Query Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-140, 0],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "wf4-valid-condition",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "wf4-call-chain-bridge",
+      "name": "Call Internal Chain Bridge",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [100, -100],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CHAIN_BRIDGE_URL + '/internal/check' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ type: $json.type, value: $json.value }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_CHAIN_BRIDGE_CREDENTIAL_ID",
+          "name": "Chain Bridge Header Auth"
+        }
+      }
+    },
+    {
+      "id": "wf4-build-public-response",
+      "name": "Build Public Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [340, -100],
+      "parameters": {
+        "jsCode": "const statusCode = Number($json.statusCode);\nconst body = $json.body && typeof $json.body === 'object' ? $json.body : {};\n\nif (statusCode !== 200) {\n  const publicStatus = statusCode >= 400 && statusCode < 500 ? statusCode : 502;\n  const code = publicStatus === 400 ? 'INVALID_REQUEST' : publicStatus === 401 ? 'BRIDGE_UNAUTHORIZED' : 'BLOCKCHAIN_UNAVAILABLE';\n  const message = publicStatus === 400 ? 'Invalid check request.' : 'Blockchain check is temporarily unavailable.';\n  return [{ json: { statusCode: publicStatus, response: { error: { code, message } } } }];\n}\n\nif (body.blacklisted !== true) {\n  return [{ json: { statusCode: 200, response: { blacklisted: false } } }];\n}\n\nreturn [{\n  json: {\n    statusCode: 200,\n    response: {\n      blacklisted: true,\n      category: body.category,\n      score: body.score,\n      since: body.since,\n      txHash: body.txHash\n    }\n  }\n}];"
+      }
+    },
+    {
+      "id": "wf4-respond-public",
+      "name": "Respond Publicly",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [580, 0],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.response }}",
+        "options": {
+          "responseCode": "={{ $json.statusCode }}",
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              },
+              {
+                "name": "X-Content-Type-Options",
+                "value": "nosniff"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Public Check Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validate Public Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Public Query": {
+      "main": [
+        [
+          {
+            "node": "Query Valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Valid?": {
+      "main": [
+        [
+          {
+            "node": "Call Internal Chain Bridge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Publicly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Internal Chain Bridge": {
+      "main": [
+        [
+          {
+            "node": "Build Public Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Public Response": {
+      "main": [
+        [
+          {
+            "node": "Respond Publicly",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}
