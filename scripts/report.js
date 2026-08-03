@@ -1,5 +1,6 @@
 const { parseArgs } = require("./lib/registry");
 const { submitReport } = require("./lib/reporting");
+const { toCliError } = require("./lib/chainErrors");
 
 function usage() {
   return [
@@ -20,6 +21,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error(JSON.stringify({ status: "error", message: error.message }));
+  console.error(JSON.stringify(toCliError(error)));
   process.exitCode = 1;
 });
