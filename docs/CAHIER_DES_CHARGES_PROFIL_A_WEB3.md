@@ -6,15 +6,15 @@
 
 ## 0. État d'avancement vérifié
 
-| Lot Profil A | État au 03/08/2026 | Preuves principales |
-| --- | --- | --- |
-| Contrat `PhishingRegistry` | **Terminé** | Déployé et vérifié sur Polygon Amoy ; 13/13 tests ; 100 % lignes et 92,31 % branches |
-| Scripts blockchain | **Terminé** | `check`, `report`, `remove`, `batchReport`, `listen`, normalisation, erreurs sûres et réconciliation des publications incertaines |
-| Bridge blockchain interne | **Terminé** | Authentification timing-safe, schémas JSON fermés, `spawn` avec `shell: false`, clé Reporter uniquement, aucun port public |
-| WF3 action | **Implémenté et validé hors ligne** | Décision, report/recheck/retry, persistance SQLite, ownership d'exécution, claim Discord et settlement ; export inactif |
-| WF4 check | **Implémenté et validé hors ligne** | `GET /check`, validation stricte, lecture seule du registre et filtrage de la réponse publique ; export inactif |
-| Sécurité et qualité | **Terminé pour le périmètre autonome** | Slither sans finding critique/haut/moyen/faible ; 118/118 tests Node ; CI GitHub verte ; smoke test Docker durci réussi |
-| Intégration finale et rapport | **À terminer en binôme** | Connexion WF1 → WF2 → WF3, credentials locaux, test Polygon Amoy/Discord contrôlé, preuves de démo et sections du rapport final |
+| Lot Profil A                  | État au 03/08/2026                     | Preuves principales                                                                                                               |
+| ----------------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Contrat `PhishingRegistry`    | **Terminé**                            | Déployé et vérifié sur Polygon Amoy ; 13/13 tests ; 100 % lignes et 92,31 % branches                                              |
+| Scripts blockchain            | **Terminé**                            | `check`, `report`, `remove`, `batchReport`, `listen`, normalisation, erreurs sûres et réconciliation des publications incertaines |
+| Bridge blockchain interne     | **Terminé**                            | Authentification timing-safe, schémas JSON fermés, `spawn` avec `shell: false`, clé Reporter uniquement, aucun port public        |
+| WF3 action                    | **Implémenté et validé hors ligne**    | Décision, report/recheck/retry, persistance SQLite, ownership d'exécution, claim Discord et settlement ; export inactif           |
+| WF4 check                     | **Implémenté et validé hors ligne**    | `GET /check`, validation stricte, lecture seule du registre et filtrage de la réponse publique ; export inactif                   |
+| Sécurité et qualité           | **Terminé pour le périmètre autonome** | Slither sans finding critique/haut/moyen/faible ; 118/118 tests Node ; CI GitHub verte ; smoke test Docker durci réussi           |
+| Intégration finale et rapport | **À terminer en binôme**               | Connexion WF1 → WF2 → WF3, credentials locaux, test Polygon Amoy/Discord contrôlé, preuves de démo et sections du rapport final   |
 
 La livraison a été fusionnée dans `main` via la PR GitHub **#1** le 03/08/2026 (merge `cfc85cf`). Elle transforme le verdict probabiliste de l'IA en une action contrôlée, persistante et auditable : l'IA ne possède aucune clé blockchain et ne peut jamais publier directement.
 
@@ -202,15 +202,15 @@ Une erreur de publication transitoire déclenche obligatoirement un recheck on-c
 
 ### 5.1 Résultat au 03/08/2026
 
-| Critère individuel | Résultat |
-| --- | --- |
-| Contrat déployé et vérifié | **Atteint** — Polygon Amoy, adresse `0x8d51dB4a92c338075360A17AcA005ec282fE1f23`, bloc `43090902` |
-| Tests et couverture du contrat | **Atteint** — 13/13 tests, 100 % lignes, 92,31 % branches |
-| Accès non-reporter refusé | **Atteint** — cas dédié dans les tests Hardhat |
-| Lecture blacklistée et saine | **Atteint** — tests unitaires des entrées URL/wallet et script `check` |
-| Audit Slither | **Atteint** — aucune alerte critique, haute, moyenne ou faible ; une information `pragma` justifiée |
-| Hygiène des secrets | **Atteint sur l'état courant** — fichiers sensibles ignorés, audit des changements avant PR, aucun secret réel dans la livraison |
-| Qualité de la couche d'intégration | **Atteint hors ligne** — 118/118 tests Node et deux jobs CI passés sur la PR #1 |
+| Critère individuel                 | Résultat                                                                                                                         |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Contrat déployé et vérifié         | **Atteint** — Polygon Amoy, adresse `0x8d51dB4a92c338075360A17AcA005ec282fE1f23`, bloc `43090902`                                |
+| Tests et couverture du contrat     | **Atteint** — 13/13 tests, 100 % lignes, 92,31 % branches                                                                        |
+| Accès non-reporter refusé          | **Atteint** — cas dédié dans les tests Hardhat                                                                                   |
+| Lecture blacklistée et saine       | **Atteint** — tests unitaires des entrées URL/wallet et script `check`                                                           |
+| Audit Slither                      | **Atteint** — aucune alerte critique, haute, moyenne ou faible ; une information `pragma` justifiée                              |
+| Hygiène des secrets                | **Atteint sur l'état courant** — fichiers sensibles ignorés, audit des changements avant PR, aucun secret réel dans la livraison |
+| Qualité de la couche d'intégration | **Atteint hors ligne** — 118/118 tests Node et deux jobs CI passés sur la PR #1                                                  |
 
 Ces critères valident le périmètre autonome du Profil A. Ils ne remplacent pas les critères globaux du projet : le pipeline WF1 → WF2 → WF3, Discord, WF4 et la démonstration chronométrée doivent encore être validés ensemble après livraison de Profil B.
 
