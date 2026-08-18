@@ -9,9 +9,15 @@ const {
   toUtf8Bytes,
 } = require("ethers");
 
+<<<<<<< HEAD
 if (process.env.SKIP_PROJECT_DOTENV !== "1") {
   dotenv.config({ path: path.resolve(__dirname, "../../.env"), quiet: true });
 }
+=======
+// Les scripts exposent un contrat JSON sur stdout. Les messages de conseil
+// dotenv rendraient cette sortie impossible a parser par le bridge n8n.
+dotenv.config({ path: path.resolve(__dirname, "../../.env"), quiet: true });
+>>>>>>> 4c12b56 (Update project)
 
 const AMOY_EXPLORER_URL = "https://amoy.polygonscan.com";
 
