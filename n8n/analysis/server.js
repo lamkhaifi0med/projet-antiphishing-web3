@@ -41,10 +41,19 @@ function readBody(request) {
 function decide(result, scoreFinal) {
   if (result.verdict === "malicious" && scoreFinal >= 0.8) return { status: "reporting", decision: "reporting" };
   // RF-N9 / tableau d'integration : legitimate est toujours journalise
-  // seulement. La confiance mesure la certitude du verdict, pas un risque.
+  // seulement, quel que soit scoreFinal.
   if (result.verdict === "legitimate") return { status: "analyzing", decision: "logged_only" };
   if (result.verdict === "suspicious" || (scoreFinal >= 0.5 && scoreFinal < 0.8)) return { status: "manual_review", decision: "manual_review" };
   return { status: "analyzing", decision: "logged_only" };
+}
+
+// La confiance du LLM mesure la certitude du verdict rendu, pas un risque de
+// phishing : 98% de confiance sur "legitimate" doit contribuer ~2% de risque,
+// pas 98%. `suspicious` n'a pas de sens directionnel, donc 0.5 neutre.
+function llmRisk(verdict, confidence) {
+  if (verdict === "malicious") return confidence;
+  if (verdict === "legitimate") return 1 - confidence;
+  return 0.5;
 }
 
 function createAnalysisServer({ secret, analyzeContent = analyze, scoreUrl = calculateUrlFeatures }) {
@@ -63,7 +72,7 @@ function createAnalysisServer({ secret, analyzeContent = analyze, scoreUrl = cal
         analyzeContent({ url: body.url, textExcerpt: body.textExcerpt, structuralDigest: body.structuralDigest }),
         scoreUrl(body.url, body.finalUrl || body.url),
       ]);
-      const scoreFinal = Number((0.7 * llm.confidence + 0.3 * features.score).toFixed(4));
+      const scoreFinal = Number((0.7 * llmRisk(llm.verdict, llm.confidence) + 0.3 * features.score).toFixed(4));
       sendJson(response, 200, { ...llm, urlFeatures: features, scoreFinal, ...decide(llm, scoreFinal) });
     } catch (error) {
       sendJson(response, error.status || 502, { error: "analysis_failed", message: error.message });
@@ -79,4 +88,4 @@ if (require.main === module) {
   server.listen(Number(process.env.ANALYSIS_PORT || 8789), "0.0.0.0");
 }
 
-module.exports = { createAnalysisServer, decide };
+module.exports = { createAnalysisServer, decide, llmRisk };
