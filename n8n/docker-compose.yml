@@ -33,11 +33,6 @@ services:
       # URL interne WF3. Le token reste dans un credential Header Auth n8n
       # chiffré ; il n'est jamais exporté dans les workflows JSON.
       - CHAIN_BRIDGE_URL=http://chain-bridge:3001
-      # WF1 lit le secret du bridge depuis l'environnement (pas de cle
-      # blockchain ici, ne monte jamais scripts/ - RF-N13). A migrer vers une
-      # credential n8n chiffree : voir REVIEW_COMMIT_57747F0.md §9.
-      - BRIDGE_SHARED_SECRET=${BRIDGE_SHARED_SECRET:?manquant - voir n8n/README.md}
-      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
     depends_on:
       chain-bridge:
         condition: service_healthy
@@ -60,6 +55,44 @@ services:
     networks:
       - frontend
       - bridge_internal
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5678/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 20s
+
+  # RF-S4 : seul ce service est destine a etre expose au-dela de la
+  # machine locale en production (en changeant son binding). Il ne
+  # transmet que /webhook/report et /webhook/check vers n8n ; l'editeur et
+  # /rest ne sont joignables que directement sur 127.0.0.1:5678.
+  proxy:
+    build:
+      context: ..
+      dockerfile: n8n/proxy/Dockerfile
+    container_name: anti-phishing-proxy
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      n8n:
+        condition: service_healthy
+    networks:
+      - frontend
+    read_only: true
+    tmpfs:
+      - /tmp:size=8m,mode=1777
+      - /var/cache/nginx:size=8m,mode=1777
+      - /var/run:size=8m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
 
   bridge:
     build:
