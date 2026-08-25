@@ -1,15 +1,8 @@
-# Prompts — v2 figée (Livrable L3)
+# Prompts — v1 (Phase 1)
 
 Templates RF-A1/A2/A3, schéma de sortie RF-A4/A5, cadre anti-injection
 RF-A7/RF-A11. Figés au plus tard J16 (Phase 3, Livrable L3) après
 évaluation (Phase 2).
-
-La v2 ajoute une calibration explicite des verdicts et traite
-l'usurpation de marque sur un hébergement tiers comme un indicateur fort.
-Elle est figée depuis le **9 août 2026** après les runs finaux Gemini et
-NVIDIA. Les hashes et la procédure de contrôle sont dans
-[`FROZEN_V2.md`](FROZEN_V2.md). Le comparatif est dans
-[`../eval/comparison-v2-final.md`](../eval/comparison-v2-final.md).
 
 ## Composition
 

@@ -7,24 +7,6 @@
 const REQUEST_TIMEOUT_MS = 20_000;
 const NVIDIA_DEFAULT_BASE_URL = "https://integrate.api.nvidia.com/v1";
 
-// Sous-ensemble JSON Schema accepte par Gemini structured output. La regle
-// conditionnelle category/verdict reste controlee par validateOutput.js.
-const RESPONSE_SCHEMA = {
-  type: "object",
-  additionalProperties: false,
-  required: ["verdict", "confidence", "category", "indicators", "explanation"],
-  properties: {
-    verdict: { type: "string", enum: ["malicious", "suspicious", "legitimate"] },
-    confidence: { type: "number", minimum: 0, maximum: 1 },
-    category: {
-      type: ["string", "null"],
-      enum: ["fake_exchange", "wallet_drainer", "fake_airdrop", "fake_support", "ponzi", "other", null],
-    },
-    indicators: { type: "array", maxItems: 5, items: { type: "string", maxLength: 200 } },
-    explanation: { type: "string", maxLength: 500 },
-  },
-};
-
 class TransientProviderError extends Error {}
 
 function isTransientStatus(status) {
@@ -59,11 +41,7 @@ async function callGemini({ systemPrompt, userPrompt }) {
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: systemPrompt }] },
         contents: [{ parts: [{ text: userPrompt }] }],
-        generationConfig: {
-          responseMimeType: "application/json",
-          responseJsonSchema: RESPONSE_SCHEMA,
-          temperature: 0,
-        },
+        generationConfig: { responseMimeType: "application/json", temperature: 0 },
       }),
     });
   } catch (error) {
@@ -110,9 +88,7 @@ async function callNvidia({ systemPrompt, userPrompt }) {
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt },
         ],
-        // NVIDIA NIM recommande guided_json plutot que json_object, qui ne
-        // garantit que la syntaxe JSON et pas la forme de l'objet.
-        guided_json: RESPONSE_SCHEMA,
+        response_format: { type: "json_object" },
         temperature: 0,
       }),
     });
