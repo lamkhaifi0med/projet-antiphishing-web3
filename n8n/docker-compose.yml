@@ -33,11 +33,6 @@ services:
       # URL interne WF3. Le token reste dans un credential Header Auth n8n
       # chiffré ; il n'est jamais exporté dans les workflows JSON.
       - CHAIN_BRIDGE_URL=http://chain-bridge:3001
-      # WF1 lit le secret du bridge depuis l'environnement (pas de cle
-      # blockchain ici, ne monte jamais scripts/ - RF-N13). A migrer vers une
-      # credential n8n chiffree : voir REVIEW_COMMIT_57747F0.md §9.
-      - BRIDGE_SHARED_SECRET=${BRIDGE_SHARED_SECRET:?manquant - voir n8n/README.md}
-      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
     depends_on:
       chain-bridge:
         condition: service_healthy

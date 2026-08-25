@@ -6,8 +6,8 @@
       "parameters": {
         "method": "POST",
         "url": "http://n8n:5678/webhook/internal-wf2-analyze",
-        "sendHeaders": true,
-        "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.BRIDGE_SHARED_SECRET }}" }] },
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
@@ -19,7 +19,13 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [740, 40],
-      "onError": "continueRegularOutput"
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_BRIDGE_SHARED_SECRET_CREDENTIAL_ID",
+          "name": "Bridge Shared Secret"
+        }
+      }
     },
     {
       "parameters": {
@@ -78,8 +84,8 @@
       "parameters": {
         "method": "POST",
         "url": "http://bridge:8787/check",
-        "sendHeaders": true,
-        "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.BRIDGE_SHARED_SECRET }}" }] },
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
@@ -94,7 +100,13 @@
       "retryOnFail": true,
       "maxTries": 3,
       "waitBetweenTries": 1000,
-      "onError": "continueErrorOutput"
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_BRIDGE_SHARED_SECRET_CREDENTIAL_ID",
+          "name": "Bridge Shared Secret"
+        }
+      }
     },
     {
       "parameters": {
@@ -149,8 +161,8 @@
       "parameters": {
         "method": "POST",
         "url": "http://bridge:8787/reports",
-        "sendHeaders": true,
-        "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.BRIDGE_SHARED_SECRET }}" }] },
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
@@ -165,7 +177,13 @@
       "retryOnFail": true,
       "maxTries": 3,
       "waitBetweenTries": 1000,
-      "onError": "continueErrorOutput"
+      "onError": "continueErrorOutput",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_BRIDGE_SHARED_SECRET_CREDENTIAL_ID",
+          "name": "Bridge Shared Secret"
+        }
+      }
     },
     {
       "parameters": {
