@@ -1,33 +1,30 @@
 #!/usr/bin/env node
 "use strict";
 
-// Évaluation RF-A9 — périmètre minimal (précision/rappel/F1 sur la
-// décision binaire malicious vs reste, par modèle et par version de
-// prompt). Aucun intervalle de confiance, aucun quartile, aucune analyse
-// de corrélation ici : jeu trop petit pour l'instant, réservé au rapport
-// final.
+// Évaluation RF-A9 — précision/rappel/F1 sur la décision binaire malicious
+// vs reste, par modèle et par version de prompt.
 //
-// Lit exclusivement le cache de capture (ai/dataset/final/.cache/pages/),
-// ne refetch JAMAIS (RF-A10). Vérifie l'intégrité du cache contre
-// ai/dataset/final/cache-index.json avant toute mesure et refuse de
-// tourner en cas de divergence.
+// Lit exclusivement le cache de capture (ai/dataset/final/.cache/pages/) et
+// le cache RDAP gelé (ai/dataset/final/rdap-cache.json), ne refetch JAMAIS
+// une page ni n'interroge RDAP en direct (RF-A10, REVIEW_COMMIT_57747F0.md
+// §5/§7). Vérifie l'intégrité du cache de capture avant toute mesure et
+// refuse de tourner en cas de divergence.
 //
-// Applique la règle Approche B (ai/lib/contentQuality.js) : contenu
-// inexploitable -> suspicious, sans appel LLM — même règle que
-// ai/client/llmClient.js et ai/tools/capture-pages, à ne jamais dupliquer.
+// AI recall v2 : deux scopes d'évaluation, --scope=content-only (défaut,
+// compatible avec les rapports v2 déjà publiés) ou --scope=end-to-end.
+//   - content-only : seules les captures status=ok sont mesurées (texte de
+//     page réellement disponible). C'est un résultat *partiel*, pas le
+//     rappel demandé par le cahier des charges — voir §11 du rapport.
+//   - end-to-end : toute entrée ayant un enregistrement de cache (quel que
+//     soit son statut) est mesurée. Le mode d'analyse (combined /
+//     url_structural / url_only, ai/lib/contentQuality.js) est choisi
+//     automatiquement par ai/client/llmClient.js selon le contenu
+//     réellement disponible ; le LLM est toujours appelé. Seules les
+//     entrées totalement absentes du cache (jamais capturées) restent
+//     exclues.
 //
 // Usage :
-//   node ai/eval/evaluate.js [--limit=N] [--provider=gemini|nvidia] [--prompt-version=TAG] [--delay-ms=N]
-//
-// --limit=N : prend les N premières entrées de phishing.json ET les N
-//             premières de legitimate.json (donc ~2N entrées traitées),
-//             pour un run rapide sans consommer tout le quota.
-// --provider=gemini|nvidia : force un seul fournisseur pour TOUTES les
-//             analyses (pas de bascule automatique), pour produire un
-//             tableau comparatif Gemini vs NVIDIA propre.
-// --prompt-version=TAG : étiquette manuelle (défaut "v1"), reportée dans
-//             le tableau exporté — permet de comparer plusieurs runs après
-//             modification des templates dans ai/prompts/.
+//   node ai/eval/evaluate.js [--limit=N] [--provider=gemini|nvidia] [--prompt-version=TAG] [--delay-ms=N] [--scope=content-only|end-to-end]
 
 const fs = require("node:fs");
 const path = require("node:path");
@@ -37,19 +34,19 @@ const dotenv = require("dotenv");
 dotenv.config({ path: path.resolve(__dirname, "../../.env"), quiet: true });
 
 const { verifyIndexIntegrity } = require("../dataset/lib/cacheIndex");
-const { assessContentQuality } = require("../lib/contentQuality");
+const { createFrozenLookupDomainAge } = require("../dataset/lib/frozenRdap");
 const { analyze } = require("../client/llmClient");
 
 const DATASET_DIR = path.resolve(__dirname, "../dataset/final");
 const CACHE_DIR = process.env.CACHE_DIR || path.join(DATASET_DIR, ".cache", "pages");
 const INDEX_PATH = path.join(DATASET_DIR, "cache-index.json");
+const RDAP_CACHE_PATH = path.join(DATASET_DIR, "rdap-cache.json");
 
-// Statuts de capture pour lesquels un textExcerpt existe réellement.
-// Les autres (dead/blocked/refused/skipped) n'ont aucun contenu : exclus
-// de la mesure, jamais comptés comme un verdict "suspicious" implicite.
-// Le protocole fige dans ai/dataset/README.md ne considere que status=ok
-// comme mesurable. Les autres statuts sont documentes, pas predits.
-const MEASURABLE_STATUSES = new Set(["ok"]);
+// content-only : seuls les statuts de capture avec un texte de page
+// réellement présent (ai/dataset/README.md, protocole figé). end-to-end
+// mesure tout le reste (dead/empty/challenged/refused/skipped) via
+// url_only/url_structural plutôt que de les exclure.
+const CONTENT_ONLY_STATUSES = new Set(["ok"]);
 
 function normalizeUrl(value) {
   // Même règle que scripts/lib/registry.js (§8.4).
@@ -94,12 +91,16 @@ function emptyMatrix() {
   return { tp: 0, fp: 0, fn: 0, tn: 0 };
 }
 
-function updateMatrix(matrix, predictedMalicious, label) {
+function classificationOutcome(predictedMalicious, label) {
   const positive = label === "phishing";
-  if (predictedMalicious && positive) matrix.tp += 1;
-  else if (predictedMalicious && !positive) matrix.fp += 1;
-  else if (!predictedMalicious && positive) matrix.fn += 1;
-  else matrix.tn += 1;
+  if (predictedMalicious && positive) return "TP";
+  if (predictedMalicious && !positive) return "FP";
+  if (!predictedMalicious && positive) return "FN";
+  return "TN";
+}
+
+function updateMatrix(matrix, outcome) {
+  matrix[outcome.toLowerCase()] += 1;
 }
 
 function metricsFromMatrix({ tp, fp, fn, tn }) {
@@ -109,48 +110,46 @@ function metricsFromMatrix({ tp, fp, fn, tn }) {
   return { tp, fp, fn, tn, precision, recall, f1, n: tp + fp + fn + tn };
 }
 
-async function evaluateEntry(entry, { forceProvider }) {
+async function evaluateEntry(entry, { forceProvider, scope, lookupDomainAge }) {
   const record = loadCacheRecord(entry.url);
   if (!record) return { skip: "not_captured" };
-  if (!MEASURABLE_STATUSES.has(record.status)) return { skip: record.status };
-
-  // Règle Approche B, réappliquée ici sur le contenu réellement en cache
-  // (pas seulement le statut déjà posé par capture.js) — source unique de
-  // vérité partagée via ai/lib/contentQuality.js.
-  const quality = assessContentQuality(record.textExcerpt);
-
-  let verdict;
-  let modelUsed;
-  let result = null;
-  if (quality.unusable) {
-    verdict = "suspicious";
-    modelUsed = "none";
-  } else {
-    result = await analyze(
-      { url: entry.url, textExcerpt: record.textExcerpt, structuralDigest: record.structuralDigest },
-      { forceProvider },
-    );
-    verdict = result.verdict;
-    modelUsed = result.modelUsed || "none";
-    if (!result.modelUsed) {
-      return { skip: "provider_error", attempted: true };
-    }
+  if (scope === "content-only" && !CONTENT_ONLY_STATUSES.has(record.status)) {
+    return { skip: `excluded_by_scope:${record.status}` };
   }
 
+  // RF-A11/RF-A6 : jamais label/category/source/notes du dataset transmis
+  // au modèle — uniquement url/finalUrl/textExcerpt/structuralDigest,
+  // exactement ce qu'analyze() accepte.
+  const result = await analyze(
+    { url: entry.url, finalUrl: record.finalUrl || entry.url, textExcerpt: record.textExcerpt, structuralDigest: record.structuralDigest },
+    { forceProvider, lookupDomainAge },
+  );
+
+  const verdict = result.verdict;
+  const modelUsed = result.modelUsed || "none";
+  if (!result.modelUsed) {
+    return { skip: "provider_error", attempted: true };
+  }
+
+  const predictedMalicious = verdict === "malicious";
   return {
     url: entry.url,
     label: entry.label,
+    captureStatus: record.status,
+    analysisMode: result.analysisMode,
+    qualityReason: result.qualityReason,
     verdict,
     modelUsed,
-    modelName: result?.modelName || null,
-    confidence: result?.confidence ?? 0.5,
-    category: result?.category ?? null,
-    indicators: result?.indicators || [],
-    explanation: result?.explanation || "Contenu non mesurable.",
-    latencyMs: result?.latencyMs || 0,
-    retries: result?.retries || 0,
+    modelName: result.modelName || null,
+    confidence: result.confidence ?? null,
+    category: result.category ?? null,
+    indicators: result.indicators || [],
+    explanation: result.explanation || "",
+    latencyMs: result.latencyMs || 0,
+    retries: result.retries || 0,
     attempted: true,
-    predictedMalicious: verdict === "malicious",
+    predictedMalicious,
+    classificationOutcome: classificationOutcome(predictedMalicious, entry.label),
   };
 }
 
@@ -158,15 +157,43 @@ function formatPercent(value) {
   return value === null ? "n/a" : `${(value * 100).toFixed(1)}%`;
 }
 
-function buildMarkdownReport({ promptVersion, forceProvider, totalEntries, processed, skipped, overall, byModel }) {
+function computeCoverage(entries, outcomes) {
+  const byLabel = { phishing: { total: 0, measured: 0 }, legitimate: { total: 0, measured: 0 } };
+  for (const entry of entries) byLabel[entry.label].total += 1;
+  for (const outcome of outcomes) byLabel[outcome.label].measured += 1;
+  return {
+    overall: { total: entries.length, measured: outcomes.length },
+    phishing: byLabel.phishing,
+    legitimate: byLabel.legitimate,
+  };
+}
+
+function countBy(outcomes, key) {
+  const counts = {};
+  for (const outcome of outcomes) {
+    const value = outcome[key] || "unknown";
+    counts[value] = (counts[value] || 0) + 1;
+  }
+  return counts;
+}
+
+function buildMarkdownReport({ scope, promptVersion, forceProvider, totalEntries, processed, skipped, overall, byModel, coverage, byAnalysisMode }) {
   const lines = [];
-  lines.push(`# Évaluation RF-A9 — version de prompt \`${promptVersion}\`${forceProvider ? ` — fournisseur forcé : ${forceProvider}` : ""}`);
+  lines.push(`# Évaluation RF-A9 — version de prompt \`${promptVersion}\` — scope \`${scope}\`${forceProvider ? ` — fournisseur forcé : ${forceProvider}` : ""}`);
   lines.push("");
-  lines.push("Protocole : jeu final fige, au plus le meme nombre d'entrees de chaque label, captures `status=ok` uniquement, aucun refetch. Les autres statuts sont exclus avant tout appel LLM.");
+  if (scope === "content-only") {
+    lines.push("**Résultat content-only** : seules les captures `status=ok` sont mesurées. Ce n'est PAS le rappel end-to-end demandé par le cahier des charges — une entrée avec une capture morte/vide/refusée n'est jamais comptée comme un échec de détection ici, elle est simplement exclue. Utiliser `--scope=end-to-end` pour la mesure demandée par le cahier des charges.");
+  } else {
+    lines.push("**Résultat end-to-end** : toute entrée ayant un enregistrement de cache est mesurée, quel que soit son statut de capture. Les entrées sans texte de page exploitable sont analysées en mode `url_structural` ou `url_only` (ai/lib/contentQuality.js) plutôt qu'exclues. Seules les entrées jamais capturées (`not_captured`) restent hors mesure.");
+  }
   lines.push("");
-  lines.push(`Entrées traitées : ${processed} / ${totalEntries}. Exclues (non mesurables) : ${JSON.stringify(skipped)}.`);
+  lines.push(`Entrées traitées : ${processed} / ${totalEntries}. Exclues : ${JSON.stringify(skipped)}.`);
   lines.push("");
-  lines.push("Décision binaire : `malicious` = positif prédit, `suspicious`/`legitimate` = négatif prédit. Positif réel = label `phishing`.");
+  lines.push(`Couverture — global : ${coverage.overall.measured}/${coverage.overall.total} ; phishing : ${coverage.phishing.measured}/${coverage.phishing.total} (${formatPercent(coverage.phishing.total ? coverage.phishing.measured / coverage.phishing.total : null)}) ; légitime : ${coverage.legitimate.measured}/${coverage.legitimate.total} (${formatPercent(coverage.legitimate.total ? coverage.legitimate.measured / coverage.legitimate.total : null)}).`);
+  lines.push("");
+  lines.push(`Modes d'analyse utilisés : ${JSON.stringify(byAnalysisMode)}.`);
+  lines.push("");
+  lines.push("Décision binaire : `malicious` = positif prédit, `suspicious`/`legitimate` = négatif prédit. Positif réel = label `phishing`. `verdict=suspicious` n'est jamais compté comme `malicious`, même avec un score élevé.");
   lines.push("");
   lines.push("| Groupe | n | TP | FP | FN | TN | Précision | Rappel | F1 |");
   lines.push("|---|---:|---:|---:|---:|---:|---:|---:|---:|");
@@ -184,6 +211,7 @@ async function main() {
   const forceProvider = args.provider || null;
   const promptVersion = args["prompt-version"] || "v1";
   const delayMs = args["delay-ms"] ? Number(args["delay-ms"]) : 0;
+  const scope = args.scope || "content-only";
 
   if (forceProvider && forceProvider !== "gemini" && forceProvider !== "nvidia") {
     console.error("--provider doit être 'gemini' ou 'nvidia'");
@@ -200,6 +228,11 @@ async function main() {
     process.exitCode = 1;
     return;
   }
+  if (scope !== "content-only" && scope !== "end-to-end") {
+    console.error("--scope doit être 'content-only' ou 'end-to-end'");
+    process.exitCode = 1;
+    return;
+  }
 
   console.error("[evaluate] Vérification d'intégrité du cache (ai/dataset/final/cache-index.json)...");
   const mismatches = verifyIndexIntegrity(INDEX_PATH, CACHE_DIR);
@@ -212,8 +245,16 @@ async function main() {
   }
   console.error("[evaluate] Intégrité du cache OK.");
 
+  if (!fs.existsSync(RDAP_CACHE_PATH)) {
+    console.error(`[evaluate] Cache RDAP gelé introuvable (${RDAP_CACHE_PATH}). Générer avec : node ai/dataset/lib/buildRdapCache.js`);
+    process.exitCode = 1;
+    return;
+  }
+  const lookupDomainAge = createFrozenLookupDomainAge(RDAP_CACHE_PATH);
+  console.error(`[evaluate] Cache RDAP gelé chargé (${RDAP_CACHE_PATH}) — aucune requête RDAP en direct pendant cette évaluation.`);
+
   const entries = loadDataset(limit);
-  console.error(`[evaluate] ${entries.length} entrées à traiter (limit=${limit ?? "aucune"}, provider=${forceProvider ?? "auto (Gemini→NVIDIA)"}, prompt-version=${promptVersion}).`);
+  console.error(`[evaluate] ${entries.length} entrées à traiter (scope=${scope}, limit=${limit ?? "aucune"}, provider=${forceProvider ?? "auto (Gemini→NVIDIA)"}, prompt-version=${promptVersion}).`);
 
   const overall = emptyMatrix();
   const byModel = {};
@@ -222,7 +263,7 @@ async function main() {
   let processed = 0;
 
   for (const entry of entries) {
-    const outcome = await evaluateEntry(entry, { forceProvider });
+    const outcome = await evaluateEntry(entry, { forceProvider, scope, lookupDomainAge });
     if (outcome.attempted && delayMs > 0) {
       await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
@@ -233,13 +274,17 @@ async function main() {
     }
     outcomes.push(outcome);
     processed += 1;
-    updateMatrix(overall, outcome.predictedMalicious, outcome.label);
+    updateMatrix(overall, outcome.classificationOutcome);
     byModel[outcome.modelUsed] = byModel[outcome.modelUsed] || emptyMatrix();
-    updateMatrix(byModel[outcome.modelUsed], outcome.predictedMalicious, outcome.label);
-    console.error(`[evaluate]   ${entry.url} -> verdict=${outcome.verdict} modèle=${outcome.modelUsed} label=${outcome.label}`);
+    updateMatrix(byModel[outcome.modelUsed], outcome.classificationOutcome);
+    console.error(`[evaluate]   ${entry.url} -> verdict=${outcome.verdict} mode=${outcome.analysisMode} modèle=${outcome.modelUsed} label=${outcome.label} outcome=${outcome.classificationOutcome}`);
   }
 
+  const coverage = computeCoverage(entries, outcomes);
+  const byAnalysisMode = countBy(outcomes, "analysisMode");
+
   const report = buildMarkdownReport({
+    scope,
     promptVersion,
     forceProvider,
     totalEntries: entries.length,
@@ -247,17 +292,20 @@ async function main() {
     skipped,
     overall,
     byModel,
+    coverage,
+    byAnalysisMode,
   });
 
   console.log(`\n${report}`);
 
-  const suffix = forceProvider ? `-${forceProvider}` : "";
+  const scopeSuffix = scope === "end-to-end" ? "-endtoend" : "";
+  const suffix = `${forceProvider ? `-${forceProvider}` : ""}${scopeSuffix}`;
   const outPath = path.join(__dirname, `report-${promptVersion}${suffix}.md`);
   fs.writeFileSync(outPath, `${report}\n`);
   const resultsPath = path.join(__dirname, `results-${promptVersion}${suffix}.json`);
   fs.writeFileSync(
     resultsPath,
-    `${JSON.stringify({ promptVersion, provider: forceProvider || "auto", outcomes }, null, 2)}\n`,
+    `${JSON.stringify({ promptVersion, provider: forceProvider || "auto", scope, coverage, byAnalysisMode, outcomes }, null, 2)}\n`,
   );
   console.error(`\n[evaluate] Rapport écrit dans ${outPath}`);
   console.error(`[evaluate] Prédictions détaillées écrites dans ${resultsPath}`);
@@ -270,4 +318,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { evaluateEntry, metricsFromMatrix, updateMatrix, emptyMatrix };
+module.exports = { evaluateEntry, metricsFromMatrix, updateMatrix, emptyMatrix, classificationOutcome, computeCoverage };

@@ -1,5 +1,15 @@
 # Comparatif final RF-A9 — prompts v2
 
+> **⚠️ BROUILLON — résultat content-only, pas le rappel end-to-end du cahier
+> des charges.** Les 38 entrées sans capture `status=ok` (dead/empty/
+> refused/challenged) sont **exclues de la mesure**, pas comptées comme des
+> échecs. Le rappel de 100 % ci-dessous ne porte donc que sur 11 URLs
+> phishing sur 36 sélectionnées (30,6 % de couverture réelle). Voir
+> `report-v2-gemini-endtoend.md` / `report-v2-nvidia-endtoend.md` pour la
+> mesure end-to-end (`--scope=end-to-end`, toute entrée avec une capture en
+> cache est mesurée via le mode d'analyse url_only/url_structural approprié
+> plutôt qu'exclue) — voir REVIEW_COMMIT_57747F0.md §5.
+
 **Date :** 2026-08-09  
 **Jeu d'entrée :** 36 phishing + 36 légitimes, sélectionnés avant exclusion  
 **Jeu mesurable :** 34 captures `status=ok` (11 phishing, 23 légitimes)

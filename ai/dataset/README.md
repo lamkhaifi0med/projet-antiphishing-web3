@@ -198,6 +198,19 @@ preuve que RF-N5 bis fonctionne), `skipped` (réponse non-HTML),
   restauration d'une archive, relancer `verifyIndexIntegrity()` pour
   confirmer qu'elle correspond bien à `cache-index.json`.
 
+**RDAP gelé (AI recall v2, REVIEW_COMMIT_57747F0.md §5/§7)** :
+`ai/dataset/final/rdap-cache.json` gèle l'âge de domaine (métadonnées
+RDAP publiques, jamais le contenu d'une page) pour chaque domaine unique
+du jeu final, avec un horodatage de référence unique (`frozenAt`).
+Contrairement au cache de pages, **ce fichier est versionné dans Git** —
+il ne contient aucune donnée sensible ni contenu hostile, uniquement des
+dates d'enregistrement de domaine publiques. `ai/eval/evaluate.js`
+l'injecte systématiquement dans `calculateUrlFeatures()` : aucune requête
+RDAP en direct pendant une évaluation, résultat reproductible quel que
+soit le jour d'exécution. Régénérer avec
+`node ai/dataset/lib/buildRdapCache.js` uniquement quand le jeu final
+change (nouvelles URLs) — pas à chaque évaluation.
+
 `ai/eval/evaluate.js` (Phase 2/3) lira exclusivement ce cache — jamais de
 refetch (RF-A10). Le **taux de mortalité** (`dead`) et le **taux de
 blocage SSRF** (`blocked`) sont documentés séparément dans le rapport
