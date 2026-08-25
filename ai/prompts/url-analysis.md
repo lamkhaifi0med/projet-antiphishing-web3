@@ -24,15 +24,6 @@ que tu n'as pas reçu :
   domaine sans rapport (ex. `binance.com.faux-domaine.xyz`).
 - **URL shorteners** : service de raccourcissement masquant la
   destination réelle.
-- **Hébergement tiers et domaine de marque incohérent** : une marque ou un
-  produit Web3 placé dans le sous-domaine ou le chemin d'une plateforme
-  générique (`vercel.app`, `pages.dev`, `web.app`, `gitbook.io`,
-  `godaddysites.com`, etc.) n'est pas sur le domaine officiel. Si cette
-  incohérence imite clairement une marque connue, traite-la comme un
-  indicateur fort de phishing, même si la page utilise HTTPS.
-- **Chemins trompeurs** : noms de wallet/exchange ou actions sensibles
-  (`login`, `verify`, `wallet`, `claim`, `reward`, `earn`, `support`)
-  placés dans le chemin d'un domaine sans rapport.
 
 <<<URL>>>
 {{url}}
