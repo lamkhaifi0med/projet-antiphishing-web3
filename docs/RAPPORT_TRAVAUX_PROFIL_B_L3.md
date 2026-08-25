@@ -1,5 +1,17 @@
 # Rapport des travaux réalisés — Profil B / Livrable L3
 
+> **Mise à jour du 25 août 2026 :** le protocole d'évaluation décrit dans
+> ce rapport (§6, section 10) mesurait uniquement les captures
+> `status=ok` — 11 URLs phishing sur 36 (30,6 %). Un protocole
+> end-to-end existe désormais (`ai/eval/evaluate.js --scope=end-to-end`),
+> qui mesure 29 à 35 URLs phishing sur 36 (80,6–97,2 %) en appelant
+> toujours le LLM (modes `combined`/`url_structural`/`url_only`, voir
+> `ai/lib/contentQuality.js`). Voir
+> `ai/eval/comparison-v2.1-endtoend.md` pour les résultats à jour, une
+> analyse des faux positifs, et un avertissement sur la clé Gemini de cet
+> environnement. Le §6 ci-dessous reste exact pour ce qu'il décrit
+> (protocole content-only du 9 août), il n'est pas corrigé rétroactivement.
+
 **Projet :** Détection de phishing Web3 par IA  
 **Rôle :** Profil B — IA générative et orchestration n8n  
 **Date :** 9 août 2026  
