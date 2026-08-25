@@ -33,6 +33,13 @@ services:
       # URL interne WF3. Le token reste dans un credential Header Auth n8n
       # chiffré ; il n'est jamais exporté dans les workflows JSON.
       - CHAIN_BRIDGE_URL=http://chain-bridge:3001
+      # WF3/WF4 lisent CHAIN_BRIDGE_URL via $env dans une expression de
+      # node (pas un secret, juste une URL interne). N8N_BLOCK_ENV_ACCESS_IN_NODE
+      # bloque $env partout, pas seulement dans les Code nodes - il doit
+      # rester desactive tant que WF3/WF4 dependent de cette expression.
+      # WF1/WF2 n'en ont plus besoin (credentials chiffrees, voir PR #7),
+      # mais ce reglage reste au niveau de l'instance n8n entiere.
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
     depends_on:
       chain-bridge:
         condition: service_healthy
