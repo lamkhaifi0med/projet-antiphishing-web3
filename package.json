@@ -13,7 +13,12 @@
     "chain:report": "node scripts/report.js",
     "chain:remove": "node scripts/remove.js",
     "chain:batch-report": "node scripts/batchReport.js",
-    "chain:listen": "node scripts/listen.js"
+    "chain:listen": "node scripts/listen.js",
+    "bridge:start": "node n8n/bridge/server.js",
+    "bridge:test": "node n8n/bridge/test.js",
+    "capture:test": "node n8n/capture/test.js",
+    "analysis:test": "node n8n/analysis/test.js",
+    "n8n:test": "node n8n/test-workflows.js"
   },
   "dependencies": {
     "dotenv": "^17.4.2",

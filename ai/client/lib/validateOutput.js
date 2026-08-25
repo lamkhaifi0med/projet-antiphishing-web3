@@ -10,6 +10,7 @@ const VERDICTS = ["malicious", "suspicious", "legitimate"];
 const MAX_INDICATORS = 5;
 const MAX_INDICATOR_CHARS = 200;
 const MAX_EXPLANATION_CHARS = 500;
+const STRONG_SIGNAL_PATTERN = /typosquat|homogly|seed phrase|cl[ée] priv[ée]e|domaine (?:n['’]est pas|non) officiel|h[ée]bergement tiers.*incoh[ée]rent|faux support|airdrop conditionn[ée]|rendement garanti|autorisation (?:wallet )?dangereuse/i;
 
 /**
  * @returns {{ valid: boolean, errors: string[] }}
@@ -62,6 +63,20 @@ function validateOutput(value) {
     errors.push("explanation doit être une chaîne");
   } else if (value.explanation.length > MAX_EXPLANATION_CHARS) {
     errors.push(`explanation dépasse ${MAX_EXPLANATION_CHARS} caractères (reçu ${value.explanation.length})`);
+  }
+
+  // Une reponse qui observe elle-meme une preuve forte mais conserve le
+  // verdict suspicious contredit la regle de decision v2. RF-A4 impose une
+  // nouvelle demande au modele au lieu d'accepter silencieusement ce faux
+  // negatif structurel.
+  if (value.verdict === "suspicious") {
+    const evidenceText = [
+      ...(Array.isArray(value.indicators) ? value.indicators.filter((item) => typeof item === "string") : []),
+      typeof value.explanation === "string" ? value.explanation : "",
+    ].join(" ");
+    if (STRONG_SIGNAL_PATTERN.test(evidenceText)) {
+      errors.push("verdict incoherent : une preuve forte est observee, verdict=malicious requis par la regle v2");
+    }
   }
 
   return { valid: errors.length === 0, errors };

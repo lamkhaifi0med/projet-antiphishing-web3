@@ -61,6 +61,13 @@ function buildUserPrompt({ url, textExcerpt, structuralDigest }) {
     JSON.stringify(structuralDigest ?? null),
     "<<<END_STRUCTURAL_DIGEST>>>",
     "",
+    "## Decision finale obligatoire",
+    "1. Ne recopie jamais les familles de la checklist : conserve uniquement les indices reellement visibles dans l'URL, le texte ou le digest.",
+    "2. Si tu identifies une marque imitee sur un domaine non officiel, un typosquat/homoglyphe credible, une demande de secret wallet, une autorisation dangereuse, un faux support, un faux airdrop conditionne ou un rendement garanti, verdict=malicious. Cette regle reste vraie meme si un seul de ces indices forts est present.",
+    "3. Il est interdit de repondre suspicious tout en affirmant dans indicators ou explanation qu'un de ces indices forts est observe. Suspicious est reserve aux signaux faibles et ambigus sans preuve forte.",
+    "4. HTTPS, un certificat valide, Vercel/Firebase/Cloudflare ou une apparence professionnelle ne prouvent jamais la legitimite.",
+    "5. Avant de repondre, verifie la coherence entre verdict, indicators et explanation.",
+    "",
     "Réponds uniquement avec l'objet JSON conforme à output-schema.json.",
   ].join("\n");
 }

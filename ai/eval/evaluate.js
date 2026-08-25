@@ -17,7 +17,7 @@
 // ai/client/llmClient.js et ai/tools/capture-pages, à ne jamais dupliquer.
 //
 // Usage :
-//   node ai/eval/evaluate.js [--limit=N] [--provider=gemini|nvidia] [--prompt-version=TAG]
+//   node ai/eval/evaluate.js [--limit=N] [--provider=gemini|nvidia] [--prompt-version=TAG] [--delay-ms=N]
 //
 // --limit=N : prend les N premières entrées de phishing.json ET les N
 //             premières de legitimate.json (donc ~2N entrées traitées),
@@ -47,7 +47,9 @@ const INDEX_PATH = path.join(DATASET_DIR, "cache-index.json");
 // Statuts de capture pour lesquels un textExcerpt existe réellement.
 // Les autres (dead/blocked/refused/skipped) n'ont aucun contenu : exclus
 // de la mesure, jamais comptés comme un verdict "suspicious" implicite.
-const STATUSES_WITH_CONTENT = new Set(["ok", "challenged", "empty"]);
+// Le protocole fige dans ai/dataset/README.md ne considere que status=ok
+// comme mesurable. Les autres statuts sont documentes, pas predits.
+const MEASURABLE_STATUSES = new Set(["ok"]);
 
 function normalizeUrl(value) {
   // Même règle que scripts/lib/registry.js (§8.4).
@@ -110,7 +112,7 @@ function metricsFromMatrix({ tp, fp, fn, tn }) {
 async function evaluateEntry(entry, { forceProvider }) {
   const record = loadCacheRecord(entry.url);
   if (!record) return { skip: "not_captured" };
-  if (!STATUSES_WITH_CONTENT.has(record.status)) return { skip: record.status };
+  if (!MEASURABLE_STATUSES.has(record.status)) return { skip: record.status };
 
   // Règle Approche B, réappliquée ici sur le contenu réellement en cache
   // (pas seulement le statut déjà posé par capture.js) — source unique de
@@ -119,16 +121,20 @@ async function evaluateEntry(entry, { forceProvider }) {
 
   let verdict;
   let modelUsed;
+  let result = null;
   if (quality.unusable) {
     verdict = "suspicious";
     modelUsed = "none";
   } else {
-    const result = await analyze(
+    result = await analyze(
       { url: entry.url, textExcerpt: record.textExcerpt, structuralDigest: record.structuralDigest },
       { forceProvider },
     );
     verdict = result.verdict;
     modelUsed = result.modelUsed || "none";
+    if (!result.modelUsed) {
+      return { skip: "provider_error", attempted: true };
+    }
   }
 
   return {
@@ -136,6 +142,14 @@ async function evaluateEntry(entry, { forceProvider }) {
     label: entry.label,
     verdict,
     modelUsed,
+    modelName: result?.modelName || null,
+    confidence: result?.confidence ?? 0.5,
+    category: result?.category ?? null,
+    indicators: result?.indicators || [],
+    explanation: result?.explanation || "Contenu non mesurable.",
+    latencyMs: result?.latencyMs || 0,
+    retries: result?.retries || 0,
+    attempted: true,
     predictedMalicious: verdict === "malicious",
   };
 }
@@ -147,6 +161,8 @@ function formatPercent(value) {
 function buildMarkdownReport({ promptVersion, forceProvider, totalEntries, processed, skipped, overall, byModel }) {
   const lines = [];
   lines.push(`# Évaluation RF-A9 — version de prompt \`${promptVersion}\`${forceProvider ? ` — fournisseur forcé : ${forceProvider}` : ""}`);
+  lines.push("");
+  lines.push("Protocole : jeu final fige, au plus le meme nombre d'entrees de chaque label, captures `status=ok` uniquement, aucun refetch. Les autres statuts sont exclus avant tout appel LLM.");
   lines.push("");
   lines.push(`Entrées traitées : ${processed} / ${totalEntries}. Exclues (non mesurables) : ${JSON.stringify(skipped)}.`);
   lines.push("");
@@ -167,6 +183,7 @@ async function main() {
   const limit = args.limit ? Number(args.limit) : null;
   const forceProvider = args.provider || null;
   const promptVersion = args["prompt-version"] || "v1";
+  const delayMs = args["delay-ms"] ? Number(args["delay-ms"]) : 0;
 
   if (forceProvider && forceProvider !== "gemini" && forceProvider !== "nvidia") {
     console.error("--provider doit être 'gemini' ou 'nvidia'");
@@ -175,6 +192,11 @@ async function main() {
   }
   if (args.limit && (!Number.isInteger(limit) || limit <= 0)) {
     console.error("--limit doit être un entier positif");
+    process.exitCode = 1;
+    return;
+  }
+  if (!Number.isInteger(delayMs) || delayMs < 0) {
+    console.error("--delay-ms doit etre un entier positif ou nul");
     process.exitCode = 1;
     return;
   }
@@ -195,16 +217,21 @@ async function main() {
 
   const overall = emptyMatrix();
   const byModel = {};
+  const outcomes = [];
   const skipped = {};
   let processed = 0;
 
   for (const entry of entries) {
     const outcome = await evaluateEntry(entry, { forceProvider });
+    if (outcome.attempted && delayMs > 0) {
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
     if (outcome.skip) {
       skipped[outcome.skip] = (skipped[outcome.skip] || 0) + 1;
       console.error(`[evaluate]   ${entry.url} -> exclu (${outcome.skip})`);
       continue;
     }
+    outcomes.push(outcome);
     processed += 1;
     updateMatrix(overall, outcome.predictedMalicious, outcome.label);
     byModel[outcome.modelUsed] = byModel[outcome.modelUsed] || emptyMatrix();
@@ -227,7 +254,13 @@ async function main() {
   const suffix = forceProvider ? `-${forceProvider}` : "";
   const outPath = path.join(__dirname, `report-${promptVersion}${suffix}.md`);
   fs.writeFileSync(outPath, `${report}\n`);
+  const resultsPath = path.join(__dirname, `results-${promptVersion}${suffix}.json`);
+  fs.writeFileSync(
+    resultsPath,
+    `${JSON.stringify({ promptVersion, provider: forceProvider || "auto", outcomes }, null, 2)}\n`,
+  );
   console.error(`\n[evaluate] Rapport écrit dans ${outPath}`);
+  console.error(`[evaluate] Prédictions détaillées écrites dans ${resultsPath}`);
 }
 
 if (require.main === module) {
