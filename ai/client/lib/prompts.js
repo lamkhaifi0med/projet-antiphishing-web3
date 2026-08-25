@@ -32,13 +32,37 @@ function loadSystemPrompt() {
   return readPrompt("system.md");
 }
 
-function buildUserPrompt({ url, textExcerpt, structuralDigest }) {
+// AI recall v2 : selon le mode d'analyse (ai/lib/contentQuality.js), la
+// page n'a pas toujours de texte ou de digest exploitable. On ne ment
+// jamais au modele en lui presentant un champ vide comme "verifie propre" -
+// chaque bloc absent est explicitement marque indisponible avec la raison,
+// pour que le modele raisonne sur ce qu'il a reellement (URL + features
+// deterministes) sans halluciner un contenu de page qu'il n'a pas vu.
+const MODE_NOTES = {
+  combined: "Preuve complete disponible : URL, texte de page et digest structurel.",
+  url_structural: "Texte de page insuffisant ou indisponible ; le digest structurel reste exploitable (motif Web3, champ de formulaire sensible ou domaine de script externe detecte). Ne pas deduire de legitimite de l'absence de texte.",
+  url_only: "Aucune preuve de page exploitable (page de defi, contenu vide, ou echec de capture). Analyse fondee uniquement sur l'URL et les features deterministes ci-dessous. Un manque de preuve n'est PAS une preuve de legitimite : reste prudent, un score de risque URL eleve doit peser dans le verdict.",
+};
+
+function formatUrlFeatures(urlFeatures) {
+  if (!urlFeatures) return "indisponible";
+  const { score, domain, tld, subdomainCount, whoisAgeDays, whoisSource, components } = urlFeatures;
+  return JSON.stringify({ score, domain, tld, subdomainCount, whoisAgeDays, whoisSource, components });
+}
+
+function buildUserPrompt({ url, textExcerpt, structuralDigest, urlFeatures, mode = "combined" }) {
   const urlChecklist = extractChecklist(readPrompt("url-analysis.md"));
   const sourceChecklist = extractChecklist(readPrompt("source-analysis.md"));
   const semanticChecklist = extractChecklist(readPrompt("semantic-analysis.md"));
 
+  const hasPageText = mode === "combined";
+  const hasDigest = mode === "combined" || mode === "url_structural";
+
   return [
     "# Analyse combinée (RF-A1 + RF-A2 + RF-A3)",
+    "",
+    `## Mode d'analyse : ${mode}`,
+    MODE_NOTES[mode] || MODE_NOTES.url_only,
     "",
     "## Analyse d'URL",
     urlChecklist,
@@ -53,12 +77,16 @@ function buildUserPrompt({ url, textExcerpt, structuralDigest }) {
     String(url ?? ""),
     "<<<END_URL>>>",
     "",
+    "<<<URL_FEATURES>>>",
+    formatUrlFeatures(urlFeatures),
+    "<<<END_URL_FEATURES>>>",
+    "",
     "<<<PAGE_TEXT>>>",
-    String(textExcerpt ?? ""),
+    hasPageText ? String(textExcerpt ?? "") : "indisponible pour ce mode d'analyse",
     "<<<END_PAGE_TEXT>>>",
     "",
     "<<<STRUCTURAL_DIGEST>>>",
-    JSON.stringify(structuralDigest ?? null),
+    hasDigest ? JSON.stringify(structuralDigest ?? null) : "indisponible pour ce mode d'analyse",
     "<<<END_STRUCTURAL_DIGEST>>>",
     "",
     "## Decision finale obligatoire",
