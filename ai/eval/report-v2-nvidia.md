@@ -1,5 +1,7 @@
 # Évaluation RF-A9 — version de prompt `v2` — fournisseur forcé : nvidia
 
+> **⚠️ BROUILLON — content-only, pas end-to-end.** Voir `comparison-v2-final.md` et `report-v2-nvidia-endtoend.md`.
+
 Protocole : jeu final fige, au plus le meme nombre d'entrees de chaque label, captures `status=ok` uniquement, aucun refetch. Les autres statuts sont exclus avant tout appel LLM.
 
 Entrées traitées : 34 / 72. Exclues (non mesurables) : {"dead":11,"empty":21,"refused":5,"challenged":1}.

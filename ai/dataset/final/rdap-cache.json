@@ -1,0 +1,1134 @@
+{
+  "frozenAt": "2026-08-25T15:42:53.207Z",
+  "description": "Métadonnées RDAP gelées pour le jeu final (ai/dataset/final). createdAt permet de recalculer un age reproductible avec whoisAge = (frozenAt - createdAt). Ne jamais interroger RDAP en direct pendant une évaluation (--scope=end-to-end).",
+  "entries": {
+    "robinhood.report": {
+      "createdAt": "2026-07-23T16:10:41.883Z",
+      "source": "rdap"
+    },
+    "vercel.app": {
+      "createdAt": "2020-01-28T03:03:01.996Z",
+      "source": "rdap"
+    },
+    "snapshot-theindex.finance": {
+      "createdAt": "2026-07-23T23:22:36.131Z",
+      "source": "rdap"
+    },
+    "hyperfuondation.xyz": {
+      "createdAt": "2026-07-24T01:51:51.026Z",
+      "source": "rdap"
+    },
+    "voting-apyxfi.com": {
+      "createdAt": "2026-07-23T23:14:33.852Z",
+      "source": "rdap"
+    },
+    "verification-variational.com": {
+      "createdAt": "2026-07-23T22:51:01.846Z",
+      "source": "rdap"
+    },
+    "robinhoodfox.info": {
+      "createdAt": "2026-07-22T15:24:34.108Z",
+      "source": "rdap"
+    },
+    "repegs-apyxfi.com": {
+      "createdAt": "2026-07-23T23:13:23.167Z",
+      "source": "rdap"
+    },
+    "amlservice.click": {
+      "createdAt": "2026-07-23T19:36:40.827Z",
+      "source": "rdap"
+    },
+    "web.app": {
+      "createdAt": "2019-01-08T22:04:54.834Z",
+      "source": "rdap"
+    },
+    "fiuid.app": {
+      "createdAt": "2026-07-22T14:41:19.351Z",
+      "source": "rdap"
+    },
+    "chewyswap.live": {
+      "createdAt": "2026-06-30T16:27:20.933Z",
+      "source": "rdap"
+    },
+    "pages.dev": {
+      "createdAt": "2020-09-02T02:33:16.249Z",
+      "source": "rdap"
+    },
+    "exponent-finances.com": {
+      "createdAt": "2026-07-23T20:00:46.177Z",
+      "source": "rdap"
+    },
+    "pumpcoinmax.fun": {
+      "createdAt": "2026-07-14T15:44:07.776Z",
+      "source": "rdap"
+    },
+    "future-zebec.com": {
+      "createdAt": "2026-07-23T16:05:16.137Z",
+      "source": "rdap"
+    },
+    "littlepepe.pw": {
+      "createdAt": "2026-07-22T18:48:51.074Z",
+      "source": "rdap"
+    },
+    "framer.ai": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "coinbases.vip": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "gitbook.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "investigation-workspace.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "godaddysites.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "duckdns.org": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "senes.at": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "preview-coinbase.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "secure-base.app": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "infoverbindung.de": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "sadmatanza.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "daftpage.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "kucoin.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "okx.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "bybit.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "gemini.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "crypto.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "bitstamp.net": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "gate.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "pancakeswap.finance": {
+      "createdAt": "2020-09-12T15:04:29.834Z",
+      "source": "rdap"
+    },
+    "curve.fi": {
+      "createdAt": "2020-01-05T21:13:20.057Z",
+      "source": "rdap"
+    },
+    "sushi.com": {
+      "createdAt": "1999-02-17T04:59:28.275Z",
+      "source": "rdap"
+    },
+    "1inch.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "lido.fi": {
+      "createdAt": "2020-10-05T19:24:08.860Z",
+      "source": "rdap"
+    },
+    "makerdao.com": {
+      "createdAt": "2015-03-17T16:50:04.934Z",
+      "source": "rdap"
+    },
+    "zksync.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "arbitrum.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "optimism.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "avax.network": {
+      "createdAt": "2020-06-21T00:44:46.471Z",
+      "source": "rdap"
+    },
+    "solana.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "trezor.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "trustwallet.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "blockchain.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "coingecko.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "coinmarketcap.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "polkadot.network": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "chain.link": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "tether.to": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "paxos.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "safe.global": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "dune.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "moonpay.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "gnosis.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "binance.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "coinbase.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "kraken.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "binance.us": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "metamask.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "uniswap.org": {
+      "createdAt": "2018-11-26T05:32:17.213Z",
+      "source": "rdap"
+    },
+    "arbitrum.foundation": {
+      "createdAt": "2022-09-13T23:43:40.973Z",
+      "source": "rdap"
+    },
+    "opensea.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "aave.com": {
+      "createdAt": "1997-10-21T03:59:07.274Z",
+      "source": "rdap"
+    },
+    "bitget.com": {
+      "createdAt": "2003-02-03T19:25:15.200Z",
+      "source": "rdap"
+    },
+    "mexc.com": {
+      "createdAt": "2000-02-27T13:58:47.018Z",
+      "source": "rdap"
+    },
+    "htx.com": {
+      "createdAt": "1995-12-13T04:59:04.165Z",
+      "source": "rdap"
+    },
+    "bitfinex.com": {
+      "createdAt": "2012-10-11T08:40:14.356Z",
+      "source": "rdap"
+    },
+    "bitmex.com": {
+      "createdAt": "2003-08-27T13:46:42.555Z",
+      "source": "rdap"
+    },
+    "deribit.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "poloniex.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "upbit.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "bithumb.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "coincheck.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "bitflyer.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "luno.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "wazirx.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "coindcx.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "cex.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "lbank.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "xt.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "bingx.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "phemex.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "whitebit.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "bitrue.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "probit.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "ascendex.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "bitpanda.com": {
+      "createdAt": "2014-06-05T18:06:58.071Z",
+      "source": "rdap"
+    },
+    "coinmama.com": {
+      "createdAt": "2013-04-17T09:31:06.154Z",
+      "source": "rdap"
+    },
+    "paxful.com": {
+      "createdAt": "2015-01-24T06:13:25.332Z",
+      "source": "rdap"
+    },
+    "river.com": {
+      "createdAt": "1994-09-06T03:58:48.476Z",
+      "source": "rdap"
+    },
+    "swanbitcoin.com": {
+      "createdAt": "2019-12-12T18:24:12.642Z",
+      "source": "rdap"
+    },
+    "strike.me": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "ethereum.org": {
+      "createdAt": "2013-11-27T20:50:01.569Z",
+      "source": "rdap"
+    },
+    "bitcoin.org": {
+      "createdAt": "2008-08-18T13:18:39.996Z",
+      "source": "rdap"
+    },
+    "cardano.org": {
+      "createdAt": "2014-09-05T02:22:08.572Z",
+      "source": "rdap"
+    },
+    "near.org": {
+      "createdAt": "2000-03-06T13:56:35.359Z",
+      "source": "rdap"
+    },
+    "algorand.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "tezos.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "tron.network": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "eos.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "cronos.org": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "fantom.foundation": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "harmony.one": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "celo.org": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "multiversx.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "hedera.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "aptosfoundation.org": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "sui.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "sei.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "base.org": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "starknet.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "scroll.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "linea.build": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "mantle.xyz": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "blast.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "cosmos.network": {
+      "createdAt": "2016-08-22T15:55:15.592Z",
+      "source": "rdap"
+    },
+    "injective.com": {
+      "createdAt": "2002-11-24T14:07:06.971Z",
+      "source": "rdap"
+    },
+    "kava.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "thorchain.org": {
+      "createdAt": "2018-05-10T05:46:52.418Z",
+      "source": "rdap"
+    },
+    "moonbeam.network": {
+      "createdAt": "2019-11-14T16:36:31.380Z",
+      "source": "rdap"
+    },
+    "astar.network": {
+      "createdAt": "2021-06-22T19:02:42.900Z",
+      "source": "rdap"
+    },
+    "klaytn.foundation": {
+      "createdAt": "2021-08-02T05:18:05.273Z",
+      "source": "rdap"
+    },
+    "roninchain.com": {
+      "createdAt": "2020-06-30T13:34:10.173Z",
+      "source": "rdap"
+    },
+    "metis.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "boba.network": {
+      "createdAt": "2020-12-31T03:00:29.488Z",
+      "source": "rdap"
+    },
+    "immutable.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "fuse.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "balancer.fi": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "yearn.fi": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "convexfinance.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "frax.finance": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "synthetix.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "dydx.exchange": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "gmx.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "rocketpool.net": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "instadapp.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "venus.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "traderjoexyz.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "osmosis.zone": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "raydium.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "orca.so": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "jup.ag": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "paraswap.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "0x.org": {
+      "createdAt": "2000-03-13T12:02:42.060Z",
+      "source": "rdap"
+    },
+    "kyber.network": {
+      "createdAt": "2017-05-07T09:41:06.928Z",
+      "source": "rdap"
+    },
+    "spookyswap.finance": {
+      "createdAt": "2025-06-16T15:13:33.711Z",
+      "source": "rdap"
+    },
+    "quickswap.exchange": {
+      "createdAt": "2020-09-21T12:40:28.519Z",
+      "source": "rdap"
+    },
+    "velodrome.finance": {
+      "createdAt": "2022-04-21T18:36:28.971Z",
+      "source": "rdap"
+    },
+    "camelot.exchange": {
+      "createdAt": "2022-09-24T15:48:47.669Z",
+      "source": "rdap"
+    },
+    "notional.finance": {
+      "createdAt": "2020-07-16T04:05:07.736Z",
+      "source": "rdap"
+    },
+    "maple.finance": {
+      "createdAt": "2019-06-06T04:57:51.169Z",
+      "source": "rdap"
+    },
+    "goldfinch.finance": {
+      "createdAt": "2020-06-19T22:24:01.315Z",
+      "source": "rdap"
+    },
+    "centrifuge.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "ondo.finance": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "polymarket.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "phantom.app": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "rabby.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "rainbow.me": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "exodus.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "argent.xyz": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "imtoken.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "tokenpocket.pro": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "zerion.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "zengo.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "bitkeep.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "frame.sh": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "coin98.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "walletconnect.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "onto.app": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "mathwallet.org": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "blur.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "looksrare.org": {
+      "createdAt": "2021-08-13T18:52:45.508Z",
+      "source": "rdap"
+    },
+    "magiceden.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "rarible.com": {
+      "createdAt": "2019-09-05T08:53:43.117Z",
+      "source": "rdap"
+    },
+    "foundation.app": {
+      "createdAt": "2020-04-24T18:11:48.818Z",
+      "source": "rdap"
+    },
+    "superrare.com": {
+      "createdAt": "2007-03-25T13:40:29.338Z",
+      "source": "rdap"
+    },
+    "zora.co": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "x2y2.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "element.market": {
+      "createdAt": "2021-03-24T02:12:17.210Z",
+      "source": "rdap"
+    },
+    "sound.xyz": {
+      "createdAt": "2021-07-22T21:34:50.745Z",
+      "source": "rdap"
+    },
+    "manifold.xyz": {
+      "createdAt": "2020-01-12T20:08:17.045Z",
+      "source": "rdap"
+    },
+    "pyth.network": {
+      "createdAt": "2020-12-01T20:44:38.040Z",
+      "source": "rdap"
+    },
+    "bandprotocol.com": {
+      "createdAt": "2018-05-07T05:47:21.327Z",
+      "source": "rdap"
+    },
+    "thegraph.com": {
+      "createdAt": "2004-02-22T19:20:45.565Z",
+      "source": "rdap"
+    },
+    "alchemy.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "infura.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "quicknode.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "moralis.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "bscscan.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "arbiscan.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "snowtrace.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "ftmscan.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "ankr.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "getblock.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "chainstack.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "defillama.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "nansen.ai": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "glassnode.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "messari.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "dappradar.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "tokenterminal.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "coincodex.com": {
+      "createdAt": "2017-06-13T09:22:27.081Z",
+      "source": "rdap"
+    },
+    "cryptocompare.com": {
+      "createdAt": "2013-11-03T04:47:10.287Z",
+      "source": "rdap"
+    },
+    "coinpaprika.com": {
+      "createdAt": "2018-01-15T12:32:23.462Z",
+      "source": "rdap"
+    },
+    "livecoinwatch.com": {
+      "createdAt": "2017-08-12T15:47:16.692Z",
+      "source": "rdap"
+    },
+    "arkhamintelligence.com": {
+      "createdAt": "2020-01-27T16:49:42.427Z",
+      "source": "rdap"
+    },
+    "certik.com": {
+      "createdAt": "2001-03-16T10:20:33.431Z",
+      "source": "rdap"
+    },
+    "peckshield.com": {
+      "createdAt": "2018-01-10T02:36:39.565Z",
+      "source": "rdap"
+    },
+    "slowmist.com": {
+      "createdAt": "2018-01-20T12:13:53.747Z",
+      "source": "rdap"
+    },
+    "chainalysis.com": {
+      "createdAt": "2014-10-28T08:16:45.946Z",
+      "source": "rdap"
+    },
+    "elliptic.co": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "trmlabs.com": {
+      "createdAt": "2018-06-26T19:54:48.467Z",
+      "source": "rdap"
+    },
+    "bitgo.com": {
+      "createdAt": "2001-09-23T06:54:40.369Z",
+      "source": "rdap"
+    },
+    "anchorage.com": {
+      "createdAt": "1996-08-09T03:57:17.295Z",
+      "source": "rdap"
+    },
+    "copper.co": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "fireblocks.com": {
+      "createdAt": "2013-08-04T18:39:06.848Z",
+      "source": "rdap"
+    },
+    "wormhole.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "layerzero.network": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "across.to": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "hop.exchange": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "synapseprotocol.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "stargate.finance": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "debridge.finance": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "portalbridge.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "ramp.network": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "transak.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "simplex.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "coinlist.co": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "polkastarter.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "daomaker.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "snapshot.org": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "tally.xyz": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "boardroom.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "ens.domains": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "worldcoin.org": {
+      "createdAt": "2019-08-21T14:27:45.955Z",
+      "source": "rdap"
+    },
+    "warpcast.com": {
+      "createdAt": "2002-12-15T09:05:04.038Z",
+      "source": "rdap"
+    },
+    "lens.xyz": {
+      "createdAt": "2014-06-02T17:22:31.061Z",
+      "source": "rdap"
+    },
+    "sandbox.game": {
+      "createdAt": "2018-02-28T03:45:24.333Z",
+      "source": "rdap"
+    },
+    "decentraland.org": {
+      "createdAt": "2014-06-03T21:09:44.134Z",
+      "source": "rdap"
+    },
+    "axieinfinity.com": {
+      "createdAt": "2018-02-05T17:48:18.314Z",
+      "source": "rdap"
+    },
+    "illuvium.io": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "coindesk.com": {
+      "createdAt": "2008-05-04T18:49:30.873Z",
+      "source": "rdap"
+    },
+    "cointelegraph.com": {
+      "createdAt": "2013-10-17T08:40:19.082Z",
+      "source": "rdap"
+    },
+    "decrypt.co": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "theblock.co": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "bitcoinmagazine.com": {
+      "createdAt": "2011-05-21T01:55:50.031Z",
+      "source": "rdap"
+    },
+    "cryptoslate.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "newsbtc.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "zilliqa.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "waves.tech": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "stellar.org": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "ripple.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "litecoin.org": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "dogecoin.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "monero.org": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "dash.org": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "zcash.foundation": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "benqi.fi": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "alchemix.fi": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "ribbon.finance": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "opyn.co": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "covalenthq.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "tenderly.co": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "flipsidecrypto.xyz": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "niftygateway.com": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "async.art": {
+      "createdAt": "2019-11-22T00:33:53.637Z",
+      "source": "rdap"
+    },
+    "taiko.xyz": {
+      "createdAt": "2019-12-30T12:58:14.830Z",
+      "source": "rdap"
+    },
+    "manta.network": {
+      "createdAt": "2020-11-14T06:04:41.317Z",
+      "source": "rdap"
+    },
+    "okcoin.com": {
+      "createdAt": "1999-11-01T23:42:14.068Z",
+      "source": "rdap"
+    },
+    "bitso.com": {
+      "createdAt": "2003-10-23T20:31:20.191Z",
+      "source": "rdap"
+    },
+    "bitvavo.com": {
+      "createdAt": "2017-04-20T12:54:01.347Z",
+      "source": "rdap"
+    },
+    "unstoppabledomains.com": {
+      "createdAt": "2018-10-20T00:25:04.471Z",
+      "source": "rdap"
+    },
+    "aragon.org": {
+      "createdAt": "1998-10-15T03:56:35.235Z",
+      "source": "rdap"
+    },
+    "superfluid.finance": {
+      "createdAt": "2020-01-16T16:03:47.380Z",
+      "source": "rdap"
+    },
+    "gitcoin.co": {
+      "createdAt": null,
+      "source": "unavailable"
+    },
+    "juicebox.money": {
+      "createdAt": "2021-07-01T16:30:20.063Z",
+      "source": "rdap"
+    }
+  }
+}

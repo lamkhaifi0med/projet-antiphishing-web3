@@ -1,5 +1,13 @@
 # Gel des prompts v2
 
+> **⚠️ Superseded by v2.1** (AI recall v2 : modes d'analyse, features URL
+> déterministes dans le prompt, RDAP gelé — REVIEW_COMMIT_57747F0.md §5).
+> `ai/client/lib/prompts.js` a été modifié : ce gel v2 ne correspond plus
+> au comportement actuel. Un nouveau manifeste `FROZEN_V2_1.md` doit être
+> généré une fois les PR concernées mergées (voir ce fichier pour la
+> checklist). Conservé ici pour la traçabilité historique du run v2 du
+> 2026-08-09, ne pas régénérer ces empreintes.
+
 **Version :** v2  
 **Date de gel :** 2026-08-09  
 **Livrable :** L3 / RF-A1 à RF-A9

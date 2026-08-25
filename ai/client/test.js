@@ -93,6 +93,53 @@ async function testGeminiFallbackOn429() {
 }
 
 /**
+ * AI recall v2 : un contenu de page court/vide selectionne desormais le
+ * mode url_only, il ne court-circuite plus l'appel LLM (c'est precisement
+ * ce qui faisait perdre 25/36 URLs phishing au rappel end-to-end avant ce
+ * correctif). Le modele doit etre appele meme sans texte de page.
+ */
+async function testShortContentStillCallsLlm() {
+  process.env.GEMINI_API_KEY = "test-dummy-gemini-key";
+  process.env.NVIDIA_API_KEY = "test-dummy-nvidia-key";
+
+  const urlOnlyOutput = {
+    verdict: "suspicious",
+    confidence: 0.4,
+    category: null,
+    indicators: ["Aucune preuve de page disponible, analyse URL seule"],
+    explanation: "Contenu de page indisponible ; verdict fonde uniquement sur les features URL.",
+  };
+
+  let geminiCalled = false;
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const target = String(url);
+    if (target.includes("generativelanguage.googleapis.com")) {
+      geminiCalled = true;
+      return { ok: true, status: 200, json: async () => ({ candidates: [{ content: { parts: [{ text: JSON.stringify(urlOnlyOutput) }] } }] }) };
+    }
+    // Le lookup RDAP des features URL passe aussi par fetch() : simuler une
+    // indisponibilite propre plutot que de faire un vrai appel reseau.
+    if (target.includes("rdap.org")) return { ok: false, status: 503, json: async () => ({}) };
+    throw new Error(`URL inattendue dans le mock de fetch : ${target}`);
+  };
+
+  try {
+    const result = await analyze({
+      url: "https://mock-url-only-test.invalid/claim-airdrop",
+      textExcerpt: "", // contenu vide : capture echouee ou page de defi
+      structuralDigest: null,
+    });
+    assert.equal(geminiCalled, true, "le LLM doit etre appele meme sans contenu de page exploitable (mode url_only)");
+    assert.equal(result.analysisMode, "url_only");
+    assert.equal(result.verdict, "suspicious");
+    assert.notEqual(result.modelUsed, null, "un contenu court ne doit plus produire modelUsed=null (ancien court-circuit force)");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+}
+
+/**
  * RF-N9 : un verdict suspicious valide doit porter manualReview=true, pas
  * seulement les sorties forcées après échec de validation/quality-gate.
  */
@@ -110,10 +157,12 @@ async function testSuspiciousTriggersManualReview() {
 
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async (url) => {
-    if (String(url).includes("generativelanguage.googleapis.com")) {
+    const target = String(url);
+    if (target.includes("generativelanguage.googleapis.com")) {
       return { ok: true, status: 200, json: async () => ({ candidates: [{ content: { parts: [{ text: JSON.stringify(suspiciousOutput) }] } }] }) };
     }
-    throw new Error(`URL inattendue dans le mock de fetch : ${url}`);
+    if (target.includes("rdap.org")) return { ok: false, status: 503, json: async () => ({}) };
+    throw new Error(`URL inattendue dans le mock de fetch : ${target}`);
   };
 
   try {
@@ -124,6 +173,39 @@ async function testSuspiciousTriggersManualReview() {
     });
     assert.equal(result.verdict, "suspicious");
     assert.equal(result.manualReview, true, "un verdict suspicious valide doit porter manualReview=true");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+}
+
+/**
+ * AI recall v2 : un digest structurel exploitable (motif Web3) doit
+ * selectionner url_structural, pas url_only, meme si le texte visible est
+ * trop court.
+ */
+async function testStructuralEvidencePromotesMode() {
+  process.env.GEMINI_API_KEY = "test-dummy-gemini-key";
+  process.env.NVIDIA_API_KEY = "test-dummy-nvidia-key";
+
+  const output = { verdict: "malicious", confidence: 0.85, category: "wallet_drainer", indicators: ["Motif eth_sign detecte dans un script"], explanation: "Digest structurel revele une demande de signature suspecte malgre un texte visible court." };
+
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const target = String(url);
+    if (target.includes("generativelanguage.googleapis.com")) {
+      return { ok: true, status: 200, json: async () => ({ candidates: [{ content: { parts: [{ text: JSON.stringify(output) }] } }] }) };
+    }
+    if (target.includes("rdap.org")) return { ok: false, status: 503, json: async () => ({}) };
+    throw new Error(`URL inattendue dans le mock de fetch : ${target}`);
+  };
+
+  try {
+    const result = await analyze({
+      url: "https://mock-structural-evidence-test.invalid/",
+      textExcerpt: "Connect wallet", // < 200 caracteres
+      structuralDigest: { formFields: [], externalScriptDomains: [], web3PatternSnippets: [{ pattern: "eth_sign", context: "..." }] },
+    });
+    assert.equal(result.analysisMode, "url_structural");
   } finally {
     globalThis.fetch = originalFetch;
   }
@@ -170,6 +252,8 @@ async function run() {
     "(a) bascule NVIDIA déclenchée, (b) sortie conforme au schéma, (c) modelUsed='nvidia' journalisé",
     testGeminiFallbackOn429,
   );
+  await test("AI recall v2 : contenu court -> mode url_only, LLM quand meme appele", testShortContentStillCallsLlm);
+  await test("AI recall v2 : preuve structurelle -> mode url_structural", testStructuralEvidencePromotesMode);
   await test("RF-N9 : verdict suspicious valide -> manualReview=true", testSuspiciousTriggersManualReview);
   await test("RF-A4/A5 : category est une propriete requise (meme absente, pas seulement invalide)", async () => testValidateOutputRequiresCategoryKey());
   await test("RF-A4 §8.3 : negation d'une preuve forte n'est pas la preuve elle-meme", async () => testStrongSignalNegationHandling());
