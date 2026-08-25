@@ -1,0 +1,222 @@
+{
+  "id": "wf1Ingestion2026",
+  "name": "WF1 - Ingestion et deduplication",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://n8n:5678/webhook/internal-wf2-analyze",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.BRIDGE_SHARED_SECRET }}" }] },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ reportId: $json.record.reportId, type: $('Valider et limiter').first().json.type, value: $('Valider et limiter').first().json.value }) }}",
+        "options": { "timeout": 5000 }
+      },
+      "id": "be3a83f5-b764-4748-858e-8a41c76853c6",
+      "name": "Lancer WF2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [740, 40],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "report",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "f5fa06ee-0801-4fd7-b931-acdeaeacb247",
+      "name": "POST report",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-900, 100],
+      "webhookId": "8b6a2d72-cd18-4a27-a27f-64d4d17aba50"
+    },
+    {
+      "parameters": {
+        "jsCode": "const request = $json;\nconst body = request.body;\nconst fail = (responseCode, error, message) => [{ json: { ok: false, responseCode, response: { error, message } } }];\n\nif (typeof body !== 'object' || body === null || Array.isArray(body)) return fail(400, 'invalid_body', 'Le corps JSON doit etre un objet.');\nif (JSON.stringify(body).length > 8192) return fail(400, 'body_too_large', 'Le corps JSON depasse 8 Ko.');\n\nconst headers = request.headers || {};\nconst clientIp = String(headers['x-forwarded-for'] || headers['x-real-ip'] || 'local').split(',')[0].trim();\nconst state = $getWorkflowStaticData('global');\nstate.rateLimits = state.rateLimits || {};\nconst now = Date.now();\nconst windowMs = 60000;\nfor (const [ip, bucket] of Object.entries(state.rateLimits)) if (now - bucket.startedAt >= windowMs) delete state.rateLimits[ip];\nconst bucket = state.rateLimits[clientIp] || { startedAt: now, count: 0 };\nif (now - bucket.startedAt >= windowMs) { bucket.startedAt = now; bucket.count = 0; }\nbucket.count += 1;\nstate.rateLimits[clientIp] = bucket;\nif (bucket.count > 10) return fail(429, 'rate_limited', 'Limite de 10 signalements par minute depassee.');\n\nconst allowed = new Set(['type', 'value', 'context', 'reporterContact']);\nconst unexpected = Object.keys(body).filter((key) => !allowed.has(key));\nif (unexpected.length) return fail(400, 'unexpected_fields', `Champs inattendus : ${unexpected.join(', ')}.`);\nif (body.type !== 'url' && body.type !== 'wallet') return fail(400, 'invalid_type', `type doit etre exactement 'url' ou 'wallet'.`);\nif (typeof body.value !== 'string' || !body.value || body.value.length > 2048) return fail(400, 'invalid_value', 'value doit etre une chaine non vide de 2048 caracteres maximum.');\nif (body.context !== undefined && (typeof body.context !== 'string' || body.context.length > 1000)) return fail(400, 'invalid_context', 'context doit contenir 1000 caracteres maximum.');\nif (body.reporterContact !== undefined && (typeof body.reporterContact !== 'string' || body.reporterContact.length > 200)) return fail(400, 'invalid_reporter_contact', 'reporterContact doit contenir 200 caracteres maximum.');\n\nif (body.type === 'url') {\n  if (!/^https?:\\/\\//i.test(body.value)) return fail(400, 'invalid_url', 'URL HTTP(S) invalide.');\n  const authority = body.value.replace(/^https?:\\/\\//i, '').split(/[\\/?#]/, 1)[0];\n  if (!authority || authority.includes('@')) return fail(400, 'invalid_url', 'URL avec identifiants interdite ou domaine absent.');\n} else if (!/^0x[a-fA-F0-9]{40}$/.test(body.value)) {\n  return fail(400, 'invalid_wallet', 'Adresse EVM invalide.');\n}\n\nreturn [{ json: { ok: true, type: body.type, value: body.value, context: body.context || null, reporterContact: body.reporterContact || null } }];"
+      },
+      "id": "0b0765b1-4478-4521-953d-f30123834d6e",
+      "name": "Valider et limiter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-680, 100]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            { "id": "5e20bb61-a1f3-443e-b62b-ea9a04f93d14", "leftValue": "={{ $json.ok }}", "rightValue": true, "operator": { "type": "boolean", "operation": "true", "singleValue": true } }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3bad69cd-fdd2-46ac-80c8-520516d52040",
+      "name": "Entree valide",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [-450, 100]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.response }}",
+        "options": { "responseCode": "={{ $json.responseCode }}" }
+      },
+      "id": "aa8c6192-d1f3-4771-8381-66e720e46060",
+      "name": "Repondre erreur client",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [-210, 260]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://bridge:8787/check",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.BRIDGE_SHARED_SECRET }}" }] },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ type: $json.type, value: $json.value }) }}",
+        "options": { "timeout": 30000 }
+      },
+      "id": "f790e754-0534-478d-a7b5-dc155e46a0f5",
+      "name": "Bridge check",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-210, 20],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 },
+          "conditions": [
+            { "id": "5bfd76d6-ee4e-4577-b9a0-972a019af5fa", "leftValue": "={{ $json.blacklisted }}", "rightValue": true, "operator": { "type": "boolean", "operation": "true", "singleValue": true } }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "1ace4673-68cc-4787-bc85-4e5e1d4ae931",
+      "name": "Deja blackliste",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [20, 20]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { responseCode: 409, response: { error: 'already_blacklisted', blacklisted: true, category: $json.category || null, score: $json.score ?? null, since: $json.since || null, txHash: $json.txHash || null } } }];"
+      },
+      "id": "ee891610-b1c6-4d91-b7af-888973ad6bc9",
+      "name": "Filtrer doublon",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [260, -100]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.response }}",
+        "options": { "responseCode": 409 }
+      },
+      "id": "4235645b-7337-4377-bc82-65aec6f306c4",
+      "name": "Repondre 409",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [500, -100]
+    },
+    {
+      "parameters": {
+        "jsCode": "const source = $('Valider et limiter').first().json;\nconst createdAt = new Date().toISOString();\nconst stamp = createdAt.replace(/[-:]/g, '').replace(/\\.\\d{3}/, '');\nconst executionPart = String($execution.id || Date.now()).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 64);\nconst reportId = `r_${stamp}_${executionPart}`;\nconst valueDefanged = source.type === 'url' ? source.value.replace(/^http/i, 'hxxp').replace(/\\./g, '[.]') : source.value;\nreturn [{ json: { reportId, createdAt, type: source.type, valueDefanged, status: 'queued' } }];"
+      },
+      "id": "64159037-a222-46f4-ad42-82374e95b21c",
+      "name": "Preparer queued",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [260, 120]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://bridge:8787/reports",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.BRIDGE_SHARED_SECRET }}" }] },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify($json) }}",
+        "options": { "timeout": 10000 }
+      },
+      "id": "6760131b-80cb-4edb-97e5-ab522754ab68",
+      "name": "Journaliser queued",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 120],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { reportId: $json.record.reportId, status: $json.record.status } }}",
+        "options": { "responseCode": 202 }
+      },
+      "id": "16d2cd45-c1c3-4a09-8dc8-a2fd2d4b77ca",
+      "name": "Repondre 202",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [740, 120]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { response: { error: 'service_unavailable', message: 'La verification blockchain ou le journal est temporairement indisponible.' } } }];"
+      },
+      "id": "dc4f900f-4cd0-49bb-b667-5af50ce2c119",
+      "name": "Preparer erreur service",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [260, 340]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.response }}",
+        "options": { "responseCode": 503 }
+      },
+      "id": "bfe2b963-f6de-479d-a8cb-344dbcc7c173",
+      "name": "Repondre 503",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [500, 340]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "POST report": { "main": [[{ "node": "Valider et limiter", "type": "main", "index": 0 }]] },
+    "Valider et limiter": { "main": [[{ "node": "Entree valide", "type": "main", "index": 0 }]] },
+    "Entree valide": { "main": [[{ "node": "Bridge check", "type": "main", "index": 0 }], [{ "node": "Repondre erreur client", "type": "main", "index": 0 }]] },
+    "Bridge check": { "main": [[{ "node": "Deja blackliste", "type": "main", "index": 0 }], [{ "node": "Preparer erreur service", "type": "main", "index": 0 }]] },
+    "Deja blackliste": { "main": [[{ "node": "Filtrer doublon", "type": "main", "index": 0 }], [{ "node": "Preparer queued", "type": "main", "index": 0 }]] },
+    "Filtrer doublon": { "main": [[{ "node": "Repondre 409", "type": "main", "index": 0 }]] },
+    "Preparer queued": { "main": [[{ "node": "Journaliser queued", "type": "main", "index": 0 }]] },
+    "Journaliser queued": { "main": [[{ "node": "Repondre 202", "type": "main", "index": 0 }, { "node": "Lancer WF2", "type": "main", "index": 0 }], [{ "node": "Preparer erreur service", "type": "main", "index": 0 }]] },
+    "Preparer erreur service": { "main": [[{ "node": "Repondre 503", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1", "saveDataErrorExecution": "all", "saveDataSuccessExecution": "all", "saveManualExecutions": true },
+  "versionId": "592a2396-0ad1-4e21-8e57-610c0ff041df",
+  "meta": { "templateCredsSetupCompleted": true },
+  "tags": []
+}

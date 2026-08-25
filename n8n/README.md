@@ -1,21 +1,36 @@
-# n8n — déploiement local
+# n8n - déploiement local, WF1-WF4
 
-Instance n8n self-hosted, en local uniquement (`127.0.0.1`), gratuite.
-WF3 et WF4 sont fournis inactifs dans `workflows/`; WF1–WF2 restent à intégrer. Ce
-dossier contient aussi l'infrastructure n8n et le bridge blockchain HTTP
-interne sécurisé, qui héberge le store persistant des cycles de vie WF3.
+Instance n8n self-hosted, liée à `127.0.0.1` uniquement, gratuite. Ce
+dossier contient l'infrastructure n8n complète :
+
+- `workflows/WF1_Ingestion.json` : webhook `POST /report`, validation,
+  rate limiting, déduplication on-chain et journalisation ;
+- `workflows/WF1_Form.json` : formulaire public qui réutilise le même
+  webhook ;
+- `workflows/WF2_Analyse.json` : capture HTML protégée SSRF, features URL,
+  analyse LLM (Gemini + fallback NVIDIA) et score final ;
+- `workflows/WF3-action.json` : sous-workflow interne de publication
+  blockchain et d'alerte Discord ;
+- `workflows/WF4-check.json` : endpoint public `GET /check` de lecture du
+  registre.
+
+La stack épingle n8n `2.31.6` — version testée pour les imports WF1/WF2 ;
+les imports WF3/WF4 (précédemment testés sur `2.32.7`) doivent être
+revalidés après ce changement.
 
 **n8n tourne dans un conteneur Docker et ne voit pas le système de
 fichiers de l'hôte.** Il n'a donc aucun accès direct à `scripts/` ni à
-`contracts/`. L'accès aux scripts blockchain (`check.js`, `report.js`) se
-fait via le service `chain-bridge`, appelé par n8n en HTTP sur le réseau
-Compose — jamais par interpolation dans un shell ou montage des scripts
-dans le conteneur n8n.
+`contracts/`. Deux bridges HTTP séparés font l'intermédiaire :
 
-Le bridge n'expose aucun port sur l'hôte. Il valide un schéma JSON fermé,
-exige un bearer token, puis lance les scripts avec `spawn`, `shell: false`
-et des arguments séparés. Seule la clé Reporter est injectée dans ce
-conteneur ; la clé Owner doit en rester strictement absente.
+- `n8n/bridge/` (WF1/WF2) : normalisation commune, lance `scripts/check.js`
+  avec `execFile`, `shell: false` et des arguments séparés ;
+- `n8n/services/chain-bridge/` (WF3) : valide un schéma JSON fermé, exige
+  un bearer token, puis lance les scripts blockchain avec `spawn`,
+  `shell: false` et des arguments séparés. Seule la clé Reporter y est
+  injectée ; la clé Owner doit en rester strictement absente.
+
+Aucun des deux bridges n'expose de port sur l'hôte. n8n ne monte jamais
+`scripts/`, et aucun workflow ne contient de node `Execute Command`.
 
 ## Protection de l'instance (RF-S4)
 
@@ -37,44 +52,37 @@ La protection de l'instance repose sur deux mécanismes cumulés :
 
 RF-S4 (« n8n derrière une authentification, instance non exposée
 publiquement ») reste donc satisfaite, mais par le compte propriétaire du
-user management + le binding `127.0.0.1`, pas par une basic auth.
+user management + le binding `127.0.0.1`, pas par une basic auth. Un
+reverse proxy pour le webhook public `/report` reste à ajouter en phase 4
+(voir §12).
 
-## 1. Générer les secrets locaux (une seule fois)
+## 1. Configuration
 
-`N8N_ENCRYPTION_KEY` chiffre les credentials stockés par n8n (ex. la
-future connexion au bridge). **Ne la régénère jamais après le premier
-démarrage** : tous les credentials déjà enregistrés deviendraient
-illisibles.
-
-Générer d'abord la clé de chiffrement n8n avec Node.js :
-
-```bash
-node -e "console.log(require('crypto').randomBytes(24).toString('hex'))"
-```
-
-Copier :
+Copier le modèle si `n8n/.env` n'existe pas :
 
 ```bash
 cp n8n/.env.example n8n/.env
 ```
 
-puis coller la valeur générée dans `n8n/.env` :
+Générer une clé de chiffrement n8n une seule fois :
 
-```env
-N8N_ENCRYPTION_KEY=<valeur générée>
+```bash
+node -e "console.log(require('crypto').randomBytes(24).toString('hex'))"
 ```
 
-Générer ensuite un secret distinct pour authentifier les appels n8n vers
-le bridge :
+Générer séparément les deux secrets de bridge (distincts l'un de l'autre
+et de `N8N_ENCRYPTION_KEY`) :
 
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-Renseigner également dans `n8n/.env` :
+Renseigner ensuite dans `n8n/.env` :
 
 ```env
-CHAIN_BRIDGE_TOKEN=<deuxième valeur générée, distincte>
+N8N_ENCRYPTION_KEY=<clé stable, jamais régénérée>
+CHAIN_BRIDGE_TOKEN=<secret WF3, 32 caractères minimum>
+BRIDGE_SHARED_SECRET=<secret WF1/WF2, 32 caractères minimum, distinct>
 AMOY_RPC_URL=https://polygon-amoy.drpc.org
 REGISTRY_CONTRACT_ADDRESS=0x8d51dB4a92c338075360A17AcA005ec282fE1f23
 REGISTRY_DEPLOYMENT_BLOCK=43090902
@@ -83,75 +91,218 @@ REPORTER_PRIVATE_KEY=<clé Reporter testnet uniquement>
 
 Ne jamais ajouter `OWNER_PRIVATE_KEY` dans `n8n/.env`. Dans l'interface
 n8n, créer un credential **Header Auth** avec le header `Authorization`
-et la valeur `Bearer <CHAIN_BRIDGE_TOKEN>`. Les workflows référencent ce
-credential sans exporter sa valeur.
+et la valeur `Bearer <CHAIN_BRIDGE_TOKEN>` pour WF3/WF4 ; WF1/WF2 lisent
+`BRIDGE_SHARED_SECRET` directement depuis l'environnement du conteneur
+(voir la limite documentée en §12).
 
-`n8n/.env` est ignoré par Git (couvert par la règle `.env` du
-`.gitignore` racine) et **distinct** du `.env` racine (blockchain/LLM/
-Discord) : Docker Compose le charge automatiquement car il se trouve à
-côté de `docker-compose.yml`, sans option supplémentaire.
+`n8n/.env` est ignoré par Git. Ne jamais régénérer `N8N_ENCRYPTION_KEY`
+après le premier démarrage : tous les credentials déjà enregistrés
+deviendraient illisibles.
 
-## 2. Démarrer
+## 2. Démarrage
 
-Depuis ce dossier (`n8n/`) :
+Depuis `n8n/` :
 
 ```bash
-docker compose up -d
+docker compose up -d --build
+docker compose ps
 ```
+
+Résultat attendu :
+
+- `anti-phishing-n8n` démarré sur `127.0.0.1:5678` ;
+- `anti-phishing-bridge`, `anti-phishing-capture`, `anti-phishing-analysis`
+  et `anti-phishing-chain-bridge` tous `healthy` ;
+- aucun port de service interne n'est publié sur l'hôte.
 
 Si `n8n/.env` est absent ou qu'une variable obligatoire est vide, la
 commande **échoue immédiatement** avec le message `manquante - voir
 n8n/README.md`, plutôt que de démarrer avec une configuration incomplète.
 
-## 3. Vérifier
+Au premier accès à http://127.0.0.1:5678, n8n demande la création du
+compte propriétaire. L'éditeur et les credentials restent inaccessibles
+sans ce compte.
 
-- `docker compose ps` → `chain-bridge` doit être `healthy` et `n8n` doit
-  être `Up`.
-- Ouvrir http://127.0.0.1:5678 dans un navigateur → **au tout premier
-  démarrage**, n8n affiche l'écran de création du compte propriétaire
-  (email + mot de passe) ; aux démarrages suivants, un écran de connexion
-  avec ce compte.
-- Vérifier que http://0.0.0.0:5678 ou l'IP locale de la machine (ex.
-  `http://192.168.x.x:5678`) **ne répond pas** depuis un autre appareil du
-  réseau — seul `127.0.0.1` doit être joignable.
-- Vérifier que http://127.0.0.1:3001 **ne répond pas** : le bridge n'a
-  aucun port publié et n'est joignable que par les services Compose.
+Réseaux : `bridge`, `capture`, `analysis` et `chain-bridge` sont tous sur
+le réseau interne `bridge_internal` (non joignable depuis l'extérieur du
+Compose) ; `bridge` et `chain-bridge` rejoignent en plus `blockchain_egress`
+pour sortir vers le RPC Amoy, `capture`/`analysis` rejoignent
+`analysis_egress`. n8n utilise un réseau `frontend` séparé pour son
+interface.
 
-## 4. Consulter les logs
+Vérifications complémentaires :
+
+- http://0.0.0.0:5678 ou l'IP locale de la machine (ex. `http://192.168.x.x:5678`)
+  **ne doit pas répondre** depuis un autre appareil du réseau — seul
+  `127.0.0.1` doit être joignable ;
+- http://127.0.0.1:3001, :8787, :8788 et :8789 **ne doivent pas répondre** :
+  aucun de ces services n'a de port publié, ils ne sont joignables que par
+  les autres conteneurs Compose.
+
+## 3. Import et activation de WF1 et WF2
+
+Importer WF2 avant WF1 (WF1 en dépend au moment de l'analyse) :
 
 ```bash
-docker compose logs -f n8n
+docker compose exec n8n n8n import:workflow --input=/export/WF2_Analyse.json
+docker compose exec n8n n8n publish:workflow --id=wf2Analysis2026
+docker compose exec n8n n8n import:workflow --input=/export/WF1_Ingestion.json
+docker compose exec n8n n8n publish:workflow --id=wf1Ingestion2026
+docker compose exec n8n n8n import:workflow --input=/export/WF1_Form.json
 ```
 
-## 5. Arrêter
+Dans l'interface, activer manuellement dans cet ordre :
+
+1. **WF2 - Capture et analyse IA** ;
+2. **WF1 - Ingestion et deduplication** ;
+3. **WF1 - Formulaire public de signalement**.
+
+Le formulaire appelle le webhook de production ; il ne fonctionne pas si
+le workflow d'ingestion est inactif.
+
+Formulaire local après activation :
+
+`http://127.0.0.1:5678/form/64724547-5ddd-4646-bf07-8dbd2f38be30`
+
+## 4. Test du webhook WF1
 
 ```bash
+curl -i -X POST http://127.0.0.1:5678/webhook/report \
+  -H "Content-Type: application/json" \
+  -d '{"type":"url","value":"https://safe-example.invalid/not-listed"}'
+```
+
+Réponse attendue pour une entrée absente du registre :
+
+```json
+{ "reportId": "r_20260809T120000Z_42", "status": "queued" }
+```
+
+Codes gérés :
+
+- `202` : signalement validé, non blacklisté et journalisé ;
+- `400` : type, valeur, taille ou champ invalide ;
+- `409` : entrée déjà active, avec résultat public filtré ;
+- `429` : plus de 10 requêtes par minute pour la même IP ;
+- `503` : bridge RPC ou journal temporairement indisponible après 3 essais.
+
+Le rate limiting utilise les données statiques de l'unique instance n8n
+locale. Le reverse proxy et une limite distribuée appartiennent au
+durcissement RF-S4/RF-S6 prévu en phase 4.
+
+La réponse `409` de WF1 peut contenir `txHash: null` : le bridge désactive
+la recherche `eth_getLogs` historique, refusée sur de grandes plages par
+certains RPC gratuits. La présence active, la catégorie, le score et la
+date viennent toujours directement du contrat. La récupération historique
+du hash sera traitée dans WF4.
+
+## 5. Comportement de WF1
+
+```text
+POST /report
+  -> validation du JSON et limite 8 Ko
+  -> rate limiting 10 requêtes/minute/IP
+  -> validation URL HTTP(S) ou wallet EVM
+  -> POST bridge:8787/check
+  -> déjà blacklisté : réponse 409 filtrée
+  -> absent : création reportId + statut queued
+  -> journal JSONL idempotent
+  -> réponse 202 (+ déclenchement WF2 en arrière-plan)
+```
+
+n8n transmet l'URL brute complète au bridge. Seul `scripts/check.js`
+applique la normalisation et calcule le hash partagé avec le smart
+contract.
+
+Le workflow ne contient aucun node `Execute Command`, aucune clé privée et
+aucun secret exporté. L'authentification du bridge vient uniquement de
+`BRIDGE_SHARED_SECRET` au runtime (limite connue, voir §12).
+
+## 6. WF2 - capture et analyse IA
+
+`workflows/WF2_Analyse.json` est déclenché en arrière-plan par WF1. Les
+deux services internes sont `capture:8788` et `analysis:8789` ; aucun port
+n'est publié sur l'hôte. Ajouter dans `n8n/.env` :
+
+```env
+GEMINI_API_KEY=<clé Gemini>
+GEMINI_MODEL_PRIMARY=gemini-flash-lite-latest
+NVIDIA_API_KEY=<clé NVIDIA NIM>
+NVIDIA_MODEL_FALLBACK=meta/llama-3.1-8b-instruct
+```
+
+Flux appliqué : capture HTTP(S) bornée et protégée SSRF, extraction texte
+et digest, features URL/RDAP, Gemini avec fallback NVIDIA, score 70/30,
+puis `reporting`, `manual_review`, `logged_only` ou `failed`. Le HTML brut
+ne sort jamais du service capture.
+
+Tests WF2 :
+
+```bash
+npm run capture:test
+npm run analysis:test
+node ai/tools/capture-pages/test.js
+node ai/client/test.js
+```
+
+## 7. Journal RF-N11 (WF1/WF2)
+
+Le volume `anti_phishing_bridge_data` contient `/data/reports.jsonl`.
+Chaque ligne initiale possède :
+
+- `reportId`, date, type, valeur défangée et statut `queued` ;
+- verdict, score final, modèle, catégorie, indicateurs, tx hash et erreur
+  initialisés à `null` ou à un tableau vide.
+
+Le journal ne stocke ni URL cliquable, ni contact utilisateur, ni secret.
+Un même `reportId` ne produit pas une seconde ligne.
+
+Diagnostic :
+
+```bash
+docker compose exec bridge sh -c "tail -n 20 /data/reports.jsonl"
+```
+
+## 8. Tests sans Docker (WF1/WF2)
+
+```bash
+npm run bridge:test
+npm run n8n:test
+```
+
+Le test du bridge utilise une lecture blockchain simulée. Le test des
+workflows contrôle les connexions, les codes HTTP et l'absence de node
+`Execute Command` ou de clé privée.
+
+## 9. Logs et arrêt
+
+```bash
+docker compose logs -f n8n bridge chain-bridge
 docker compose down
 ```
 
-Les volumes nommés `anti_phishing_n8n_data` et
+Les volumes `anti_phishing_n8n_data`, `anti_phishing_bridge_data` et
 `anti_phishing_chain_bridge_state` ne sont pas supprimés par `down` : les
-workflows, credentials et cycles de vie WF3 persistent. Pour tout effacer
-(rare, ex. réinitialisation complète) : `docker compose down -v` —
-**irréversible**, à utiliser en connaissance de cause. Supprimer le second
-volume efface notamment les claims Discord et rend impossible leur audit.
+workflows, credentials, journal WF1/WF2 et cycles de vie WF3 persistent.
+Pour tout effacer (rare, ex. réinitialisation complète) :
+`docker compose down -v` — **irréversible**, à utiliser en connaissance de
+cause. Supprimer le volume `chain_bridge_state` efface notamment les
+claims Discord et rend impossible leur audit.
 
-## 6. Exporter les workflows en JSON (pour les versionner)
-
-Une fois des workflows créés dans l'éditeur n8n :
+## 10. Exporter les workflows en JSON (pour les versionner)
 
 ```bash
 docker compose exec n8n n8n export:workflow --all --output=/export/workflows.json
 ```
 
-Le fichier apparaît directement sur l'hôte dans `n8n/workflows/`
-(monté sur `/export`), prêt à être commité.
+Le fichier apparaît directement sur l'hôte dans `n8n/workflows/` (monté
+sur `/export`), prêt à être commité.
 
 **Les credentials ne sont jamais exportés ni versionnés** : ils restent
 uniquement dans le volume interne `anti_phishing_n8n_data`, chiffrés avec
 `N8N_ENCRYPTION_KEY`.
 
-## 7. Importer et configurer WF4 `/check`
+## 11. Importer et configurer WF4 `/check`
 
 Le fichier `workflows/WF4-check.json` expose le endpoint public demandé :
 
@@ -161,9 +312,9 @@ GET /webhook/check?type=url&value=https%3A%2F%2Fsafe-example.invalid
 
 Importer le fichier depuis l'interface n8n ou avec la CLI, puis ouvrir le
 nœud **Call Internal Chain Bridge** et sélectionner le credential Header
-Auth créé à la section 1. Le placeholder d'identifiant présent dans le
-JSON n'est pas un secret et doit être remplacé par ce credential local
-avant activation.
+Auth créé en §1. Le placeholder d'identifiant présent dans le JSON n'est
+pas un secret et doit être remplacé par ce credential local avant
+activation.
 
 Le workflow est volontairement importé avec `active: false`. Avant de
 l'activer :
@@ -178,7 +329,7 @@ l'activer :
 WF4 ne fait aucun appel IA et aucune transaction. Il effectue uniquement
 une lecture publique du registre Polygon Amoy.
 
-## 8. Contrat d'erreur blockchain pour WF3 (RF-N12)
+## 12. Contrat d'erreur blockchain pour WF3 (RF-N12)
 
 Le bridge ne transmet jamais le message brut du provider RPC. Un échec
 blockchain retourne un message générique et trois champs contrôlés :
@@ -241,7 +392,7 @@ création de WF3 :
 Le délai et le jitter sont injectables dans les tests, ce qui permet de
 valider le comportement entièrement hors ligne sans attente réelle.
 
-## 9. Cycle de vie et unicité de l'alerte finale (RF-N10)
+## 13. Cycle de vie et unicité de l'alerte finale WF3 (RF-N10)
 
 Le contrat pur `lib/wf3Lifecycle.js` limite chaque signalement aux statuts
 contractuels suivants :
@@ -321,7 +472,7 @@ traitement manuel. WF3 utilise ces routes et autorise Discord uniquement
 après relecture du claim persistant gagnant ; il reste néanmoins inactif
 jusqu'à la configuration locale des credentials et aux tests contrôlés.
 
-## 10. Construction sûre de l'alerte Discord
+## 14. Construction sûre de l'alerte Discord
 
 Le module pur `lib/wf3Discord.js` construit le corps JSON de l'alerte sans
 contenir ni appeler un webhook. Son entrée est fermée et comporte uniquement
@@ -362,7 +513,7 @@ transmet `discord` au webhook chiffré sélectionné par `channel`. La
 construction du payload ne remplace donc pas le protocole d'idempotence de la
 section précédente.
 
-## 11. Importer et configurer WF3
+## 15. Importer et configurer WF3
 
 Le fichier `workflows/WF3-action.json` est un sous-workflow interne, sans
 webhook public. WF2 doit l'appeler avec exactement les sept champs validés
@@ -435,7 +586,8 @@ webhooks Discord.
 Le workflow est volontairement importé avec `active: false`. Avant de le
 connecter à WF2 :
 
-1. utiliser l'image n8n épinglée `2.32.7` ;
+1. utiliser l'image n8n unifiée `2.31.6` (voir en tête de ce document) et
+   revalider les imports WF3/WF4 avec cette version ;
 2. reconstruire le bridge et vérifier `/health` ;
 3. remplacer les trois placeholders de credentials ;
 4. tester d'abord `legitimate`, `suspicious` et `malicious` avec des domaines

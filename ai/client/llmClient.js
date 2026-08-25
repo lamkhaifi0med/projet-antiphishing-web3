@@ -80,15 +80,19 @@ async function analyze({ url, textExcerpt, structuralDigest }, options = {}) {
 
   const systemPrompt = loadSystemPrompt();
   const userPrompt = buildUserPrompt({ url, textExcerpt, structuralDigest });
+  let correctivePrompt = userPrompt;
 
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     let result;
     try {
-      if (forceProvider === "gemini") result = await callGemini({ systemPrompt, userPrompt });
-      else if (forceProvider === "nvidia") result = await callNvidia({ systemPrompt, userPrompt });
-      else result = await callModelWithFallback({ systemPrompt, userPrompt });
+      if (forceProvider === "gemini") result = await callGemini({ systemPrompt, userPrompt: correctivePrompt });
+      else if (forceProvider === "nvidia") result = await callNvidia({ systemPrompt, userPrompt: correctivePrompt });
+      else result = await callModelWithFallback({ systemPrompt, userPrompt: correctivePrompt });
     } catch (error) {
       logAttempt({ attempt, ok: false, error: error.message });
+      if (attempt < MAX_RETRIES) {
+        await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** attempt));
+      }
       continue;
     }
 
@@ -97,12 +101,14 @@ async function analyze({ url, textExcerpt, structuralDigest }, options = {}) {
       parsed = JSON.parse(result.rawText);
     } catch {
       logAttempt({ attempt, modelUsed: result.provider, ok: false, error: "invalid_json" });
+      correctivePrompt = `${userPrompt}\n\nCORRECTION OBLIGATOIRE : la sortie precedente n'etait pas un objet JSON valide. Reponds a nouveau avec uniquement l'objet conforme.`;
       continue;
     }
 
     const { valid, errors } = validateOutput(parsed);
     if (!valid) {
       logAttempt({ attempt, modelUsed: result.provider, ok: false, error: "schema_invalid", details: errors });
+      correctivePrompt = `${userPrompt}\n\nCORRECTION OBLIGATOIRE : la sortie precedente a ete rejetee pour ces raisons : ${errors.join(" ; ")}. Corrige ces erreurs et reponds uniquement avec l'objet JSON conforme.`;
       continue;
     }
 

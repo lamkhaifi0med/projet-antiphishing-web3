@@ -1,0 +1,67 @@
+{
+  "id": "wf1FormPublic2026",
+  "name": "WF1 - Formulaire public de signalement",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Signaler une menace Web3",
+        "formDescription": "Signalez une URL ou une adresse wallet suspecte.",
+        "formFields": {
+          "values": [
+            { "fieldLabel": "Type", "fieldName": "type", "fieldType": "dropdown", "fieldOptions": { "values": [{ "option": "url" }, { "option": "wallet" }] }, "requiredField": true },
+            { "fieldLabel": "URL ou adresse wallet", "fieldName": "value", "requiredField": true },
+            { "fieldLabel": "Contexte", "fieldName": "context", "fieldType": "textarea" },
+            { "fieldLabel": "Contact", "fieldName": "reporterContact" }
+          ]
+        },
+        "responseMode": "lastNode",
+        "options": { "buttonLabel": "Envoyer le signalement" }
+      },
+      "id": "71058e55-c3c9-4754-b0a1-a8563c154949",
+      "name": "Formulaire signalement",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [-320, 0],
+      "webhookId": "64724547-5ddd-4646-bf07-8dbd2f38be30"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://n8n:5678/webhook/report",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ type: $json['Type'], value: $json['URL ou adresse wallet'], context: $json['Contexte'] || undefined, reporterContact: $json['Contact'] || undefined }) }}",
+        "options": { "timeout": 45000 }
+      },
+      "id": "f86cb43f-1133-47cc-810d-90fc8184cd92",
+      "name": "Appeler WF1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-80, 0]
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Signalement traite",
+        "completionMessage": "={{ $json.status === 'queued' ? 'Signalement accepte. Identifiant : ' + $json.reportId : JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "1663795d-832e-48d5-b129-b3e31a40e53e",
+      "name": "Afficher resultat",
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [160, 0]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Formulaire signalement": { "main": [[{ "node": "Appeler WF1", "type": "main", "index": 0 }]] },
+    "Appeler WF1": { "main": [[{ "node": "Afficher resultat", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "4ce8cb0f-e5e6-4398-b3db-95bd2bd7df6d",
+  "meta": { "templateCredsSetupCompleted": true },
+  "tags": []
+}

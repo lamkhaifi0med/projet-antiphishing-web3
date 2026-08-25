@@ -1,14 +1,16 @@
 # Déploiement n8n local (Phase 0 du plan Profil B — RF-S4, DP-7).
-# Self-hosted, local uniquement, gratuit. Pas de workflow ici : infrastructure seulement.
+# Self-hosted, local uniquement, gratuit.
 #
 # Démarrage (depuis ce dossier) :
-#   docker compose up -d
+#   docker compose up -d --build
 # Les variables sont lues automatiquement depuis n8n/.env (voir n8n/README.md).
 
 services:
   n8n:
-    # Version utilisée pour valider les imports WF3/WF4 (RNF-4).
-    image: n8nio/n8n:2.32.7
+    # Une seule version choisie pour WF1-WF4 : re-valider les imports WF3/WF4
+    # (déjà testés sur 2.32.7) après ce changement vers 2.31.6 (déjà testé
+    # pour les imports WF1/WF2).
+    image: n8nio/n8n:2.31.6
     container_name: anti-phishing-n8n
     restart: unless-stopped
     ports:
@@ -28,11 +30,22 @@ services:
       - N8N_VERSION_NOTIFICATIONS_ENABLED=false
       - N8N_HIRING_BANNER_ENABLED=false
       - N8N_PERSONALIZATION_ENABLED=false
-      # URL interne uniquement. Le token reste dans un credential Header Auth
-      # n8n chiffré ; il n'est jamais exporté dans les workflows JSON.
+      # URL interne WF3. Le token reste dans un credential Header Auth n8n
+      # chiffré ; il n'est jamais exporté dans les workflows JSON.
       - CHAIN_BRIDGE_URL=http://chain-bridge:3001
+      # WF1 lit le secret du bridge depuis l'environnement (pas de cle
+      # blockchain ici, ne monte jamais scripts/ - RF-N13). A migrer vers une
+      # credential n8n chiffree : voir REVIEW_COMMIT_57747F0.md §9.
+      - BRIDGE_SHARED_SECRET=${BRIDGE_SHARED_SECRET:?manquant - voir n8n/README.md}
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
     depends_on:
       chain-bridge:
+        condition: service_healthy
+      bridge:
+        condition: service_healthy
+      capture:
+        condition: service_healthy
+      analysis:
         condition: service_healthy
     volumes:
       # Volume nommé : persiste la base interne n8n (workflows, credentials
@@ -44,6 +57,104 @@ services:
       # souvent un bind mount Windows imbriqué dans un volume nommé sur
       # Docker Desktop.
       - ./workflows:/export
+    networks:
+      - frontend
+      - bridge_internal
+
+  bridge:
+    build:
+      context: ..
+      dockerfile: n8n/bridge/Dockerfile
+    container_name: anti-phishing-bridge
+    restart: unless-stopped
+    expose:
+      - "8787"
+    environment:
+      - BRIDGE_SHARED_SECRET=${BRIDGE_SHARED_SECRET:?manquant - voir n8n/README.md}
+      - BRIDGE_PORT=8787
+      - REPORT_JOURNAL_PATH=/data/reports.jsonl
+      - AMOY_RPC_URL=${AMOY_RPC_URL:?manquante - voir n8n/README.md}
+      - REGISTRY_CONTRACT_ADDRESS=${REGISTRY_CONTRACT_ADDRESS:?manquante - voir n8n/README.md}
+      - REGISTRY_DEPLOYMENT_BLOCK=${REGISTRY_DEPLOYMENT_BLOCK:-}
+      - CHECK_INCLUDE_TX_HASH=false
+    volumes:
+      - bridge_data:/data
+    networks:
+      - bridge_internal
+      # Sortie Internet pour le RPC Amoy, sans publication de port entrant.
+      - blockchain_egress
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8787/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  capture:
+    build:
+      context: ..
+      dockerfile: n8n/capture/Dockerfile
+    container_name: anti-phishing-capture
+    restart: unless-stopped
+    expose:
+      - "8788"
+    environment:
+      - BRIDGE_SHARED_SECRET=${BRIDGE_SHARED_SECRET:?manquant - voir n8n/README.md}
+      - CAPTURE_PORT=8788
+    networks:
+      - bridge_internal
+      - analysis_egress
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8788/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  analysis:
+    build:
+      context: ..
+      dockerfile: n8n/analysis/Dockerfile
+    container_name: anti-phishing-analysis
+    restart: unless-stopped
+    expose:
+      - "8789"
+    environment:
+      - BRIDGE_SHARED_SECRET=${BRIDGE_SHARED_SECRET:?manquant - voir n8n/README.md}
+      - ANALYSIS_PORT=8789
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GEMINI_MODEL_PRIMARY=${GEMINI_MODEL_PRIMARY:-gemini-flash-lite-latest}
+      - NVIDIA_API_KEY=${NVIDIA_API_KEY:-}
+      - NVIDIA_MODEL_FALLBACK=${NVIDIA_MODEL_FALLBACK:-meta/llama-3.1-8b-instruct}
+      - NVIDIA_BASE_URL=${NVIDIA_BASE_URL:-https://integrate.api.nvidia.com/v1}
+    networks:
+      - bridge_internal
+      - analysis_egress
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8789/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
 
   chain-bridge:
     build:
@@ -71,6 +182,9 @@ services:
       # Seul emplacement persistant et inscriptible du bridge. SQLite y
       # applique le compare-and-swap des cycles de vie WF3.
       - chain_bridge_state:/var/lib/chain-bridge
+    networks:
+      - bridge_internal
+      - blockchain_egress
     tmpfs:
       - /tmp:size=16m,mode=1777
     cap_drop:
@@ -93,3 +207,12 @@ volumes:
     name: anti_phishing_n8n_data
   chain_bridge_state:
     name: anti_phishing_chain_bridge_state
+  bridge_data:
+    name: anti_phishing_bridge_data
+
+networks:
+  frontend:
+  bridge_internal:
+    internal: true
+  blockchain_egress:
+  analysis_egress:
