@@ -115,7 +115,9 @@ async function analyze({ url, textExcerpt, structuralDigest }, options = {}) {
     logAttempt({ attempt, modelUsed: result.provider, modelName: result.model, ok: true, latencyMs: result.latencyMs });
     return {
       ...parsed,
-      manualReview: false,
+      // RF-N9 : un verdict suspicious exige toujours une revue manuelle,
+      // meme quand la sortie LLM elle-meme est valide.
+      manualReview: parsed.verdict === "suspicious",
       modelUsed: result.provider,
       modelName: result.model,
       latencyMs: result.latencyMs,
