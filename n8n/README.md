@@ -98,10 +98,20 @@ REPORTER_PRIVATE_KEY=<clé Reporter testnet uniquement>
 ```
 
 Ne jamais ajouter `OWNER_PRIVATE_KEY` dans `n8n/.env`. Dans l'interface
-n8n, créer un credential **Header Auth** avec le header `Authorization`
-et la valeur `Bearer <CHAIN_BRIDGE_TOKEN>` pour WF3/WF4 ; WF1/WF2 lisent
-`BRIDGE_SHARED_SECRET` directement depuis l'environnement du conteneur
-(voir la limite documentée en §12).
+n8n, créer deux credentials chiffrées de type **Header Auth**, chacune
+avec le header `Authorization` :
+
+- `Chain Bridge Header Auth` → valeur `Bearer <CHAIN_BRIDGE_TOKEN>`, pour
+  WF3/WF4 ;
+- `Bridge Shared Secret` → valeur `Bearer <BRIDGE_SHARED_SECRET>`, pour
+  WF1/WF2 (webhook interne WF2 et tous les appels vers `bridge`/`capture`/
+  `analysis`).
+
+Ni l'une ni l'autre valeur n'est jamais exportée dans le JSON des
+workflows : seuls un nom de credential et un identifiant y figurent. n8n
+n'a donc plus besoin d'accéder aux variables d'environnement du conteneur
+depuis les workflows (`N8N_BLOCK_ENV_ACCESS_IN_NODE` reste à sa valeur
+sûre par défaut).
 
 `n8n/.env` est ignoré par Git. Ne jamais régénérer `N8N_ENCRYPTION_KEY`
 après le premier démarrage : tous les credentials déjà enregistrés
@@ -165,6 +175,11 @@ docker compose exec n8n n8n import:workflow --input=/export/WF1_Ingestion.json
 docker compose exec n8n n8n publish:workflow --id=wf1Ingestion2026
 docker compose exec n8n n8n import:workflow --input=/export/WF1_Form.json
 ```
+
+Chaque import contient un placeholder d'identifiant de credential (pas un
+secret) sur les nœuds HTTP internes et sur le déclencheur webhook de WF2 :
+ouvrir chacun de ces nœuds et sélectionner la credential locale
+`Bridge Shared Secret` créée en §1 avant d'activer.
 
 Dans l'interface, activer manuellement dans cet ordre :
 
@@ -233,8 +248,9 @@ applique la normalisation et calcule le hash partagé avec le smart
 contract.
 
 Le workflow ne contient aucun node `Execute Command`, aucune clé privée et
-aucun secret exporté. L'authentification du bridge vient uniquement de
-`BRIDGE_SHARED_SECRET` au runtime (limite connue, voir §12).
+aucun secret exporté. L'authentification vers le bridge passe par la
+credential chiffrée `Bridge Shared Secret` (voir §1) ; aucun node
+n'accède à `$env` pour ce secret.
 
 ## 6. WF2 - capture et analyse IA
 

@@ -3,11 +3,17 @@
   "name": "WF2 - Capture et analyse IA",
   "nodes": [
     {
-      "parameters": { "httpMethod": "POST", "path": "internal-wf2-analyze", "responseMode": "onReceived", "options": { "responseCode": 202, "responseData": "{\"accepted\":true}" } },
-      "id": "15d42f0a-1ac0-4250-b157-7d37db4ea101", "name": "Declencheur WF2", "type": "n8n-nodes-base.webhook", "typeVersion": 2, "position": [-900, 100], "webhookId": "2c33b868-c80f-4c42-9238-d27c8ba8be65"
+      "parameters": { "httpMethod": "POST", "path": "internal-wf2-analyze", "authentication": "headerAuth", "responseMode": "onReceived", "options": { "responseCode": 202, "responseData": "{\"accepted\":true}" } },
+      "id": "15d42f0a-1ac0-4250-b157-7d37db4ea101", "name": "Declencheur WF2", "type": "n8n-nodes-base.webhook", "typeVersion": 2, "position": [-900, 100], "webhookId": "2c33b868-c80f-4c42-9238-d27c8ba8be65",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_BRIDGE_SHARED_SECRET_CREDENTIAL_ID",
+          "name": "Bridge Shared Secret"
+        }
+      }
     },
     {
-      "parameters": { "jsCode": "const request = $json;\nconst expected = `Bearer ${$env.BRIDGE_SHARED_SECRET}`;\nif (request.headers?.authorization !== expected) throw new Error('WF2 non autorise');\nconst body = request.body;\nif (!body || typeof body !== 'object') throw new Error('Corps WF2 invalide');\nconst allowed = new Set(['reportId','type','value']);\nif (Object.keys(body).some((key) => !allowed.has(key))) throw new Error('Champs WF2 inattendus');\nif (!/^r_\\d{8}T\\d{6}Z_[A-Za-z0-9_-]{1,64}$/.test(body.reportId)) throw new Error('reportId WF2 invalide');\nif (body.type !== 'url' && body.type !== 'wallet') throw new Error('type WF2 invalide');\nif (typeof body.value !== 'string' || !body.value || body.value.length > 2048) throw new Error('value WF2 invalide');\nreturn [{ json: body }];" },
+      "parameters": { "jsCode": "const request = $json;\nconst body = request.body;\nif (!body || typeof body !== 'object') throw new Error('Corps WF2 invalide');\nconst allowed = new Set(['reportId','type','value']);\nif (Object.keys(body).some((key) => !allowed.has(key))) throw new Error('Champs WF2 inattendus');\nif (!/^r_\\d{8}T\\d{6}Z_[A-Za-z0-9_-]{1,64}$/.test(body.reportId)) throw new Error('reportId WF2 invalide');\nif (body.type !== 'url' && body.type !== 'wallet') throw new Error('type WF2 invalide');\nif (typeof body.value !== 'string' || !body.value || body.value.length > 2048) throw new Error('value WF2 invalide');\nreturn [{ json: body }];" },
       "id": "258eb093-3dd5-4932-90a0-943ce31e87a2", "name": "Valider WF2", "type": "n8n-nodes-base.code", "typeVersion": 2, "position": [-680, 100]
     },
     {
@@ -15,24 +21,28 @@
       "id": "78727db4-c1e6-4497-aead-23f30e2353ac", "name": "Type URL", "type": "n8n-nodes-base.if", "typeVersion": 2.2, "position": [-460, 100]
     },
     {
-      "parameters": { "method": "PATCH", "url": "={{ 'http://bridge:8787/reports/' + $json.reportId }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.BRIDGE_SHARED_SECRET }}" }] }, "sendBody": true, "contentType": "raw", "rawContentType": "application/json", "body": "={{ JSON.stringify({ status: 'analyzing' }) }}", "options": { "timeout": 10000 } },
-      "id": "5cc566b2-f749-45de-8085-d2af2a976f85", "name": "Statut analyzing", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [-230, 0], "retryOnFail": true, "maxTries": 3, "waitBetweenTries": 1000, "onError": "continueErrorOutput"
+      "parameters": { "method": "PATCH", "url": "={{ 'http://bridge:8787/reports/' + $json.reportId }}", "authentication": "genericCredentialType", "genericAuthType": "httpHeaderAuth", "sendBody": true, "contentType": "raw", "rawContentType": "application/json", "body": "={{ JSON.stringify({ status: 'analyzing' }) }}", "options": { "timeout": 10000 } },
+      "id": "5cc566b2-f749-45de-8085-d2af2a976f85", "name": "Statut analyzing", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [-230, 0], "retryOnFail": true, "maxTries": 3, "waitBetweenTries": 1000, "onError": "continueErrorOutput",
+      "credentials": { "httpHeaderAuth": { "id": "REPLACE_WITH_BRIDGE_SHARED_SECRET_CREDENTIAL_ID", "name": "Bridge Shared Secret" } }
     },
     {
-      "parameters": { "method": "POST", "url": "http://capture:8788/capture", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.BRIDGE_SHARED_SECRET }}" }] }, "sendBody": true, "contentType": "raw", "rawContentType": "application/json", "body": "={{ JSON.stringify({ url: $('Valider WF2').first().json.value }) }}", "options": { "timeout": 15000 } },
-      "id": "4d32ce4d-38a6-41b5-b193-a313220820fa", "name": "Capture securisee", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [0, 0], "retryOnFail": true, "maxTries": 2, "waitBetweenTries": 1000, "onError": "continueErrorOutput"
+      "parameters": { "method": "POST", "url": "http://capture:8788/capture", "authentication": "genericCredentialType", "genericAuthType": "httpHeaderAuth", "sendBody": true, "contentType": "raw", "rawContentType": "application/json", "body": "={{ JSON.stringify({ url: $('Valider WF2').first().json.value }) }}", "options": { "timeout": 15000 } },
+      "id": "4d32ce4d-38a6-41b5-b193-a313220820fa", "name": "Capture securisee", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [0, 0], "retryOnFail": true, "maxTries": 2, "waitBetweenTries": 1000, "onError": "continueErrorOutput",
+      "credentials": { "httpHeaderAuth": { "id": "REPLACE_WITH_BRIDGE_SHARED_SECRET_CREDENTIAL_ID", "name": "Bridge Shared Secret" } }
     },
     {
-      "parameters": { "method": "POST", "url": "http://analysis:8789/analyze", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.BRIDGE_SHARED_SECRET }}" }] }, "sendBody": true, "contentType": "raw", "rawContentType": "application/json", "body": "={{ JSON.stringify({ url: $('Valider WF2').first().json.value, finalUrl: $json.finalUrl, textExcerpt: $json.textExcerpt, structuralDigest: $json.structuralDigest }) }}", "options": { "timeout": 75000 } },
-      "id": "17395df3-43ce-4b9c-a352-dd023c5e8795", "name": "Analyse Gemini NVIDIA", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [240, 0], "retryOnFail": true, "maxTries": 2, "waitBetweenTries": 1000, "onError": "continueErrorOutput"
+      "parameters": { "method": "POST", "url": "http://analysis:8789/analyze", "authentication": "genericCredentialType", "genericAuthType": "httpHeaderAuth", "sendBody": true, "contentType": "raw", "rawContentType": "application/json", "body": "={{ JSON.stringify({ url: $('Valider WF2').first().json.value, finalUrl: $json.finalUrl, textExcerpt: $json.textExcerpt, structuralDigest: $json.structuralDigest }) }}", "options": { "timeout": 75000 } },
+      "id": "17395df3-43ce-4b9c-a352-dd023c5e8795", "name": "Analyse Gemini NVIDIA", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [240, 0], "retryOnFail": true, "maxTries": 2, "waitBetweenTries": 1000, "onError": "continueErrorOutput",
+      "credentials": { "httpHeaderAuth": { "id": "REPLACE_WITH_BRIDGE_SHARED_SECRET_CREDENTIAL_ID", "name": "Bridge Shared Secret" } }
     },
     {
       "parameters": { "jsCode": "const a = $json;\nreturn [{ json: { status: a.status, decision: a.decision, verdict: a.verdict, scoreFinal: a.scoreFinal, modelUsed: a.modelName || a.modelUsed || null, category: a.category ?? null, indicators: [...(a.indicators || []), `URL features=${a.urlFeatures?.score ?? 'indisponible'}; RDAP=${a.urlFeatures?.whoisSource ?? 'indisponible'}`].slice(0, 10), error: null } }];" },
       "id": "58856753-c108-4e74-bb4c-3f7f75f0af5c", "name": "Preparer resultat", "type": "n8n-nodes-base.code", "typeVersion": 2, "position": [480, 0]
     },
     {
-      "parameters": { "method": "PATCH", "url": "={{ 'http://bridge:8787/reports/' + $('Valider WF2').first().json.reportId }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.BRIDGE_SHARED_SECRET }}" }] }, "sendBody": true, "contentType": "raw", "rawContentType": "application/json", "body": "={{ JSON.stringify($json) }}", "options": { "timeout": 10000 } },
-      "id": "6a811c04-4312-4b38-ab45-61fd11f539f5", "name": "Journaliser resultat", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [720, 0], "retryOnFail": true, "maxTries": 3, "waitBetweenTries": 1000
+      "parameters": { "method": "PATCH", "url": "={{ 'http://bridge:8787/reports/' + $('Valider WF2').first().json.reportId }}", "authentication": "genericCredentialType", "genericAuthType": "httpHeaderAuth", "sendBody": true, "contentType": "raw", "rawContentType": "application/json", "body": "={{ JSON.stringify($json) }}", "options": { "timeout": 10000 } },
+      "id": "6a811c04-4312-4b38-ab45-61fd11f539f5", "name": "Journaliser resultat", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [720, 0], "retryOnFail": true, "maxTries": 3, "waitBetweenTries": 1000,
+      "credentials": { "httpHeaderAuth": { "id": "REPLACE_WITH_BRIDGE_SHARED_SECRET_CREDENTIAL_ID", "name": "Bridge Shared Secret" } }
     },
     {
       "parameters": { "jsCode": "return [{ json: { status: 'manual_review', decision: 'manual_review', verdict: 'suspicious', scoreFinal: 0.5, modelUsed: null, category: null, indicators: ['Adresse wallet: analyse HTML non applicable; revue manuelle requise'], error: null } }];" },
@@ -43,8 +53,9 @@
       "id": "a83241c7-c7de-4d35-9283-af39488072f0", "name": "Preparer echec", "type": "n8n-nodes-base.code", "typeVersion": 2, "position": [240, 260]
     },
     {
-      "parameters": { "method": "PATCH", "url": "={{ 'http://bridge:8787/reports/' + $('Valider WF2').first().json.reportId }}", "sendHeaders": true, "headerParameters": { "parameters": [{ "name": "Authorization", "value": "={{ 'Bearer ' + $env.BRIDGE_SHARED_SECRET }}" }] }, "sendBody": true, "contentType": "raw", "rawContentType": "application/json", "body": "={{ JSON.stringify($json) }}", "options": { "timeout": 10000 } },
-      "id": "90888eae-6d79-4440-8de1-aa79d249ec26", "name": "Journaliser fin alternative", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [500, 260], "retryOnFail": true, "maxTries": 3, "waitBetweenTries": 1000
+      "parameters": { "method": "PATCH", "url": "={{ 'http://bridge:8787/reports/' + $('Valider WF2').first().json.reportId }}", "authentication": "genericCredentialType", "genericAuthType": "httpHeaderAuth", "sendBody": true, "contentType": "raw", "rawContentType": "application/json", "body": "={{ JSON.stringify($json) }}", "options": { "timeout": 10000 } },
+      "id": "90888eae-6d79-4440-8de1-aa79d249ec26", "name": "Journaliser fin alternative", "type": "n8n-nodes-base.httpRequest", "typeVersion": 4.2, "position": [500, 260], "retryOnFail": true, "maxTries": 3, "waitBetweenTries": 1000,
+      "credentials": { "httpHeaderAuth": { "id": "REPLACE_WITH_BRIDGE_SHARED_SECRET_CREDENTIAL_ID", "name": "Bridge Shared Secret" } }
     }
   ],
   "pinData": {},
