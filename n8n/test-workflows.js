@@ -44,4 +44,20 @@ assert.ok(!serialized.includes("OWNER_PRIVATE_KEY"));
 assert.ok(!serialized.includes("REPORTER_PRIVATE_KEY"));
 assert.ok(!/[a-f0-9]{64}/i.test(serialized), "aucun secret hexadecimal ne doit etre exporte dans les workflows");
 
-console.log("WF1/WF2 workflows: 17/17 controles statiques passes.");
+// RF-S7/RF-N13 : le secret bridge passe par une credential n8n chiffree,
+// jamais par un acces $env depuis un node (Code ou expression).
+assert.ok(!serialized.includes("$env.BRIDGE_SHARED_SECRET"), "aucun node WF1/WF2 ne doit lire BRIDGE_SHARED_SECRET via $env");
+const httpNodesNeedingAuth = ["Lancer WF2", "Bridge check", "Journaliser queued", "Statut analyzing", "Capture securisee", "Analyse Gemini NVIDIA", "Journaliser resultat", "Journaliser fin alternative"];
+for (const workflow of workflows) {
+  for (const node of workflow.nodes) {
+    if (!httpNodesNeedingAuth.includes(node.name)) continue;
+    assert.equal(node.parameters.authentication, "genericCredentialType", `${node.name} doit utiliser une credential generique`);
+    assert.equal(node.parameters.genericAuthType, "httpHeaderAuth", `${node.name} doit utiliser Header Auth`);
+    assert.equal(node.credentials?.httpHeaderAuth?.name, "Bridge Shared Secret", `${node.name} doit referencer la credential Bridge Shared Secret`);
+  }
+}
+const wf2Webhook = wf2.nodes.find((node) => node.name === "Declencheur WF2");
+assert.equal(wf2Webhook.parameters.authentication, "headerAuth", "le declencheur interne WF2 doit exiger un Header Auth n8n natif");
+assert.equal(wf2Webhook.credentials?.httpHeaderAuth?.name, "Bridge Shared Secret");
+
+console.log("WF1/WF2 workflows: 19/19 controles statiques passes.");
