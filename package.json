@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "node --test test/blockchain-inputs.test.js test/blockchain-checking.test.js test/blockchain-reporting.test.js test/chain-errors.test.js test/chain-bridge.test.js test/chain-bridge-server.test.js test/wf3-decision.test.js test/wf3-retry.test.js test/wf3-lifecycle.test.js test/lifecycle-store.test.js test/wf3-discord.test.js test/wf3-coordinator.test.js test/workflow-definitions.test.js",
-    "test:all": "npm test && node ai/client/test.js && node ai/tools/capture-pages/test.js && node n8n/bridge/test.js && node n8n/capture/test.js && node n8n/analysis/test.js && node n8n/test-workflows.js",
+    "test:all": "npm test && node ai/client/test.js && node ai/eval/test.js && node ai/tools/capture-pages/test.js && node n8n/bridge/test.js && node n8n/capture/test.js && node n8n/analysis/test.js && node n8n/test-workflows.js",
     "chain:bridge": "node n8n/services/chain-bridge/server.js",
     "chain:check": "node scripts/check.js",
     "chain:report": "node scripts/report.js",
