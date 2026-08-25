@@ -52,9 +52,17 @@ La protection de l'instance repose sur deux mécanismes cumulés :
 
 RF-S4 (« n8n derrière une authentification, instance non exposée
 publiquement ») reste donc satisfaite, mais par le compte propriétaire du
-user management + le binding `127.0.0.1`, pas par une basic auth. Un
-reverse proxy pour le webhook public `/report` reste à ajouter en phase 4
-(durcissement RF-S4/RF-S6, non commencé).
+user management + le binding `127.0.0.1`, pas par une basic auth.
+
+Un troisième mécanisme sépare en plus l'accès public de l'administration :
+un service **`proxy`** (nginx, voir `n8n/proxy/`) ne relaie que
+`POST /webhook/report` et `GET /webhook/check` vers n8n ; toute autre
+requête (`/`, `/rest/*`, `/webhook-test/*`, mauvaise méthode HTTP sur les
+deux routes ci-dessus) reçoit `403` sans jamais atteindre n8n. En local,
+`proxy` écoute aussi sur `127.0.0.1` (port `8080`) — en déploiement
+réel, c'est uniquement ce port qu'on exposerait publiquement, jamais
+`5678`, qui resterait joignable seulement en interne (VPN/tunnel SSH pour
+l'administration).
 
 ## 1. Configuration
 
@@ -121,9 +129,10 @@ docker compose ps
 Résultat attendu :
 
 - `anti-phishing-n8n` démarré sur `127.0.0.1:5678` ;
-- `anti-phishing-bridge`, `anti-phishing-capture`, `anti-phishing-analysis`
-  et `anti-phishing-chain-bridge` tous `healthy` ;
-- aucun port de service interne n'est publié sur l'hôte.
+- `anti-phishing-bridge`, `anti-phishing-capture`, `anti-phishing-analysis`,
+  `anti-phishing-chain-bridge` et `anti-phishing-proxy` tous `healthy` ;
+- aucun port de service interne n'est publié sur l'hôte (`proxy` est le
+  seul autre port publié, sur `127.0.0.1:8080`, en plus de `5678`).
 
 Si `n8n/.env` est absent ou qu'une variable obligatoire est vide, la
 commande **échoue immédiatement** avec le message `manquante - voir
@@ -137,8 +146,9 @@ Réseaux : `bridge`, `capture`, `analysis` et `chain-bridge` sont tous sur
 le réseau interne `bridge_internal` (non joignable depuis l'extérieur du
 Compose) ; `bridge` et `chain-bridge` rejoignent en plus `blockchain_egress`
 pour sortir vers le RPC Amoy, `capture`/`analysis` rejoignent
-`analysis_egress`. n8n utilise un réseau `frontend` séparé pour son
-interface.
+`analysis_egress`. n8n et `proxy` partagent le réseau `frontend` — `proxy`
+n'a accès à aucun autre réseau et ne peut donc joindre que n8n, jamais le
+bridge, capture, analysis ou chain-bridge directement.
 
 Vérifications complémentaires :
 
@@ -147,7 +157,12 @@ Vérifications complémentaires :
   `127.0.0.1` doit être joignable ;
 - http://127.0.0.1:3001, :8787, :8788 et :8789 **ne doivent pas répondre** :
   aucun de ces services n'a de port publié, ils ne sont joignables que par
-  les autres conteneurs Compose.
+  les autres conteneurs Compose ;
+- `curl -X POST http://127.0.0.1:8080/webhook/report -d '{}'` doit être
+  relayé vers n8n (donc échouer plus loin sur la validation du corps, pas
+  sur une erreur de proxy) ;
+- `curl http://127.0.0.1:8080/` et `curl http://127.0.0.1:8080/rest/login`
+  **doivent répondre `403`** : le proxy ne donne jamais accès à l'éditeur.
 
 ## 3. Import et activation de WF1 et WF2
 
@@ -201,9 +216,12 @@ Codes gérés :
 - `429` : plus de 10 requêtes par minute pour la même IP ;
 - `503` : bridge RPC ou journal temporairement indisponible après 3 essais.
 
-Le rate limiting utilise les données statiques de l'unique instance n8n
-locale. Le reverse proxy et une limite distribuée appartiennent au
-durcissement RF-S4/RF-S6 prévu en phase 4.
+Le rate limiting utilise l'état en mémoire de l'unique instance n8n
+locale (RF-S6, seuil 10/minute/IP) ; il reste par-processus, pas
+distribué. Le webhook public passe par le reverse proxy `proxy` (voir
+§0 Protection de l'instance) mais n'en hérite aujourd'hui aucune limite
+supplémentaire — le proxy ne fait que router/bloquer par chemin et
+méthode.
 
 La réponse `409` de WF1 peut contenir `txHash: null` : le bridge désactive
 la recherche `eth_getLogs` historique, refusée sur de grandes plages par
