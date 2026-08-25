@@ -6,7 +6,7 @@
 
 const assert = require("node:assert/strict");
 const { analyze } = require("./llmClient");
-const { validateOutput } = require("./lib/validateOutput");
+const { validateOutput, hasUnnegatedStrongSignal } = require("./lib/validateOutput");
 
 const results = [];
 
@@ -92,12 +92,87 @@ async function testGeminiFallbackOn429() {
   }
 }
 
+/**
+ * RF-N9 : un verdict suspicious valide doit porter manualReview=true, pas
+ * seulement les sorties forcées après échec de validation/quality-gate.
+ */
+async function testSuspiciousTriggersManualReview() {
+  process.env.GEMINI_API_KEY = "test-dummy-gemini-key";
+  process.env.NVIDIA_API_KEY = "test-dummy-nvidia-key";
+
+  const suspiciousOutput = {
+    verdict: "suspicious",
+    confidence: 0.55,
+    category: null,
+    indicators: ["Urgence artificielle sans autre preuve forte"],
+    explanation: "Ton pressant sans preuve technique suffisante pour conclure a malicious.",
+  };
+
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    if (String(url).includes("generativelanguage.googleapis.com")) {
+      return { ok: true, status: 200, json: async () => ({ candidates: [{ content: { parts: [{ text: JSON.stringify(suspiciousOutput) }] } }] }) };
+    }
+    throw new Error(`URL inattendue dans le mock de fetch : ${url}`);
+  };
+
+  try {
+    const result = await analyze({
+      url: "https://mock-suspicious-manual-review-test.invalid/",
+      textExcerpt: "x".repeat(250),
+      structuralDigest: { formFields: [], externalScriptDomains: [], web3PatternSnippets: [] },
+    });
+    assert.equal(result.verdict, "suspicious");
+    assert.equal(result.manualReview, true, "un verdict suspicious valide doit porter manualReview=true");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+}
+
+/**
+ * RF-A4/RF-A5 : le schema exige les 5 proprietes toujours presentes, meme
+ * quand category vaut null pour un verdict non-malicious.
+ */
+function testValidateOutputRequiresCategoryKey() {
+  const withoutCategoryKey = {
+    verdict: "legitimate",
+    confidence: 0.9,
+    indicators: [],
+    explanation: "Site officiel connu, aucun indicateur de phishing.",
+  };
+  const { valid, errors } = validateOutput(withoutCategoryKey);
+  assert.equal(valid, false, "category doit etre une propriete requise meme absente pour un verdict non-malicious");
+  assert.ok(errors.some((e) => e.includes("category")), `attendu une erreur mentionnant category, recu : ${errors.join(", ")}`);
+}
+
+/**
+ * RF-A4 §8.3 REVIEW_COMMIT_57747F0 : une negation explicite ne doit pas
+ * etre lue comme la preuve forte elle-meme.
+ */
+function testStrongSignalNegationHandling() {
+  assert.equal(hasUnnegatedStrongSignal("No typosquatting detected, only urgency language."), false, "une negation explicite ne doit pas declencher le signal fort");
+  assert.equal(hasUnnegatedStrongSignal("Aucun typosquatting observe sur ce domaine."), false, "negation en francais non plus");
+  assert.equal(hasUnnegatedStrongSignal("Typosquatting confirme : blnance.com imite binance.com."), true, "une preuve forte reellement affirmee doit toujours declencher le signal");
+
+  const { valid, errors } = validateOutput({
+    verdict: "suspicious",
+    confidence: 0.5,
+    category: null,
+    indicators: ["No typosquatting detected"],
+    explanation: "Contenu ambigu, aucune preuve forte observee.",
+  });
+  assert.ok(valid, `une explication qui NIE une preuve forte ne doit pas etre rejetee : ${errors.join(", ")}`);
+}
+
 async function run() {
   console.log("Critère d'acceptation n°3 — fallback NVIDIA sur 429 Gemini (mock, sans réseau réel)");
   await test(
     "(a) bascule NVIDIA déclenchée, (b) sortie conforme au schéma, (c) modelUsed='nvidia' journalisé",
     testGeminiFallbackOn429,
   );
+  await test("RF-N9 : verdict suspicious valide -> manualReview=true", testSuspiciousTriggersManualReview);
+  await test("RF-A4/A5 : category est une propriete requise (meme absente, pas seulement invalide)", async () => testValidateOutputRequiresCategoryKey());
+  await test("RF-A4 §8.3 : negation d'une preuve forte n'est pas la preuve elle-meme", async () => testStrongSignalNegationHandling());
 
   const failed = results.filter((r) => !r.ok);
   console.log(`\n${results.length - failed.length}/${results.length} tests passés.`);
