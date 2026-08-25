@@ -20,7 +20,8 @@
     "capture:test": "node n8n/capture/test.js",
     "analysis:test": "node n8n/analysis/test.js",
     "n8n:test": "node n8n/test-workflows.js",
-    "eval:test": "node ai/eval/test.js"
+    "eval:test": "node ai/eval/test.js",
+    "test:prompt-injection": "node ai/client/test-live.js"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
