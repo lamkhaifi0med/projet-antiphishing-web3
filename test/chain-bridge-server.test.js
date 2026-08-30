@@ -292,6 +292,8 @@ test("authenticated WF3 routes execute, claim, reread, and settle safely", async
           status: "manual_review",
           finalized: true,
           alertRequired: true,
+          txHash: null,
+          errorCode: null,
         });
 
         const claimResponse = await fetch(`${baseUrl}/internal/wf3/claim`, {
@@ -315,7 +317,14 @@ test("authenticated WF3 routes execute, claim, reread, and settle safely", async
           }),
         });
         assert.equal(settleResponse.status, 200);
-        assert.equal((await settleResponse.json()).alertState, "sent");
+        assert.deepEqual(await settleResponse.json(), {
+          settled: true,
+          reportId: context.reportId,
+          status: "manual_review",
+          alertState: "sent",
+          txHash: null,
+          errorCode: null,
+        });
 
         const malformed = await fetch(`${baseUrl}/internal/wf3/claim`, {
           method: "POST",

@@ -1,0 +1,505 @@
+<!-- PAGE 1 — COUVERTURE -->
+<section class="page cover" data-page="1">
+  <div class="cover-grid"></div>
+  <div class="cover-orb"></div>
+  <div class="cover-inner">
+    <div class="eyebrow">Stage · Projet technologique · 40 jours</div>
+    <h1>Rapport<br />d’avancement</h1>
+    <div class="rule"></div>
+    <p class="subtitle">
+      Intégration de l’IA générative et de la blockchain pour la lutte
+      automatisée contre le phishing et les fraudes Web3
+    </p>
+
+    <div class="cover-meta">
+      <div>
+        <span class="meta-label">Binôme</span>
+        <span class="meta-value">Lamkhaifi Mohamed<br />Malek Mouhcine</span>
+      </div>
+      <div>
+        <span class="meta-label">État consolidé au</span>
+        <span class="meta-value">11 août 2026<br />Version 1.0</span>
+      </div>
+    </div>
+    <div class="cover-footer">
+      Anti-Phishing Web3 · IA générative · n8n · Polygon Amoy
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 2 — SYNTHÈSE EXÉCUTIVE -->
+<section class="page" data-page="2">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span
+    ><span>Synthèse exécutive</span>
+  </div>
+  <div class="section-title">
+    <div class="index">01</div>
+    <div>
+      <h1>Synthèse exécutive</h1>
+      <p class="subtitle">
+        Position réelle du prototype au 11 août 2026, distinguant clairement
+        réalisation, intégration et validation.
+      </p>
+    </div>
+  </div>
+
+  <p class="lead">
+    Le projet vise à transformer un signalement d’URL ou de wallet suspect en
+    une décision explicable, puis — uniquement lorsque le niveau de risque est
+    suffisant — en une inscription vérifiable sur une blockchain de test et une
+    alerte communautaire. L’approche retenue combine trois qualités
+    complémentaires : la capacité d’analyse de l’IA générative, l’automatisation
+    de n8n et la traçabilité d’un registre on-chain.
+  </p>
+
+  <div class="grid-4">
+    <div class="stat">
+      <span class="value">131</span
+      ><span class="label"
+        >tests automatisés passants<br />118 Node + 13 Hardhat</span
+      >
+    </div>
+    <div class="stat">
+      <span class="value">100&nbsp;%</span
+      ><span class="label">couverture des lignes du smart contract</span>
+    </div>
+    <div class="stat">
+      <span class="value">100&nbsp;%</span
+      ><span class="label">précision IA v1<br />sur 32 cas mesurables</span>
+    </div>
+    <div class="stat">
+      <span class="value">46,2&nbsp;%</span
+      ><span class="label"
+        >rappel IA v1<br />objectif contractuel&nbsp;: ≥ 80&nbsp;%</span
+      >
+    </div>
+  </div>
+
+  <h3>Ce qui est solidement établi</h3>
+  <div class="grid-2">
+    <div class="card accent">
+      <h4>Socle blockchain et sécurité</h4>
+      <ul class="checks small">
+        <li>
+          <strong>PhishingRegistry</strong> déployé et vérifié sur Polygon Amoy.
+        </li>
+        <li>
+          Rôles Owner/Reporter, blacklist URL/wallet, suppression contrôlée et
+          events.
+        </li>
+        <li>
+          Scripts d’interaction, bridge HTTP interne, persistance SQLite et
+          retries testés.
+        </li>
+        <li>Audit Slither sans finding critique, haut, moyen ou faible.</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h4>Socle IA et données</h4>
+      <ul class="checks small">
+        <li>
+          Prompts spécialisés URL, structure et sémantique, avec sortie JSON
+          stricte.
+        </li>
+        <li>
+          Gemini principal, NVIDIA NIM en fallback sur incidents transitoires.
+        </li>
+        <li>Dataset documenté et capture isolée sans exécution JavaScript.</li>
+        <li>
+          Évaluation v1 honnête ayant localisé un défaut de rappel précis.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Position d’avancement globale</h3>
+  <table class="small">
+    <thead>
+      <tr>
+        <th>Ensemble</th>
+        <th>État vérifié</th>
+        <th>Lecture de l’état</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Contrat, scripts et déploiement Amoy</td>
+        <td><span class="status done">Réalisé</span></td>
+        <td>
+          Fonctionnels et vérifiés séparément, avec transactions de
+          démonstration.
+        </td>
+      </tr>
+      <tr>
+        <td>Module IA v1</td>
+        <td><span class="status partial">Partiel</span></td>
+        <td>
+          Architecture réalisée et précision forte, mais rappel inférieur à la
+          cible.
+        </td>
+      </tr>
+      <tr>
+        <td>WF3 Action et WF4 Check</td>
+        <td><span class="status partial">Implémentés, inactifs</span></td>
+        <td>
+          Exports et logique testés hors ligne ; credentials et activation
+          contrôlée restent à faire.
+        </td>
+      </tr>
+      <tr>
+        <td>WF1 Ingestion et WF2 Analyse</td>
+        <td><span class="status pending">À intégrer</span></td>
+        <td>
+          Le chaînage d’entrée, le fetch sécurisé et l’appel IA ne sont pas
+          présents comme workflows actifs.
+        </td>
+      </tr>
+      <tr>
+        <td>Démo bout-en-bout</td>
+        <td><span class="status pending">Non validée</span></td>
+        <td>
+          Aucune preuve ne permet encore de déclarer le flux complet
+          opérationnel.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warning small">
+    <strong>Conclusion de gestion.</strong> Le prototype possède un socle
+    technique avancé, surtout sur la publication blockchain, la fiabilité et les
+    contrôles de sécurité. Il n’est cependant pas encore un produit intégré :
+    les priorités sont l’amélioration du rappel IA, l’implémentation de WF1–WF2
+    et un test E2E contrôlé reliant IA, Polygon Amoy, Discord et l’endpoint de
+    vérification.
+  </div>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Lamkhaifi Mohamed &amp; Malek Mouhcine</span
+    ><span class="page-number">2</span>
+  </div>
+</section>
+
+<!-- PAGE 3 — SOMMAIRE -->
+<section class="page" data-page="3">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span><span>Sommaire</span>
+  </div>
+  <div class="section-title">
+    <div class="index">02</div>
+    <div>
+      <h1>Sommaire &amp; conventions</h1>
+      <p class="subtitle">
+        Une lecture progressive : du sujet initial aux preuves, limites et
+        travaux restants.
+      </p>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="entry">
+      <span class="n">01</span><span class="t">Synthèse exécutive</span
+      ><span class="p">2</span>
+    </div>
+    <div class="entry">
+      <span class="n">10</span><span class="t">Scripts et chain bridge</span
+      ><span class="p">11</span>
+    </div>
+    <div class="entry">
+      <span class="n">02</span><span class="t">Sommaire et conventions</span
+      ><span class="p">3</span>
+    </div>
+    <div class="entry">
+      <span class="n">11</span><span class="t">Module IA : conception v1</span
+      ><span class="p">12</span>
+    </div>
+    <div class="entry">
+      <span class="n">03</span><span class="t">Contexte et problématique</span
+      ><span class="p">4</span>
+    </div>
+    <div class="entry">
+      <span class="n">12</span
+      ><span class="t">Dataset et capture sécurisée</span
+      ><span class="p">13</span>
+    </div>
+    <div class="entry">
+      <span class="n">04</span
+      ><span class="t">Objectifs et critères de succès</span
+      ><span class="p">5</span>
+    </div>
+    <div class="entry">
+      <span class="n">13</span><span class="t">Résultats IA v1</span
+      ><span class="p">14</span>
+    </div>
+    <div class="entry">
+      <span class="n">05</span><span class="t">Démarche adoptée</span
+      ><span class="p">6</span>
+    </div>
+    <div class="entry">
+      <span class="n">14</span
+      ><span class="t">Plan d’amélioration Recall v2</span
+      ><span class="p">15</span>
+    </div>
+    <div class="entry">
+      <span class="n">06</span><span class="t">Architecture globale</span
+      ><span class="p">7</span>
+    </div>
+    <div class="entry">
+      <span class="n">15</span><span class="t">Orchestration n8n</span
+      ><span class="p">16</span>
+    </div>
+    <div class="entry">
+      <span class="n">07</span
+      ><span class="t">Contrats intermodules et décision</span
+      ><span class="p">8</span>
+    </div>
+    <div class="entry">
+      <span class="n">16</span
+      ><span class="t">Sécurité et modèle de menace</span
+      ><span class="p">17</span>
+    </div>
+    <div class="entry">
+      <span class="n">08</span
+      ><span class="t">Smart contract PhishingRegistry</span
+      ><span class="p">9</span>
+    </div>
+    <div class="entry">
+      <span class="n">17</span
+      ><span class="t">Tests, couverture, CI et audit</span
+      ><span class="p">18</span>
+    </div>
+    <div class="entry">
+      <span class="n">09</span
+      ><span class="t">Déploiement et preuves on-chain</span
+      ><span class="p">10</span>
+    </div>
+    <div class="entry">
+      <span class="n">18</span
+      ><span class="t">Bilan, difficultés et enseignements</span
+      ><span class="p">19</span>
+    </div>
+    <div class="entry">
+      <span class="n">19</span
+      ><span class="t">Feuille de route et conclusion</span
+      ><span class="p">20</span>
+    </div>
+  </div>
+
+  <h3 class="mt-3">Conventions de statut utilisées dans ce rapport</h3>
+  <div class="grid-2">
+    <div class="card soft small">
+      <p><span class="status done">Réalisé</span></p>
+      <p>
+        Code et preuves présents ; comportement vérifié par tests, artefacts,
+        transaction publique ou audit approprié.
+      </p>
+    </div>
+    <div class="card soft small">
+      <p><span class="status partial">Implémenté / partiel</span></p>
+      <p>
+        Composant développé, mais dépendance, activation, performance cible ou
+        validation réelle encore manquante.
+      </p>
+    </div>
+    <div class="card soft small">
+      <p><span class="status pending">À faire / non validé</span></p>
+      <p>
+        Élément absent du dépôt actif ou résultat non démontré. Il n’est jamais
+        présenté comme opérationnel.
+      </p>
+    </div>
+    <div class="card soft small">
+      <p><span class="status info">Objectif initial</span></p>
+      <p>
+        Exigence du cahier des charges. Un objectif n’est pas une preuve
+        d’achèvement ; son état est évalué séparément.
+      </p>
+    </div>
+  </div>
+
+  <div class="callout small mt-3">
+    <strong>Périmètre rédactionnel.</strong> Le document présente le travail du
+    binôme comme une réalisation collective. Il s’appuie sur l’état du dépôt,
+    les rapports générés, les exports de workflows, les tests exécutés et les
+    preuves publiques disponibles. Les éléments projetés sont explicitement
+    signalés comme tels.
+  </div>
+
+  <h3>Référentiel temporel</h3>
+  <p class="small">
+    Le plan initial couvre 40 jours ouvrés et les documents techniques de suivi
+    décrivent un état au 3 août 2026. Les suites de tests ont été rejouées pour
+    ce rapport le 11 août 2026 sur la branche <span class="mono">main</span>,
+    commit <span class="mono">2e99059</span>. L’absence de modification
+    fonctionnelle ultérieure prouvée conduit à conserver les statuts
+    d’intégration documentés : WF3/WF4 inactifs, WF1/WF2 à intégrer et E2E non
+    déclaré.
+  </p>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Sommaire</span><span class="page-number">3</span>
+  </div>
+</section>
+
+<!-- PAGE 4 — CONTEXTE -->
+<section class="page" data-page="4">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span
+    ><span>Contexte et problématique</span>
+  </div>
+  <div class="section-title">
+    <div class="index">03</div>
+    <div>
+      <h1>Comprendre le sujet initial</h1>
+      <p class="subtitle">
+        Pourquoi rapprocher analyse cognitive, orchestration et registre
+        blockchain dans un même prototype&nbsp;?
+      </p>
+    </div>
+  </div>
+
+  <p class="lead">
+    Dans l’écosystème Web3, le phishing ne vise pas seulement des identifiants
+    classiques. Il peut détourner une signature, imiter une plateforme
+    d’échange, se présenter comme un support officiel, proposer un faux airdrop
+    ou conduire l’utilisateur vers un wallet drainer. La vitesse de création et
+    de disparition de ces campagnes rend difficile une réponse exclusivement
+    manuelle.
+  </p>
+
+  <div class="quote">
+    Problème directeur&nbsp;: comment détecter, qualifier et partager une menace
+    Web3 en quasi-temps réel, de façon automatisée, traçable et consultable par
+    la communauté&nbsp;?
+  </div>
+
+  <h3>Limites d’une réponse traditionnelle</h3>
+  <div class="grid-3">
+    <div class="card">
+      <h4>Temps de réaction</h4>
+      <p class="small">
+        Une collecte et une validation manuelles peuvent arriver après la
+        disparition ou la migration du domaine frauduleux.
+      </p>
+    </div>
+    <div class="card">
+      <h4>Confiance dans le verdict</h4>
+      <p class="small">
+        Un score automatisé sans explication ni historique est difficile à
+        auditer, contester et réutiliser.
+      </p>
+    </div>
+    <div class="card">
+      <h4>Partage fragmenté</h4>
+      <p class="small">
+        Un signalement isolé protège peu si son résultat reste enfermé dans un
+        outil ou une base centralisée.
+      </p>
+    </div>
+  </div>
+
+  <h3>Réponse proposée par le projet</h3>
+  <div class="flow">
+    <div class="node">
+      <span class="num">1</span><b>Recevoir</b
+      ><span>URL ou wallet signalé</span>
+    </div>
+    <div class="node">
+      <span class="num">2</span><b>Analyser</b
+      ><span>Indices URL, structure et langage</span>
+    </div>
+    <div class="node">
+      <span class="num">3</span><b>Décider</b
+      ><span>Seuils et revue manuelle</span>
+    </div>
+    <div class="node">
+      <span class="num">4</span><b>Publier</b
+      ><span>Hash ou wallet sur Amoy</span>
+    </div>
+    <div class="node">
+      <span class="num">5</span><b>Alerter</b
+      ><span>Message Discord défangé</span>
+    </div>
+    <div class="node">
+      <span class="num">6</span><b>Vérifier</b
+      ><span>Lecture publique du registre</span>
+    </div>
+  </div>
+
+  <div class="split-60">
+    <div>
+      <h3>Périmètre fonctionnel retenu</h3>
+      <ul class="checks">
+        <li>Signalement d’URLs HTTP(S) et d’adresses EVM.</li>
+        <li>Analyse par Gemini avec fallback NVIDIA NIM.</li>
+        <li>
+          Catégories Web3 fermées&nbsp;: faux exchange, drainer, faux airdrop,
+          faux support, Ponzi, autre.
+        </li>
+        <li>Blacklist sur Polygon Amoy, testnet sans fonds réels.</li>
+        <li>Alertes Discord et endpoint de vérification.</li>
+        <li>
+          Contrôles de sécurité sur clés, entrées, contenu hostile et
+          infrastructure.
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h3>Hors périmètre</h3>
+      <ul class="arrows small">
+        <li>Déploiement mainnet et manipulation de fonds réels.</li>
+        <li>Exécution dynamique du JavaScript d’un site hostile.</li>
+        <li>Extension navigateur complète.</li>
+        <li>Analyse de SMS ou d’e-mails bruts.</li>
+        <li>
+          Garantie qu’un verdict automatisé constitue une vérité juridique.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Acteurs et responsabilités du système</h3>
+  <table class="small">
+    <thead>
+      <tr>
+        <th>Acteur</th>
+        <th>Rôle</th>
+        <th>Contrainte de confiance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Signaleur</td>
+        <td>Soumet une cible et un contexte éventuel.</td>
+        <td>Entrée considérée non fiable, strictement validée.</td>
+      </tr>
+      <tr>
+        <td>n8n</td>
+        <td>Orchestre les étapes et conserve le cycle de vie.</td>
+        <td>
+          Ne reçoit jamais la clé Owner et n’exécute pas de shell utilisateur.
+        </td>
+      </tr>
+      <tr>
+        <td>Reporter on-chain</td>
+        <td>Publie les entrées validées.</td>
+        <td>Privilège limité, révocable par l’Owner.</td>
+      </tr>
+      <tr>
+        <td>Owner</td>
+        <td>Administre les reporters et corrige un faux positif.</td>
+        <td>Clé conservée hors de n8n et du bridge.</td>
+      </tr>
+      <tr>
+        <td>Consommateur</td>
+        <td>Consulte gratuitement le statut public.</td>
+        <td>Reçoit une réponse filtrée, sans détails internes inutiles.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Contexte</span><span class="page-number">4</span>
+  </div>
+</section>

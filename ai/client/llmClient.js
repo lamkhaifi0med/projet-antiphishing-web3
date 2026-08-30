@@ -25,7 +25,12 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { loadSystemPrompt, buildUserPrompt } = require("./lib/prompts");
 const { validateOutput } = require("./lib/validateOutput");
-const { callModelWithFallback, callGemini, callNvidia } = require("./lib/providers");
+const {
+  callModelWithFallback,
+  callGemini,
+  callNvidia,
+  TransientProviderError,
+} = require("./lib/providers");
 const { classifyAnalysisMode } = require("../lib/contentQuality");
 const { calculateUrlFeatures } = require("../features/urlFeatures");
 
@@ -34,13 +39,54 @@ dotenv.config({ path: path.resolve(__dirname, "../../.env"), quiet: true });
 
 const MAX_RETRIES = 2; // RF-A4 : 2 retries max après le premier essai
 
+// Les échecs transitoires du fournisseur (timeout, 429, 5xx) ont leur
+// propre budget, distinct des retries de correction de schéma RF-A4 : un
+// quota momentanément épuisé ne doit pas consommer les tentatives resevées
+// aux sorties invalides, sinon l'entrée est exclue de la mesure
+// (provider_error) alors qu'un simple délai suffisait.
+const MAX_TRANSIENT_RETRIES = 4;
+const TRANSIENT_BACKOFF_BASE_MS = 2_000;
+const TRANSIENT_BACKOFF_MAX_MS = 60_000;
+
+function transientDelayMs(error, transientAttempt) {
+  const advised = error?.retryAfterMs;
+  if (Number.isFinite(advised) && advised > 0) {
+    return Math.min(advised, TRANSIENT_BACKOFF_MAX_MS);
+  }
+  return Math.min(
+    TRANSIENT_BACKOFF_BASE_MS * 2 ** transientAttempt,
+    TRANSIENT_BACKOFF_MAX_MS,
+  );
+}
+
 function logAttempt(event) {
   // Diagnostic uniquement : jamais de clé API, jamais de contenu analysé
   // (RF-A6). stderr pour ne pas polluer la sortie JSON sur stdout.
   console.error(`[llmClient] ${JSON.stringify(event)}`);
 }
 
-function forcedSuspicious({ reason, analysisMode, qualityReason, indicator, explanation }) {
+function defangUrlForLog(value) {
+  try {
+    const parsed = new URL(value);
+    const protocol =
+      parsed.protocol === "https:"
+        ? "hxxps:"
+        : parsed.protocol === "http:"
+          ? "hxxp:"
+          : parsed.protocol;
+    return `${protocol}//${parsed.hostname.replaceAll(".", "[.]")}${parsed.pathname}${parsed.search}${parsed.hash}`;
+  } catch {
+    return "[invalid URL omitted]";
+  }
+}
+
+function forcedSuspicious({
+  reason,
+  analysisMode,
+  qualityReason,
+  indicator,
+  explanation,
+}) {
   return {
     verdict: "suspicious",
     confidence: 0.5,
@@ -69,24 +115,44 @@ function forcedSuspicious({ reason, analysisMode, qualityReason, indicator, expl
  *   l'utilise pour lire un cache RDAP gelé plutôt que d'interroger le
  *   réseau à chaque évaluation, RF-A10).
  */
-async function analyze({ url, finalUrl, textExcerpt, structuralDigest }, options = {}) {
+async function analyze(
+  { url, finalUrl, textExcerpt, structuralDigest },
+  options = {},
+) {
   const { forceProvider, lookupDomainAge } = options;
-  if (forceProvider && forceProvider !== "gemini" && forceProvider !== "nvidia") {
-    throw new Error(`forceProvider invalide : ${forceProvider} (attendu : "gemini" ou "nvidia")`);
+  if (
+    forceProvider &&
+    forceProvider !== "gemini" &&
+    forceProvider !== "nvidia"
+  ) {
+    throw new Error(
+      `forceProvider invalide : ${forceProvider} (attendu : "gemini" ou "nvidia")`,
+    );
   }
 
-  const { mode, qualityReason } = classifyAnalysisMode(textExcerpt, structuralDigest);
+  const { mode, qualityReason } = classifyAnalysisMode(
+    textExcerpt,
+    structuralDigest,
+  );
 
   let urlFeatures = null;
   try {
-    urlFeatures = await calculateUrlFeatures(url, finalUrl || url, lookupDomainAge ? { lookupDomainAge } : {});
+    urlFeatures = await calculateUrlFeatures(
+      url,
+      finalUrl || url,
+      lookupDomainAge ? { lookupDomainAge } : {},
+    );
   } catch (error) {
     // Une URL malformee ne doit jamais faire echouer toute l'analyse : le
     // modele continue avec des features URL absentes plutot que de planter.
-    logAttempt({ url, ok: false, error: `url_features_failed: ${error.message}` });
+    logAttempt({
+      url: defangUrlForLog(url),
+      ok: false,
+      error: `url_features_failed: ${error.message}`,
+    });
   }
 
-  logAttempt({ url, analysisMode: mode, qualityReason });
+  logAttempt({ url: defangUrlForLog(url), analysisMode: mode, qualityReason });
 
   const systemPrompt = loadSystemPrompt();
   const userPrompt = buildUserPrompt({
@@ -97,17 +163,52 @@ async function analyze({ url, finalUrl, textExcerpt, structuralDigest }, options
     mode,
   });
   let correctivePrompt = userPrompt;
+  let transientRetries = 0;
 
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     let result;
     try {
-      if (forceProvider === "gemini") result = await callGemini({ systemPrompt, userPrompt: correctivePrompt });
-      else if (forceProvider === "nvidia") result = await callNvidia({ systemPrompt, userPrompt: correctivePrompt });
-      else result = await callModelWithFallback({ systemPrompt, userPrompt: correctivePrompt });
+      if (forceProvider === "gemini")
+        result = await callGemini({
+          systemPrompt,
+          userPrompt: correctivePrompt,
+        });
+      else if (forceProvider === "nvidia")
+        result = await callNvidia({
+          systemPrompt,
+          userPrompt: correctivePrompt,
+        });
+      else
+        result = await callModelWithFallback({
+          systemPrompt,
+          userPrompt: correctivePrompt,
+        });
     } catch (error) {
+      if (
+        error instanceof TransientProviderError &&
+        transientRetries < MAX_TRANSIENT_RETRIES
+      ) {
+        // Budget dedie aux erreurs transitoires (quota, 5xx, timeout) : on
+        // attend le delai conseille par le fournisseur (Retry-After) sans
+        // consommer les retries de correction de schema RF-A4.
+        const delayMs = transientDelayMs(error, transientRetries);
+        transientRetries += 1;
+        logAttempt({
+          attempt,
+          ok: false,
+          error: error.message,
+          transientRetry: transientRetries,
+          delayMs,
+        });
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        attempt -= 1; // ne consomme pas le budget RF-A4
+        continue;
+      }
       logAttempt({ attempt, ok: false, error: error.message });
       if (attempt < MAX_RETRIES) {
-        await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** attempt));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 1000 * 2 ** attempt),
+        );
       }
       continue;
     }
@@ -116,19 +217,36 @@ async function analyze({ url, finalUrl, textExcerpt, structuralDigest }, options
     try {
       parsed = JSON.parse(result.rawText);
     } catch {
-      logAttempt({ attempt, modelUsed: result.provider, ok: false, error: "invalid_json" });
+      logAttempt({
+        attempt,
+        modelUsed: result.provider,
+        ok: false,
+        error: "invalid_json",
+      });
       correctivePrompt = `${userPrompt}\n\nCORRECTION OBLIGATOIRE : la sortie precedente n'etait pas un objet JSON valide. Reponds a nouveau avec uniquement l'objet conforme.`;
       continue;
     }
 
     const { valid, errors } = validateOutput(parsed);
     if (!valid) {
-      logAttempt({ attempt, modelUsed: result.provider, ok: false, error: "schema_invalid", details: errors });
+      logAttempt({
+        attempt,
+        modelUsed: result.provider,
+        ok: false,
+        error: "schema_invalid",
+        details: errors,
+      });
       correctivePrompt = `${userPrompt}\n\nCORRECTION OBLIGATOIRE : la sortie precedente a ete rejetee pour ces raisons : ${errors.join(" ; ")}. Corrige ces erreurs et reponds uniquement avec l'objet JSON conforme.`;
       continue;
     }
 
-    logAttempt({ attempt, modelUsed: result.provider, modelName: result.model, ok: true, latencyMs: result.latencyMs });
+    logAttempt({
+      attempt,
+      modelUsed: result.provider,
+      modelName: result.model,
+      ok: true,
+      latencyMs: result.latencyMs,
+    });
     return {
       ...parsed,
       // RF-N9 : un verdict suspicious exige toujours une revue manuelle,
@@ -154,7 +272,8 @@ async function analyze({ url, finalUrl, textExcerpt, structuralDigest }, options
     analysisMode: mode,
     qualityReason,
     indicator: "Sortie LLM invalide après 2 tentatives de correction",
-    explanation: "Verdict suspicious forcé après échec de validation du schéma JSON malgré 2 retries (RF-A4).",
+    explanation:
+      "Verdict suspicious forcé après échec de validation du schéma JSON malgré 2 retries (RF-A4).",
   });
 }
 
@@ -171,12 +290,18 @@ function parseArgs(argv) {
 
 function loadDevEntry(index) {
   const devDir = path.resolve(__dirname, "../dataset/dev");
-  const phishing = JSON.parse(fs.readFileSync(path.join(devDir, "phishing.json"), "utf8"));
-  const legitimate = JSON.parse(fs.readFileSync(path.join(devDir, "legitimate.json"), "utf8"));
+  const phishing = JSON.parse(
+    fs.readFileSync(path.join(devDir, "phishing.json"), "utf8"),
+  );
+  const legitimate = JSON.parse(
+    fs.readFileSync(path.join(devDir, "legitimate.json"), "utf8"),
+  );
   const combined = [...phishing, ...legitimate];
 
   if (index < 0 || index >= combined.length) {
-    throw new Error(`--from-dev=${index} hors limites (0 à ${combined.length - 1})`);
+    throw new Error(
+      `--from-dev=${index} hors limites (0 à ${combined.length - 1})`,
+    );
   }
   return combined[index];
 }
@@ -185,7 +310,9 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
 
   if (args["from-dev"] === undefined) {
-    console.error("Usage : node ai/client/llmClient.js --from-dev=<index> [--url=<url>]");
+    console.error(
+      "Usage : node ai/client/llmClient.js --from-dev=<index> [--url=<url>]",
+    );
     process.exitCode = 1;
     return;
   }
@@ -200,7 +327,9 @@ async function main() {
   const entry = loadDevEntry(index);
   const url = args.url || entry.url;
 
-  console.error(`[llmClient] entrée dev #${index} : ${entry.url} (label attendu : ${entry.label})`);
+  console.error(
+    `[llmClient] entrée dev #${index} : ${defangUrlForLog(entry.url)} (label attendu : ${entry.label})`,
+  );
 
   const result = await analyze({
     url,
@@ -218,4 +347,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { analyze };
+module.exports = { analyze, defangUrlForLog };

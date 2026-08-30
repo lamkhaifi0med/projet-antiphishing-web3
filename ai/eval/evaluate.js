@@ -29,16 +29,21 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
+const { spawnSync } = require("node:child_process");
 
 const dotenv = require("dotenv");
 dotenv.config({ path: path.resolve(__dirname, "../../.env"), quiet: true });
 
 const { verifyIndexIntegrity } = require("../dataset/lib/cacheIndex");
-const { createFrozenLookupDomainAge } = require("../dataset/lib/frozenRdap");
+const {
+  createFrozenLookupDomainAge,
+  loadFrozenRdapCache,
+} = require("../dataset/lib/frozenRdap");
 const { analyze } = require("../client/llmClient");
 
 const DATASET_DIR = path.resolve(__dirname, "../dataset/final");
-const CACHE_DIR = process.env.CACHE_DIR || path.join(DATASET_DIR, ".cache", "pages");
+const CACHE_DIR =
+  process.env.CACHE_DIR || path.join(DATASET_DIR, ".cache", "pages");
 const INDEX_PATH = path.join(DATASET_DIR, "cache-index.json");
 const RDAP_CACHE_PATH = path.join(DATASET_DIR, "rdap-cache.json");
 
@@ -64,7 +69,10 @@ function cacheKeyFor(normalizedUrl) {
 }
 
 function loadCacheRecord(url) {
-  const cachePath = path.join(CACHE_DIR, `${cacheKeyFor(normalizeUrl(url))}.json`);
+  const cachePath = path.join(
+    CACHE_DIR,
+    `${cacheKeyFor(normalizeUrl(url))}.json`,
+  );
   if (!fs.existsSync(cachePath)) return null;
   return JSON.parse(fs.readFileSync(cachePath, "utf8"));
 }
@@ -79,8 +87,12 @@ function parseArgs(argv) {
 }
 
 function loadDataset(limit) {
-  const phishing = JSON.parse(fs.readFileSync(path.join(DATASET_DIR, "phishing.json"), "utf8"));
-  const legitimate = JSON.parse(fs.readFileSync(path.join(DATASET_DIR, "legitimate.json"), "utf8"));
+  const phishing = JSON.parse(
+    fs.readFileSync(path.join(DATASET_DIR, "phishing.json"), "utf8"),
+  );
+  const legitimate = JSON.parse(
+    fs.readFileSync(path.join(DATASET_DIR, "legitimate.json"), "utf8"),
+  );
   const cap = (arr) => (limit ? arr.slice(0, limit) : arr);
   return [...cap(phishing), ...cap(legitimate)];
   // historical.json volontairement exclu : hors jeu de mesure officiel
@@ -106,7 +118,10 @@ function updateMatrix(matrix, outcome) {
 function metricsFromMatrix({ tp, fp, fn, tn }) {
   const precision = tp + fp > 0 ? tp / (tp + fp) : null;
   const recall = tp + fn > 0 ? tp / (tp + fn) : null;
-  const f1 = precision !== null && recall !== null && precision + recall > 0 ? (2 * precision * recall) / (precision + recall) : null;
+  const f1 =
+    precision !== null && recall !== null && precision + recall > 0
+      ? (2 * precision * recall) / (precision + recall)
+      : null;
   return { tp, fp, fn, tn, precision, recall, f1, n: tp + fp + fn + tn };
 }
 
@@ -121,7 +136,12 @@ async function evaluateEntry(entry, { forceProvider, scope, lookupDomainAge }) {
   // au modèle — uniquement url/finalUrl/textExcerpt/structuralDigest,
   // exactement ce qu'analyze() accepte.
   const result = await analyze(
-    { url: entry.url, finalUrl: record.finalUrl || entry.url, textExcerpt: record.textExcerpt, structuralDigest: record.structuralDigest },
+    {
+      url: entry.url,
+      finalUrl: record.finalUrl || entry.url,
+      textExcerpt: record.textExcerpt,
+      structuralDigest: record.structuralDigest,
+    },
     { forceProvider, lookupDomainAge },
   );
 
@@ -141,6 +161,7 @@ async function evaluateEntry(entry, { forceProvider, scope, lookupDomainAge }) {
     verdict,
     modelUsed,
     modelName: result.modelName || null,
+    urlFeatures: result.urlFeatures || null,
     confidence: result.confidence ?? null,
     category: result.category ?? null,
     indicators: result.indicators || [],
@@ -149,7 +170,10 @@ async function evaluateEntry(entry, { forceProvider, scope, lookupDomainAge }) {
     retries: result.retries || 0,
     attempted: true,
     predictedMalicious,
-    classificationOutcome: classificationOutcome(predictedMalicious, entry.label),
+    classificationOutcome: classificationOutcome(
+      predictedMalicious,
+      entry.label,
+    ),
   };
 }
 
@@ -158,7 +182,10 @@ function formatPercent(value) {
 }
 
 function computeCoverage(entries, outcomes) {
-  const byLabel = { phishing: { total: 0, measured: 0 }, legitimate: { total: 0, measured: 0 } };
+  const byLabel = {
+    phishing: { total: 0, measured: 0 },
+    legitimate: { total: 0, measured: 0 },
+  };
   for (const entry of entries) byLabel[entry.label].total += 1;
   for (const outcome of outcomes) byLabel[outcome.label].measured += 1;
   return {
@@ -177,27 +204,171 @@ function countBy(outcomes, key) {
   return counts;
 }
 
-function buildMarkdownReport({ scope, promptVersion, forceProvider, totalEntries, processed, skipped, overall, byModel, coverage, byAnalysisMode }) {
+function defangUrl(value) {
+  try {
+    const parsed = new URL(value);
+    const protocol =
+      parsed.protocol === "https:"
+        ? "hxxps:"
+        : parsed.protocol === "http:"
+          ? "hxxp:"
+          : parsed.protocol;
+    const hostname = parsed.hostname.replaceAll(".", "[.]");
+    const port = parsed.port ? `:${parsed.port}` : "";
+    return `${protocol}//${hostname}${port}${parsed.pathname}${parsed.search}${parsed.hash}`;
+  } catch {
+    return "[invalid URL omitted]";
+  }
+}
+
+function defangTarget(value) {
+  const text = String(value ?? "");
+  return /^https?:\/\//i.test(text)
+    ? defangUrl(text)
+    : text.replaceAll(".", "[.]");
+}
+
+function toPersistedUrlFeatures(urlFeatures) {
+  if (!urlFeatures) return null;
+  const { score, tld, subdomainCount, whoisAgeDays, whoisSource, components } =
+    urlFeatures;
+  return {
+    score,
+    tld,
+    subdomainCount,
+    whoisAgeDays,
+    whoisSource,
+    components,
+  };
+}
+
+function toPersistedOutcome(outcome) {
+  const { url, urlFeatures, indicators, explanation, ...safeOutcome } = outcome;
+  return {
+    ...safeOutcome,
+    displayUrl: defangUrl(url),
+    urlFeatures: toPersistedUrlFeatures(urlFeatures),
+    indicatorCount: Array.isArray(indicators) ? indicators.length : 0,
+    explanationPresent:
+      typeof explanation === "string" && explanation.length > 0,
+  };
+}
+
+function sha256File(filePath) {
+  return crypto
+    .createHash("sha256")
+    .update(fs.readFileSync(filePath))
+    .digest("hex");
+}
+
+function currentGitCommit() {
+  const result = spawnSync("git", ["rev-parse", "HEAD"], {
+    cwd: path.resolve(__dirname, "../.."),
+    encoding: "utf8",
+    windowsHide: true,
+  });
+  return result.status === 0 ? result.stdout.trim() : null;
+}
+
+function buildProvenance({
+  limit,
+  forceProvider,
+  promptVersion,
+  delayMs,
+  scope,
+  outcomes,
+}) {
+  const rdapCache = loadFrozenRdapCache(RDAP_CACHE_PATH);
+  const observedModels = [
+    ...new Set(
+      outcomes
+        .map((outcome) => outcome.modelName)
+        .filter(
+          (modelName) => typeof modelName === "string" && modelName.length > 0,
+        ),
+    ),
+  ].sort();
+
+  return {
+    schemaVersion: 1,
+    generatedAt: new Date().toISOString(),
+    gitCommit: currentGitCommit(),
+    command: {
+      script: "ai/eval/evaluate.js",
+      limit,
+      provider: forceProvider || "auto",
+      promptVersion,
+      delayMs,
+      scope,
+    },
+    providerSelection: forceProvider ? "forced" : "automatic_fallback",
+    observedModels,
+    frozenInputs: {
+      pageCache: "verified_locally_against_cache_index",
+      cacheIndexSha256: sha256File(INDEX_PATH),
+      cacheIndexEntries: Object.keys(
+        JSON.parse(fs.readFileSync(INDEX_PATH, "utf8")),
+      ).length,
+      rdapCacheSha256: sha256File(RDAP_CACHE_PATH),
+      rdapCacheEntries: Object.keys(rdapCache.entries || {}).length,
+      rdapFrozenAt: rdapCache.frozenAt,
+      pageOrRdapRefetch: false,
+    },
+    outputSafety: {
+      rawUrlsPersisted: false,
+      rawPageContentPersisted: false,
+      freeTextModelOutputPersisted: false,
+      urlRepresentation: "defanged displayUrl",
+      urlFeatureDomainPersisted: false,
+    },
+  };
+}
+
+function buildMarkdownReport({
+  scope,
+  promptVersion,
+  forceProvider,
+  totalEntries,
+  processed,
+  skipped,
+  overall,
+  byModel,
+  coverage,
+  byAnalysisMode,
+}) {
   const lines = [];
-  lines.push(`# Évaluation RF-A9 — version de prompt \`${promptVersion}\` — scope \`${scope}\`${forceProvider ? ` — fournisseur forcé : ${forceProvider}` : ""}`);
+  lines.push(
+    `# Évaluation RF-A9 — version de prompt \`${promptVersion}\` — scope \`${scope}\`${forceProvider ? ` — fournisseur forcé : ${forceProvider}` : ""}`,
+  );
   lines.push("");
   if (scope === "content-only") {
-    lines.push("**Résultat content-only** : seules les captures `status=ok` sont mesurées. Ce n'est PAS le rappel end-to-end demandé par le cahier des charges — une entrée avec une capture morte/vide/refusée n'est jamais comptée comme un échec de détection ici, elle est simplement exclue. Utiliser `--scope=end-to-end` pour la mesure demandée par le cahier des charges.");
+    lines.push(
+      "**Résultat content-only** : seules les captures `status=ok` sont mesurées. Ce n'est PAS le rappel end-to-end demandé par le cahier des charges — une entrée avec une capture morte/vide/refusée n'est jamais comptée comme un échec de détection ici, elle est simplement exclue. Utiliser `--scope=end-to-end` pour la mesure demandée par le cahier des charges.",
+    );
   } else {
-    lines.push("**Résultat end-to-end** : toute entrée ayant un enregistrement de cache est mesurée, quel que soit son statut de capture. Les entrées sans texte de page exploitable sont analysées en mode `url_structural` ou `url_only` (ai/lib/contentQuality.js) plutôt qu'exclues. Seules les entrées jamais capturées (`not_captured`) restent hors mesure.");
+    lines.push(
+      "**Résultat end-to-end** : toute entrée ayant un enregistrement de cache est mesurée, quel que soit son statut de capture. Les entrées sans texte de page exploitable sont analysées en mode `url_structural` ou `url_only` (ai/lib/contentQuality.js) plutôt qu'exclues. Seules les entrées jamais capturées (`not_captured`) restent hors mesure.",
+    );
   }
   lines.push("");
-  lines.push(`Entrées traitées : ${processed} / ${totalEntries}. Exclues : ${JSON.stringify(skipped)}.`);
+  lines.push(
+    `Entrées traitées : ${processed} / ${totalEntries}. Exclues : ${JSON.stringify(skipped)}.`,
+  );
   lines.push("");
-  lines.push(`Couverture — global : ${coverage.overall.measured}/${coverage.overall.total} ; phishing : ${coverage.phishing.measured}/${coverage.phishing.total} (${formatPercent(coverage.phishing.total ? coverage.phishing.measured / coverage.phishing.total : null)}) ; légitime : ${coverage.legitimate.measured}/${coverage.legitimate.total} (${formatPercent(coverage.legitimate.total ? coverage.legitimate.measured / coverage.legitimate.total : null)}).`);
+  lines.push(
+    `Couverture — global : ${coverage.overall.measured}/${coverage.overall.total} ; phishing : ${coverage.phishing.measured}/${coverage.phishing.total} (${formatPercent(coverage.phishing.total ? coverage.phishing.measured / coverage.phishing.total : null)}) ; légitime : ${coverage.legitimate.measured}/${coverage.legitimate.total} (${formatPercent(coverage.legitimate.total ? coverage.legitimate.measured / coverage.legitimate.total : null)}).`,
+  );
   lines.push("");
   lines.push(`Modes d'analyse utilisés : ${JSON.stringify(byAnalysisMode)}.`);
   lines.push("");
-  lines.push("Décision binaire : `malicious` = positif prédit, `suspicious`/`legitimate` = négatif prédit. Positif réel = label `phishing`. `verdict=suspicious` n'est jamais compté comme `malicious`, même avec un score élevé.");
+  lines.push(
+    "Décision binaire : `malicious` = positif prédit, `suspicious`/`legitimate` = négatif prédit. Positif réel = label `phishing`. `verdict=suspicious` n'est jamais compté comme `malicious`, même avec un score élevé.",
+  );
   lines.push("");
   lines.push("| Groupe | n | TP | FP | FN | TN | Précision | Rappel | F1 |");
   lines.push("|---|---:|---:|---:|---:|---:|---:|---:|---:|");
-  const row = (name, m) => `| ${name} | ${m.n} | ${m.tp} | ${m.fp} | ${m.fn} | ${m.tn} | ${formatPercent(m.precision)} | ${formatPercent(m.recall)} | ${formatPercent(m.f1)} |`;
+  const row = (name, m) =>
+    `| ${name} | ${m.n} | ${m.tp} | ${m.fp} | ${m.fn} | ${m.tn} | ${formatPercent(m.precision)} | ${formatPercent(m.recall)} | ${formatPercent(m.f1)} |`;
   lines.push(row("**Global**", metricsFromMatrix(overall)));
   for (const [model, matrix] of Object.entries(byModel)) {
     lines.push(row(model, metricsFromMatrix(matrix)));
@@ -213,7 +384,11 @@ async function main() {
   const delayMs = args["delay-ms"] ? Number(args["delay-ms"]) : 0;
   const scope = args.scope || "content-only";
 
-  if (forceProvider && forceProvider !== "gemini" && forceProvider !== "nvidia") {
+  if (
+    forceProvider &&
+    forceProvider !== "gemini" &&
+    forceProvider !== "nvidia"
+  ) {
     console.error("--provider doit être 'gemini' ou 'nvidia'");
     process.exitCode = 1;
     return;
@@ -234,27 +409,40 @@ async function main() {
     return;
   }
 
-  console.error("[evaluate] Vérification d'intégrité du cache (ai/dataset/final/cache-index.json)...");
+  console.error(
+    "[evaluate] Vérification d'intégrité du cache (ai/dataset/final/cache-index.json)...",
+  );
   const mismatches = verifyIndexIntegrity(INDEX_PATH, CACHE_DIR);
   if (mismatches.length > 0) {
-    console.error(`[evaluate] ${mismatches.length} divergence(s) détectée(s) — refus de tourner :`);
-    for (const m of mismatches) console.error(`  - ${m.normalizedUrl} : ${m.reason}`);
-    console.error("[evaluate] Voir ai/dataset/README.md §6 (procédure de sauvegarde / restauration).");
+    console.error(
+      `[evaluate] ${mismatches.length} divergence(s) détectée(s) — refus de tourner :`,
+    );
+    for (const m of mismatches)
+      console.error(`  - ${defangTarget(m.normalizedUrl)} : ${m.reason}`);
+    console.error(
+      "[evaluate] Voir ai/dataset/README.md §6 (procédure de sauvegarde / restauration).",
+    );
     process.exitCode = 1;
     return;
   }
   console.error("[evaluate] Intégrité du cache OK.");
 
   if (!fs.existsSync(RDAP_CACHE_PATH)) {
-    console.error(`[evaluate] Cache RDAP gelé introuvable (${RDAP_CACHE_PATH}). Générer avec : node ai/dataset/lib/buildRdapCache.js`);
+    console.error(
+      `[evaluate] Cache RDAP gelé introuvable (${RDAP_CACHE_PATH}). Générer avec : node ai/dataset/lib/buildRdapCache.js`,
+    );
     process.exitCode = 1;
     return;
   }
   const lookupDomainAge = createFrozenLookupDomainAge(RDAP_CACHE_PATH);
-  console.error(`[evaluate] Cache RDAP gelé chargé (${RDAP_CACHE_PATH}) — aucune requête RDAP en direct pendant cette évaluation.`);
+  console.error(
+    `[evaluate] Cache RDAP gelé chargé (${RDAP_CACHE_PATH}) — aucune requête RDAP en direct pendant cette évaluation.`,
+  );
 
   const entries = loadDataset(limit);
-  console.error(`[evaluate] ${entries.length} entrées à traiter (scope=${scope}, limit=${limit ?? "aucune"}, provider=${forceProvider ?? "auto (Gemini→NVIDIA)"}, prompt-version=${promptVersion}).`);
+  console.error(
+    `[evaluate] ${entries.length} entrées à traiter (scope=${scope}, limit=${limit ?? "aucune"}, provider=${forceProvider ?? "auto (Gemini→NVIDIA)"}, prompt-version=${promptVersion}).`,
+  );
 
   const overall = emptyMatrix();
   const byModel = {};
@@ -263,13 +451,19 @@ async function main() {
   let processed = 0;
 
   for (const entry of entries) {
-    const outcome = await evaluateEntry(entry, { forceProvider, scope, lookupDomainAge });
+    const outcome = await evaluateEntry(entry, {
+      forceProvider,
+      scope,
+      lookupDomainAge,
+    });
     if (outcome.attempted && delayMs > 0) {
       await new Promise((resolve) => setTimeout(resolve, delayMs));
     }
     if (outcome.skip) {
       skipped[outcome.skip] = (skipped[outcome.skip] || 0) + 1;
-      console.error(`[evaluate]   ${entry.url} -> exclu (${outcome.skip})`);
+      console.error(
+        `[evaluate]   ${defangUrl(entry.url)} -> exclu (${outcome.skip})`,
+      );
       continue;
     }
     outcomes.push(outcome);
@@ -277,11 +471,15 @@ async function main() {
     updateMatrix(overall, outcome.classificationOutcome);
     byModel[outcome.modelUsed] = byModel[outcome.modelUsed] || emptyMatrix();
     updateMatrix(byModel[outcome.modelUsed], outcome.classificationOutcome);
-    console.error(`[evaluate]   ${entry.url} -> verdict=${outcome.verdict} mode=${outcome.analysisMode} modèle=${outcome.modelUsed} label=${outcome.label} outcome=${outcome.classificationOutcome}`);
+    console.error(
+      `[evaluate]   ${defangUrl(entry.url)} -> verdict=${outcome.verdict} mode=${outcome.analysisMode} modèle=${outcome.modelUsed} label=${outcome.label} outcome=${outcome.classificationOutcome}`,
+    );
   }
 
   const coverage = computeCoverage(entries, outcomes);
   const byAnalysisMode = countBy(outcomes, "analysisMode");
+  const byCaptureStatus = countBy(outcomes, "captureStatus");
+  const byVerdict = countBy(outcomes, "verdict");
 
   const report = buildMarkdownReport({
     scope,
@@ -302,13 +500,40 @@ async function main() {
   const suffix = `${forceProvider ? `-${forceProvider}` : ""}${scopeSuffix}`;
   const outPath = path.join(__dirname, `report-${promptVersion}${suffix}.md`);
   fs.writeFileSync(outPath, `${report}\n`);
-  const resultsPath = path.join(__dirname, `results-${promptVersion}${suffix}.json`);
+  const resultsPath = path.join(
+    __dirname,
+    `results-${promptVersion}${suffix}.json`,
+  );
+  const provenance = buildProvenance({
+    limit,
+    forceProvider,
+    promptVersion,
+    delayMs,
+    scope,
+    outcomes,
+  });
   fs.writeFileSync(
     resultsPath,
-    `${JSON.stringify({ promptVersion, provider: forceProvider || "auto", scope, coverage, byAnalysisMode, outcomes }, null, 2)}\n`,
+    `${JSON.stringify(
+      {
+        promptVersion,
+        provider: forceProvider || "auto",
+        scope,
+        coverage,
+        byAnalysisMode,
+        byCaptureStatus,
+        byVerdict,
+        provenance,
+        outcomes: outcomes.map(toPersistedOutcome),
+      },
+      null,
+      2,
+    )}\n`,
   );
   console.error(`\n[evaluate] Rapport écrit dans ${outPath}`);
-  console.error(`[evaluate] Prédictions détaillées écrites dans ${resultsPath}`);
+  console.error(
+    `[evaluate] Prédictions détaillées écrites dans ${resultsPath}`,
+  );
 }
 
 if (require.main === module) {
@@ -318,4 +543,16 @@ if (require.main === module) {
   });
 }
 
-module.exports = { evaluateEntry, metricsFromMatrix, updateMatrix, emptyMatrix, classificationOutcome, computeCoverage };
+module.exports = {
+  evaluateEntry,
+  metricsFromMatrix,
+  updateMatrix,
+  emptyMatrix,
+  classificationOutcome,
+  computeCoverage,
+  countBy,
+  defangUrl,
+  defangTarget,
+  toPersistedUrlFeatures,
+  toPersistedOutcome,
+};

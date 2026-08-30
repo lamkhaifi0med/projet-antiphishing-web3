@@ -8,9 +8,25 @@
         "formDescription": "Signalez une URL ou une adresse wallet suspecte.",
         "formFields": {
           "values": [
-            { "fieldLabel": "Type", "fieldName": "type", "fieldType": "dropdown", "fieldOptions": { "values": [{ "option": "url" }, { "option": "wallet" }] }, "requiredField": true },
-            { "fieldLabel": "URL ou adresse wallet", "fieldName": "value", "requiredField": true },
-            { "fieldLabel": "Contexte", "fieldName": "context", "fieldType": "textarea" },
+            {
+              "fieldLabel": "Type",
+              "fieldName": "type",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [{ "option": "url" }, { "option": "wallet" }]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "URL ou adresse wallet",
+              "fieldName": "value",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Contexte",
+              "fieldName": "context",
+              "fieldType": "textarea"
+            },
             { "fieldLabel": "Contact", "fieldName": "reporterContact" }
           ]
         },
@@ -32,7 +48,10 @@
         "contentType": "raw",
         "rawContentType": "application/json",
         "body": "={{ JSON.stringify({ type: $json['Type'], value: $json['URL ou adresse wallet'], context: $json['Contexte'] || undefined, reporterContact: $json['Contact'] || undefined }) }}",
-        "options": { "timeout": 45000 }
+        "options": {
+          "timeout": 45000,
+          "response": { "response": { "neverError": true } }
+        }
       },
       "id": "f86cb43f-1133-47cc-810d-90fc8184cd92",
       "name": "Appeler WF1",
@@ -43,8 +62,9 @@
     {
       "parameters": {
         "operation": "completion",
+        "respondWith": "showText",
+        "responseText": "={{ '<div style=\"font-family:system-ui,sans-serif;max-width:520px;margin:48px auto;text-align:center\">' + ($json.error === 'already_blacklisted' ? '<h2 style=\"color:#dc2626\">Deja blacklistee</h2><p>Cette cible est deja enregistree comme malveillante sur la blockchain' + ($json.since ? ' depuis le ' + new Date($json.since).toLocaleDateString('fr-FR') : '') + '.</p><p>Score : <strong>' + ($json.score ?? '?') + '/100</strong></p>' : ($json.status === 'queued' ? '<h2 style=\"color:#16a34a\">Signalement accepte</h2><p>Identifiant : <strong>' + $json.reportId + '</strong></p><p>L\\'analyse est en cours. Le resultat sera notifie sur Discord.</p>' : ($json.reportId ? '<h2>Signalement recu</h2><p>Identifiant : <strong>' + $json.reportId + '</strong> (statut : ' + ($json.status || 'inconnu') + ')</p>' : '<h2>Signalement transmis</h2><p>' + ($json.message || 'Consultez le canal Discord pour le suivi.') + '</p>'))) + '<a href=\"/form/64724547-5ddd-4646-bf07-8dbd2f38be30\" style=\"display:inline-block;margin-top:24px;padding:12px 24px;background:#ff6d5a;color:#fff;border-radius:8px;text-decoration:none;font-weight:600\">Envoyer un autre signalement</a><br/><a href=\"http://localhost:8080/\" style=\"display:inline-block;margin-top:14px;color:#64748b;font-size:14px;text-decoration:none\">&larr; Retour au portail Sentinel</a></div>' }}",
         "completionTitle": "Signalement traite",
-        "completionMessage": "={{ $json.status === 'queued' ? 'Signalement accepte. Identifiant : ' + $json.reportId : JSON.stringify($json) }}",
         "options": {}
       },
       "id": "1663795d-832e-48d5-b129-b3e31a40e53e",
@@ -56,8 +76,12 @@
   ],
   "pinData": {},
   "connections": {
-    "Formulaire signalement": { "main": [[{ "node": "Appeler WF1", "type": "main", "index": 0 }]] },
-    "Appeler WF1": { "main": [[{ "node": "Afficher resultat", "type": "main", "index": 0 }]] }
+    "Formulaire signalement": {
+      "main": [[{ "node": "Appeler WF1", "type": "main", "index": 0 }]]
+    },
+    "Appeler WF1": {
+      "main": [[{ "node": "Afficher resultat", "type": "main", "index": 0 }]]
+    }
   },
   "active": false,
   "settings": { "executionOrder": "v1" },

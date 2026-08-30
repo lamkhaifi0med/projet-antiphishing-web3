@@ -262,7 +262,7 @@ n'est publié sur l'hôte. Ajouter dans `n8n/.env` :
 GEMINI_API_KEY=<clé Gemini>
 GEMINI_MODEL_PRIMARY=gemini-flash-lite-latest
 NVIDIA_API_KEY=<clé NVIDIA NIM>
-NVIDIA_MODEL_FALLBACK=meta/llama-3.1-8b-instruct
+NVIDIA_MODEL_FALLBACK=openai/gpt-oss-20b
 ```
 
 Flux appliqué : capture HTTP(S) bornée et protégée SSRF, extraction texte

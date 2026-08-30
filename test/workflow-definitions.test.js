@@ -8,9 +8,14 @@ const assert = require("node:assert/strict");
 const workflowPath = path.resolve(__dirname, "../n8n/workflows/WF4-check.json");
 const workflowText = fs.readFileSync(workflowPath, "utf8");
 const workflow = JSON.parse(workflowText);
+const proxyPath = path.resolve(__dirname, "../n8n/proxy/nginx.conf");
+const proxyText = fs.readFileSync(proxyPath, "utf8");
 const wf3Path = path.resolve(__dirname, "../n8n/workflows/WF3-action.json");
 const wf3Text = fs.readFileSync(wf3Path, "utf8");
 const wf3 = JSON.parse(wf3Text);
+const wf2Path = path.resolve(__dirname, "../n8n/workflows/WF2_Analyse.json");
+const wf2Text = fs.readFileSync(wf2Path, "utf8");
+const wf2 = JSON.parse(wf2Text);
 
 function node(name) {
   const found = workflow.nodes.find((candidate) => candidate.name === name);
@@ -20,7 +25,7 @@ function node(name) {
 
 function runCodeNode(name, json) {
   const code = node(name).parameters.jsCode;
-  return Function("$json", code)(json);
+  return Function("$json", "URL", code)(json, undefined);
 }
 
 function wf3Node(name) {
@@ -37,6 +42,26 @@ function wf3Connections(name, output = 0) {
   return wf3.connections[name]?.main?.[output] || [];
 }
 
+function wf2Node(name) {
+  const found = wf2.nodes.find((candidate) => candidate.name === name);
+  assert.ok(found, `WF2 node not found: ${name}`);
+  return found;
+}
+
+function wf2Targets(name, output = 0) {
+  return (wf2.connections[name]?.main?.[output] || []).map(
+    (connection) => connection.node,
+  );
+}
+
+function runWf2CodeNode(name, json, upstream = {}) {
+  const code = wf2Node(name).parameters.jsCode;
+  const select = (nodeName) => ({
+    first: () => ({ json: upstream[nodeName] }),
+  });
+  return Function("$json", "$", code)(json, select);
+}
+
 test("WF4 is inactive on import and exposes the specified GET /check webhook", () => {
   assert.equal(workflow.active, false);
   assert.equal(node("Public Check Webhook").parameters.httpMethod, "GET");
@@ -44,6 +69,17 @@ test("WF4 is inactive on import and exposes the specified GET /check webhook", (
   assert.equal(
     node("Public Check Webhook").parameters.responseMode,
     "responseNode",
+  );
+});
+
+test("WF4 proxy preserves the complete public check query string", () => {
+  const checkLocation = proxyText.match(
+    /location = \/webhook\/check \{[\s\S]*?\n    \}/,
+  );
+  assert.ok(checkLocation, "WF4 proxy location not found");
+  assert.match(
+    checkLocation[0],
+    /proxy_pass \$upstream\/webhook\/check\$is_args\$args;/,
   );
 });
 
@@ -62,6 +98,10 @@ test("WF4 bridge call uses encrypted Header Auth credentials and the internal UR
   assert.match(bridge.parameters.url, /internal\/check/);
   assert.equal(bridge.parameters.options.response.response.neverError, true);
   assert.equal(bridge.parameters.options.response.response.fullResponse, true);
+  assert.equal(
+    bridge.parameters.options.response.response.responseFormat,
+    "autodetect",
+  );
 });
 
 test("WF4 query validation accepts safe URL and wallet inputs", () => {
@@ -92,6 +132,8 @@ test("WF4 query validation rejects unsafe and unexpected inputs", () => {
     { query: { type: "email", value: "test@example.invalid" } },
     { query: { type: "url", value: "not-a-url" } },
     { query: { type: "url", value: "https://user:pass@example.invalid" } },
+    { query: { type: "url", value: "https://example.invalid:70000/path" } },
+    { query: { type: "url", value: "https://example.invalid/a path" } },
     { query: { type: "wallet", value: "0x1234" } },
     {
       query: {
@@ -160,6 +202,164 @@ test("WF4 public response code masks internal failures", () => {
   );
 });
 
+test("WF2 invokes WF3 with exactly its nine-field internal contract", () => {
+  const execute = wf2Node("Executer WF3");
+  assert.equal(execute.type, "n8n-nodes-base.executeWorkflow");
+  assert.equal(execute.parameters.source, "database");
+  assert.equal(execute.parameters.workflowId.value, "anti-phishing-wf3-action");
+  assert.equal(execute.parameters.mode, "once");
+  assert.equal(execute.parameters.options.waitForSubWorkflow, true);
+  assert.equal(execute.onError, "continueErrorOutput");
+
+  const result = runWf2CodeNode(
+    "Preparer entree WF3",
+    {},
+    {
+      "Valider WF2": {
+        reportId: "report-contract",
+        type: "url",
+        value: "https://safe-example.invalid/path",
+        ignored: "must-not-leak",
+      },
+      "Preparer resultat": {
+        verdict: "malicious",
+        category: "phishing",
+        scoreFinal: 91,
+        indicators: ["credential\nform", "", 42, "redirect"],
+        internal: "must-not-leak",
+      },
+    },
+  );
+
+  assert.deepEqual(result, [
+    {
+      json: {
+        reportId: "report-contract",
+        type: "url",
+        value: "https://safe-example.invalid/path",
+        verdict: "malicious",
+        category: "phishing",
+        scoreFinal: 91,
+        indicators: ["credential form", "redirect"],
+        llmConfidence: null,
+        featureScore: null,
+      },
+    },
+  ]);
+  assert.deepEqual(Object.keys(result[0].json), [
+    "reportId",
+    "type",
+    "value",
+    "verdict",
+    "category",
+    "scoreFinal",
+    "indicators",
+    "llmConfidence",
+    "featureScore",
+  ]);
+});
+
+test("WF2 routes only successful URL analyses and wallet reviews to WF3", () => {
+  assert.deepEqual(wf2Targets("Journaliser resultat"), ["Preparer entree WF3"]);
+  assert.deepEqual(wf2Targets("Journaliser fin alternative"), [
+    "Wallet eligible WF3?",
+    "Echec a notifier?",
+  ]);
+  assert.deepEqual(wf2Targets("Wallet eligible WF3?", 0), [
+    "Preparer entree WF3",
+  ]);
+  assert.deepEqual(wf2Targets("Wallet eligible WF3?", 1), []);
+  assert.deepEqual(wf2Targets("Preparer entree WF3"), ["Executer WF3"]);
+  assert.deepEqual(wf2Targets("Executer WF3", 0), ["Preparer resultat WF3"]);
+  assert.deepEqual(wf2Targets("Executer WF3", 1), ["Preparer echec WF3"]);
+
+  const walletGate = JSON.stringify(wf2Node("Wallet eligible WF3?").parameters);
+  assert.match(walletGate, /Valider WF2/);
+  assert.match(walletGate, /wallet/);
+});
+
+test("WF2 journals only safe WF3 terminal fields and fails closed", () => {
+  const txHash = `0x${"a".repeat(64)}`;
+  const valid = runWf2CodeNode("Preparer resultat WF3", {
+    reportId: "report-safe",
+    status: "reported",
+    txHash,
+    error: null,
+    claim: { secret: "must-not-leak" },
+  });
+  assert.deepEqual(valid, [
+    {
+      json: { status: "reported", txHash, error: null },
+    },
+  ]);
+
+  const safeFailure = runWf2CodeNode("Preparer resultat WF3", {
+    status: "failed",
+    txHash: null,
+    error: "CHAIN_TIMEOUT",
+  });
+  assert.deepEqual(safeFailure, [
+    {
+      json: { status: "failed", txHash: null, error: "CHAIN_TIMEOUT" },
+    },
+  ]);
+
+  const invalid = runWf2CodeNode("Preparer resultat WF3", {
+    status: "unexpected",
+    txHash: "0xabc",
+    error: "internal detail",
+  });
+  assert.deepEqual(invalid, [
+    {
+      json: {
+        status: "failed",
+        txHash: null,
+        error: "WF3_INVALID_RESULT",
+      },
+    },
+  ]);
+
+  const unconfirmed = runWf2CodeNode("Preparer resultat WF3", {
+    status: "reported",
+    txHash: "0xabc",
+    error: "sensitive provider detail",
+  });
+  assert.deepEqual(unconfirmed, [
+    {
+      json: {
+        status: "failed",
+        txHash: null,
+        error: "WF3_INVALID_RESULT",
+      },
+    },
+  ]);
+
+  const executionFailure = runWf2CodeNode("Preparer echec WF3", {
+    error: "sensitive runtime exception",
+  });
+  assert.deepEqual(executionFailure, [
+    {
+      json: {
+        status: "failed",
+        txHash: null,
+        error: "WF3_EXECUTION_FAILED",
+      },
+    },
+  ]);
+
+  for (const source of ["Preparer resultat WF3", "Preparer echec WF3"]) {
+    assert.deepEqual(wf2Targets(source), ["Journaliser resultat WF3"]);
+  }
+  const journal = wf2Node("Journaliser resultat WF3");
+  assert.equal(journal.parameters.authentication, "genericCredentialType");
+  assert.equal(journal.parameters.genericAuthType, "httpHeaderAuth");
+  assert.match(journal.parameters.url, /Valider WF2/);
+  assert.deepEqual(journal.credentials.httpHeaderAuth, {
+    id: "REPLACE_WITH_BRIDGE_SHARED_SECRET_CREDENTIAL_ID",
+    name: "Bridge Shared Secret",
+  });
+});
+
 test("WF3 imports inactive and can only be called as an internal sub-workflow", () => {
   assert.equal(wf3.active, false);
   assert.equal(
@@ -206,6 +406,11 @@ test("every WF3 bridge call uses the encrypted Header Auth credential", () => {
       bridge.parameters.url,
       new RegExp(route.replaceAll("/", "\\/")),
     );
+    assert.equal(
+      bridge.parameters.options.response.response.responseFormat,
+      "autodetect",
+      `${name} doit resoudre la reponse JSON d'un body raw`,
+    );
     assert.deepEqual(bridge.credentials.httpHeaderAuth, {
       id: "REPLACE_WITH_CHAIN_BRIDGE_CREDENTIAL_ID",
       name: "Chain Bridge Header Auth",
@@ -219,58 +424,46 @@ test("every WF3 bridge call uses the encrypted Header Auth credential", () => {
 });
 
 test("WF3 wiring cannot reach Discord without a persisted winning claim", () => {
-  assert.deepEqual(wf3Targets("When Called by WF2"), [
-    "Execute Secured WF3",
-    "Merge Execution Context",
-  ]);
+  assert.deepEqual(wf3Targets("When Called by WF2"), ["Execute Secured WF3"]);
   assert.deepEqual(wf3Targets("Execute Secured WF3"), [
-    "Merge Execution Context",
-  ]);
-  assert.deepEqual(wf3Targets("Merge Execution Context"), [
     "Final Alert Required?",
   ]);
   assert.deepEqual(wf3Targets("Final Alert Required?", 0), [
     "Claim Final Alert",
   ]);
-  assert.deepEqual(wf3Targets("Final Alert Required?", 1), []);
-  assert.deepEqual(wf3Targets("Claim Final Alert"), ["Dispatch Authorized?"]);
-  assert.deepEqual(wf3Targets("Dispatch Authorized?", 0), [
-    "Alerts Channel?",
-    "Merge Claim and Outcome",
+  assert.deepEqual(wf3Targets("Final Alert Required?", 1), [
+    "Build WF3 Result",
   ]);
-  assert.deepEqual(wf3Targets("Dispatch Authorized?", 1), []);
+  assert.deepEqual(wf3Targets("Claim Final Alert"), ["Dispatch Authorized?"]);
+  assert.deepEqual(wf3Targets("Dispatch Authorized?", 0), ["Alerts Channel?"]);
+  assert.deepEqual(wf3Targets("Dispatch Authorized?", 1), ["Build WF3 Result"]);
   assert.deepEqual(wf3Targets("Alerts Channel?", 0), ["Send Alerts Discord"]);
   assert.deepEqual(wf3Targets("Alerts Channel?", 1), [
     "Send Manual Review Discord",
   ]);
 
-  for (const name of ["Merge Execution Context", "Merge Claim and Outcome"]) {
-    const merge = wf3Node(name);
-    assert.equal(merge.type, "n8n-nodes-base.merge");
-    assert.equal(merge.typeVersion, 3.2);
-    assert.equal(merge.parameters.mode, "combine");
-    assert.equal(merge.parameters.combineBy, "combineByPosition");
-    assert.equal(merge.parameters.numberInputs, 2);
-    assert.equal(
-      merge.parameters.options.clashHandling.values.resolveClash,
-      "preferInput2",
+  assert.equal(
+    wf3.nodes.some((candidate) => candidate.type === "n8n-nodes-base.merge"),
+    false,
+  );
+
+  const claimBody = wf3Node("Claim Final Alert").parameters.body;
+  for (const field of [
+    "reportId",
+    "type",
+    "value",
+    "verdict",
+    "category",
+    "scoreFinal",
+    "indicators",
+  ]) {
+    assert.match(
+      claimBody,
+      new RegExp(
+        `\\$\\('When Called by WF2'\\)\\.first\\(\\)\\.json\\.${field}`,
+      ),
     );
   }
-
-  assert.equal(
-    wf3Connections("When Called by WF2").find(
-      (connection) => connection.node === "Merge Execution Context",
-    ).index,
-    0,
-  );
-  assert.equal(wf3Connections("Execute Secured WF3")[0].index, 1);
-  assert.equal(
-    wf3Connections("Dispatch Authorized?").find(
-      (connection) => connection.node === "Merge Claim and Outcome",
-    ).index,
-    0,
-  );
-  assert.equal(wf3Connections("Classify Discord Outcome")[0].index, 1);
 });
 
 test("WF3 Discord nodes use separate encrypted credentials and safe bridge output", () => {
@@ -306,11 +499,9 @@ test("WF3 always classifies Discord delivery and settles the exact claim", () =>
     "Classify Discord Outcome",
   ]);
   assert.deepEqual(wf3Targets("Classify Discord Outcome"), [
-    "Merge Claim and Outcome",
-  ]);
-  assert.deepEqual(wf3Targets("Merge Claim and Outcome"), [
     "Settle Final Alert",
   ]);
+  assert.deepEqual(wf3Targets("Settle Final Alert"), ["Build WF3 Result"]);
 
   const classify = wf3Node("Classify Discord Outcome").parameters.jsCode;
   assert.deepEqual(Function("$json", classify)({ id: "123456789012345678" }), [
@@ -326,11 +517,20 @@ test("WF3 always classifies Discord delivery and settles the exact claim", () =>
     { json: { outcome: "uncertain" } },
   ]);
 
-  assert.doesNotMatch(wf3Text, /\$\(['"]/);
   const settleBody = wf3Node("Settle Final Alert").parameters.body;
-  assert.match(settleBody, /\$json\.reportId/);
-  assert.match(settleBody, /\$json\.claim/);
+  assert.match(
+    settleBody,
+    /\$\('Claim Final Alert'\)\.first\(\)\.json\.reportId/,
+  );
+  assert.match(settleBody, /\$\('Claim Final Alert'\)\.first\(\)\.json\.claim/);
   assert.match(settleBody, /\$json\.outcome/);
   assert.match(settleBody, /claim/);
   assert.match(settleBody, /outcome/);
+
+  const resultCode = wf3Node("Build WF3 Result").parameters.jsCode;
+  assert.match(resultCode, /Execute Secured WF3/);
+  assert.match(resultCode, /reportId/);
+  assert.match(resultCode, /status/);
+  assert.match(resultCode, /txHash/);
+  assert.match(resultCode, /errorCode/);
 });

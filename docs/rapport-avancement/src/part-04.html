@@ -1,0 +1,690 @@
+<!-- PAGE 13 — DATASET -->
+<section class="page compact" data-page="13">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span
+    ><span>Dataset et capture</span>
+  </div>
+  <div class="section-title">
+    <div class="index">12</div>
+    <div>
+      <h1>Données traçables et capture isolée</h1>
+      <p class="subtitle">
+        Le jeu final sépare développement, mesure officielle et cas historiques,
+        sans refetch pendant l’évaluation.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid-4">
+    <div class="stat">
+      <span class="value">36</span
+      ><span class="label">URLs phishing dans le jeu final</span>
+    </div>
+    <div class="stat">
+      <span class="value">260</span
+      ><span class="label">URLs légitimes dans le jeu final</span>
+    </div>
+    <div class="stat">
+      <span class="value">10</span
+      ><span class="label">cas historiques documentés, hors mesure</span>
+    </div>
+    <div class="stat">
+      <span class="value">12,2&nbsp;%</span
+      ><span class="label"
+        >part de phishing dans le jeu final déséquilibré</span
+      >
+    </div>
+  </div>
+
+  <h3>Trois périmètres distincts</h3>
+  <table class="small">
+    <thead>
+      <tr>
+        <th>Jeu</th>
+        <th>Usage</th>
+        <th>Nature</th>
+        <th>Règle d’évaluation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="mono">dev/</span></td>
+        <td>Itération sur prompts et client.</td>
+        <td>
+          Cas synthétiques sur domaines <span class="mono">.invalid</span>,
+          contenu inclus.
+        </td>
+        <td>Jamais utilisé comme résultat final.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">final/</span></td>
+        <td>Mesure précision, rappel et F1.</td>
+        <td>36 phishing sourcés + 260 sites Web3 légitimes.</td>
+        <td>Cache figé, intégrité vérifiée, aucun refetch.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">historical.json</span></td>
+        <td>Illustration de patterns anciens.</td>
+        <td>
+          10 menaces issues d’une source vieillissante, majoritairement mortes.
+        </td>
+        <td>Exclu de la mesure officielle.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Pipeline de capture</h3>
+  <div class="flow">
+    <div class="node">
+      <span class="num">1</span><b>Candidat</b
+      ><span>source, date,<br />référence figée</span>
+    </div>
+    <div class="node">
+      <span class="num">2</span><b>Conteneur</b
+      ><span>fetch isolé,<br />sans JavaScript</span>
+    </div>
+    <div class="node">
+      <span class="num">3</span><b>Contrôles</b
+      ><span>SSRF, timeout,<br />type et taille</span>
+    </div>
+    <div class="node">
+      <span class="num">4</span><b>Représentation</b
+      ><span>texte ≤ 20&nbsp;000<br />digest ≤ 5&nbsp;000</span>
+    </div>
+    <div class="node">
+      <span class="num">5</span><b>Cache</b
+      ><span>privé + index<br />SHA-256 versionné</span>
+    </div>
+  </div>
+
+  <p class="small">
+    Le <strong>textExcerpt</strong> alimente l’analyse sémantique. Le
+    <strong>structuralDigest</strong> conserve des métadonnées de formulaires,
+    domaines de scripts et courts extraits autour de motifs Web3 que le texte
+    visible ne révèle pas. Le cache brut reste hors Git car il contient du
+    contenu hostile ; son index versionné permet de vérifier qu’il n’a pas été
+    remplacé ou modifié.
+  </p>
+
+  <h3>Résultat de la capture du 31 juillet 2026</h3>
+  <table class="micro">
+    <thead>
+      <tr>
+        <th>Jeu</th>
+        <th class="number">n</th>
+        <th class="number">ok</th>
+        <th class="number">dead</th>
+        <th class="number">empty</th>
+        <th class="number">challenged</th>
+        <th class="number">refused</th>
+        <th class="number">skipped</th>
+        <th class="number">Taux ok</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Phishing</td>
+        <td class="number">36</td>
+        <td class="number">11</td>
+        <td class="number">10</td>
+        <td class="number">10</td>
+        <td class="number">0</td>
+        <td class="number">5</td>
+        <td class="number">0</td>
+        <td class="number"><strong>30,6 %</strong></td>
+      </tr>
+      <tr>
+        <td>Légitime</td>
+        <td class="number">260</td>
+        <td class="number">187</td>
+        <td class="number">10</td>
+        <td class="number">45</td>
+        <td class="number">1</td>
+        <td class="number">16</td>
+        <td class="number">1</td>
+        <td class="number"><strong>71,9 %</strong></td>
+      </tr>
+      <tr>
+        <td>Historique</td>
+        <td class="number">10</td>
+        <td class="number">0</td>
+        <td class="number">8</td>
+        <td class="number">2</td>
+        <td class="number">0</td>
+        <td class="number">0</td>
+        <td class="number">0</td>
+        <td class="number"><strong>0 %</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="grid-2">
+    <div class="card soft small">
+      <h4>Mortalité des menaces</h4>
+      <p>
+        Neuf des dix échecs <span class="mono">dead</span> phishing sont des
+        <span class="mono">ENOTFOUND</span>&nbsp;: les domaines ne résolvaient
+        déjà plus au moment de la capture. Capturer tôt est donc déterminant.
+      </p>
+    </div>
+    <div class="card soft small">
+      <h4>Longueur du contenu</h4>
+      <p>
+        La médiane du texte phishing capturé est de 285 caractères contre
+        3&nbsp;756 pour le légitime, soit environ treize fois moins. Ce signal
+        peut devenir un biais si le modèle apprend «&nbsp;court =
+        phishing&nbsp;».
+      </p>
+    </div>
+  </div>
+
+  <h3>Biais et limites explicitement documentés</h3>
+  <ul class="arrows small">
+    <li>
+      Le jeu phishing est dominé par
+      <span class="mono">fake_exchange</span> (19/36)&nbsp;; les métriques par
+      catégorie ne sont pas statistiquement exploitables.
+    </li>
+    <li>
+      Les catégories phishing sont souvent déduites du domaine et marquées
+      <span class="mono">unverified</span>&nbsp;; seule la vérité terrain
+      binaire phishing/légitime est utilisée.
+    </li>
+    <li>
+      Des pages de login, support, airdrop officiel et wallet-connect légitimes
+      ont été ajoutées pour réduire le confondant «&nbsp;page d’action =
+      phishing&nbsp;».
+    </li>
+    <li>
+      Les timeouts de certains sites légitimes peuvent provenir d’un filtrage
+      réseau ou géographique, mais cette hypothèse n’est pas déclarée comme un
+      fait.
+    </li>
+  </ul>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Dataset</span><span class="page-number">13</span>
+  </div>
+</section>
+
+<!-- PAGE 14 — ÉVALUATION IA -->
+<section class="page" data-page="14">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span><span>Évaluation IA v1</span>
+  </div>
+  <div class="section-title">
+    <div class="index">13</div>
+    <div>
+      <h1>Résultats IA v1&nbsp;: précis mais incomplets</h1>
+      <p class="subtitle">
+        L’évaluation stricte révèle zéro faux positif, mais sept menaces non
+        classées « malicious ».
+      </p>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="stat">
+      <span class="value">100&nbsp;%</span
+      ><span class="label">précision<br />6 TP / 0 FP</span>
+    </div>
+    <div class="stat">
+      <span class="value">46,2&nbsp;%</span
+      ><span class="label">rappel<br />6 TP / 7 FN</span>
+    </div>
+    <div class="stat">
+      <span class="value">63,2&nbsp;%</span
+      ><span class="label">F1 harmonique<br />précision / rappel</span>
+    </div>
+  </div>
+
+  <h3>Protocole du run conservé</h3>
+  <p>
+    Le rapport v1 contient 40 entrées candidates, dont 32 traitées et 8 exclues
+    comme non mesurables (<span class="mono">dead: 6</span>,
+    <span class="mono">refused: 2</span>). La classification est volontairement
+    stricte&nbsp;: seul <span class="mono">verdict === "malicious"</span> compte
+    comme prédiction positive ; <span class="mono">suspicious</span> reste une
+    décision de revue manuelle et est donc négative pour le calcul du rappel.
+  </p>
+
+  <div class="split-60">
+    <div>
+      <h3>Matrice de confusion</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Réalité / prédiction</th>
+            <th class="number">Malicious</th>
+            <th class="number">Non malicious</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Phishing</strong></td>
+            <td class="number">TP = 6</td>
+            <td class="number">FN = 7</td>
+          </tr>
+          <tr>
+            <td><strong>Légitime</strong></td>
+            <td class="number">FP = 0</td>
+            <td class="number">TN = 19</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card blue small">
+      <h4>Formules</h4>
+      <p>Précision = TP / (TP + FP)<br />Rappel = TP / (TP + FN)</p>
+      <p>F1 = 2 × précision × rappel / (précision + rappel)</p>
+      <p class="mb-0">
+        <strong>Cible&nbsp;:</strong> précision ≥ 85&nbsp;% et rappel ≥
+        80&nbsp;%.
+      </p>
+    </div>
+  </div>
+
+  <h3>Analyse par chemin d’exécution</h3>
+  <table class="small">
+    <thead>
+      <tr>
+        <th>Groupe</th>
+        <th class="number">n</th>
+        <th class="number">TP</th>
+        <th class="number">FP</th>
+        <th class="number">FN</th>
+        <th class="number">TN</th>
+        <th>Lecture</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Gemini</strong></td>
+        <td class="number">7</td>
+        <td class="number">6</td>
+        <td class="number">0</td>
+        <td class="number">0</td>
+        <td class="number">1</td>
+        <td>100 % précision et rappel sur ce sous-ensemble très réduit.</td>
+      </tr>
+      <tr>
+        <td><strong>Aucun modèle</strong></td>
+        <td class="number">25</td>
+        <td class="number">0</td>
+        <td class="number">0</td>
+        <td class="number">7</td>
+        <td class="number">18</td>
+        <td>Le court-circuit déterministe produit tous les faux négatifs.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout danger">
+    <strong>Cause racine localisée.</strong> Les sept faux négatifs ne
+    proviennent pas d’une mauvaise réponse Gemini. Ils appartiennent tous au
+    groupe <span class="mono">none</span>&nbsp;: pour un texte trop court ou une
+    page de challenge, <span class="mono">assessContentQuality()</span> interdit
+    tout appel au modèle et force <span class="mono">suspicious</span>. La règle
+    protège la précision, mais rend le détecteur aveugle à des indices URL ou
+    structurels encore disponibles.
+  </div>
+
+  <h3>Ce que les chiffres permettent — et ne permettent pas — de conclure</h3>
+  <div class="grid-2">
+    <div class="card accent small">
+      <h4>Conclusions valides</h4>
+      <ul class="checks">
+        <li>
+          Le run n’a produit aucun faux positif parmi 19 cas légitimes mesurés.
+        </li>
+        <li>
+          Le rappel global est inférieur de 33,8 points à la cible de 80 %.
+        </li>
+        <li>
+          Le point de blocage est la politique de contenu, pas le sous-ensemble
+          Gemini observé.
+        </li>
+      </ul>
+    </div>
+    <div class="card accent small">
+      <h4>Conclusions interdites</h4>
+      <ul class="arrows">
+        <li>Ne pas généraliser « Gemini = 100 % » à partir de sept cas.</li>
+        <li>Ne pas présenter la cible IA comme atteinte.</li>
+        <li>
+          Ne pas compter <span class="mono">suspicious</span> comme malveillant
+          pour améliorer artificiellement le rappel.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warning small">
+    <strong>Reproductibilité à renforcer.</strong> Le rapport v1 ne consigne pas
+    encore explicitement le commit, le hash de l’index, la date, la commande
+    exacte, le modèle et les versions de prompts. Le prochain run doit
+    enregistrer ces éléments sans modifier ni écraser le rapport v1.
+  </div>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Évaluation IA</span
+    ><span class="page-number">14</span>
+  </div>
+</section>
+
+<!-- PAGE 15 — RECALL V2 -->
+<section class="page compact" data-page="15">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span><span>Plan Recall v2</span>
+  </div>
+  <div class="section-title">
+    <div class="index">14</div>
+    <div>
+      <h1>Améliorer le rappel sans tricher</h1>
+      <p class="subtitle">
+        Le seuil de 200 caractères doit sélectionner un mode d’analyse, et non
+        imposer à lui seul le verdict.
+      </p>
+    </div>
+  </div>
+
+  <div class="callout warning small mt-0">
+    <strong>Statut.</strong> La spécification Recall v2 est documentée mais
+    n’est pas encore implémentée dans l’état audité. Cette page décrit le
+    travail planifié, pas un résultat acquis.
+  </div>
+
+  <h3>Trois modes fondés sur les preuves disponibles</h3>
+  <div class="grid-3">
+    <div class="card accent">
+      <span class="badge">Mode 1</span>
+      <h4>combined</h4>
+      <p class="small">
+        Texte exploitable&nbsp;: URL, features déterministes, extrait textuel et
+        digest structurel alimentent le même cadre de validation.
+      </p>
+    </div>
+    <div class="card accent">
+      <span class="badge">Mode 2</span>
+      <h4>url_structural</h4>
+      <p class="small">
+        Texte court mais structure utile&nbsp;: champs de formulaire, scripts
+        externes et motifs Web3 restent analysables.
+      </p>
+    </div>
+    <div class="card accent">
+      <span class="badge">Mode 3</span>
+      <h4>url_only</h4>
+      <p class="small">
+        Contenu absent, vide ou challenge&nbsp;: analyser l’URL et ses features,
+        sans considérer l’absence comme preuve.
+      </p>
+    </div>
+  </div>
+
+  <h3>Features URL déterministes prévues</h3>
+  <div class="code-panel">
+    scoreURL = 0,30 × scoreTLD + 0,25 × scoreAgeDomaine + 0,20 × scoreHomoglyphe
+    + 0,15 × scoreSousDomaines + 0,10 × scoreRaccourcisseur
+  </div>
+  <div class="grid-2">
+    <ul class="checks small">
+      <li>
+        Parser standard <span class="mono">URL</span> et Public Suffix List pour
+        le domaine enregistrable.
+      </li>
+      <li>Liste fermée de TLD suspects et de raccourcisseurs.</li>
+      <li>
+        Âge RDAP figé dans le cache ; aucune requête réseau pendant
+        l’évaluation.
+      </li>
+      <li>Détection punycode et table documentée de confusions visuelles.</li>
+    </ul>
+    <ul class="checks small">
+      <li>
+        Nombre de sous-domaines calculé avant le domaine enregistrable, jamais
+        depuis le path.
+      </li>
+      <li>Valeur neutre 0,5 lorsque l’âge du domaine est indisponible.</li>
+      <li>
+        Une seule feature ne suffit pas automatiquement à déclarer
+        <span class="mono">malicious</span>.
+      </li>
+      <li>Aucune URL du jeu final codée en dur dans la logique.</li>
+    </ul>
+  </div>
+
+  <h3>Corriger la sémantique de confiance</h3>
+  <p>
+    Le champ <span class="mono">confidence</span> mesure la confiance dans le
+    verdict retourné, et non le risque de phishing. La transformation prévue est
+    donc&nbsp;:
+  </p>
+  <table class="small">
+    <thead>
+      <tr>
+        <th>Verdict</th>
+        <th>Risque LLM utilisé</th>
+        <th>Exemple</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="mono">malicious</span></td>
+        <td><span class="mono">confidence</span></td>
+        <td>malicious 0,90 → risque 0,90</td>
+      </tr>
+      <tr>
+        <td><span class="mono">legitimate</span></td>
+        <td><span class="mono">1 − confidence</span></td>
+        <td>legitimate 0,98 → risque 0,02</td>
+      </tr>
+      <tr>
+        <td><span class="mono">suspicious</span></td>
+        <td>0,50</td>
+        <td>Cas ambigu → risque neutre, revue manuelle</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="small">
+    Le score final devient <strong>0,7 × risque LLM + 0,3 × score URL</strong>.
+    Une feature forte ne peut toutefois pas convertir silencieusement un verdict
+    légitime ou suspect en transaction&nbsp;: le garde-fou
+    <span class="mono">verdict === "malicious"</span> demeure.
+  </p>
+
+  <h3>Plan de validation v2</h3>
+  <div class="grid-2">
+    <div class="card blue small">
+      <h4>Tests à ajouter</h4>
+      <ul>
+        <li>Sélection des trois modes et métadonnées associées.</li>
+        <li>
+          URL invalide, IP littérale, <span class="mono">co.uk</span>, punycode
+          et domaines hébergés.
+        </li>
+        <li>
+          Aucune fuite de label, source ou catégorie attendue dans le prompt.
+        </li>
+        <li>Fallback, retries et validation identiques pour chaque mode.</li>
+      </ul>
+    </div>
+    <div class="card blue small">
+      <h4>Comparaison honnête</h4>
+      <ul>
+        <li>Conserver le cache et le rapport v1 inchangés.</li>
+        <li>Rejouer le même périmètre et documenter tous les paramètres.</li>
+        <li>Séparer « contenu exploitable » et « disponibilité réaliste ».</li>
+        <li>Exiger précision ≥ 85 % et rappel ≥ 80 %, sans relabeling.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Recall v2</span
+    ><span class="page-number">15</span>
+  </div>
+</section>
+
+<!-- PAGE 16 — N8N -->
+<section class="page compact" data-page="16">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span><span>Orchestration n8n</span>
+  </div>
+  <div class="section-title">
+    <div class="index">15</div>
+    <div>
+      <h1>Workflows livrés et chaînage restant</h1>
+      <p class="subtitle">
+        WF3 et WF4 sont développés, exportés et testés hors ligne, mais
+        volontairement inactifs.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid-4">
+    <div class="card text-center">
+      <h4>WF1 · Ingestion</h4>
+      <span class="status pending">À intégrer</span>
+      <p class="small mt-2">
+        Webhook, formulaire, validation et déduplication.
+      </p>
+    </div>
+    <div class="card text-center">
+      <h4>WF2 · Analyse</h4>
+      <span class="status pending">À intégrer</span>
+      <p class="small mt-2">Fetch, features, LLM et score final.</p>
+    </div>
+    <div class="card text-center">
+      <h4>WF3 · Action</h4>
+      <span class="status partial">Inactif</span>
+      <p class="small mt-2">Décision, blockchain, retry, cycle et Discord.</p>
+    </div>
+    <div class="card text-center">
+      <h4>WF4 · Check</h4>
+      <span class="status partial">Inactif</span>
+      <p class="small mt-2">GET /check et réponse publique filtrée.</p>
+    </div>
+  </div>
+
+  <h3>WF3 · chemin d’exécution implémenté</h3>
+  <div class="flow">
+    <div class="node">
+      <span class="num">1</span><b>Appel WF2</b
+      ><span>7 champs métier<br />strictement validés</span>
+    </div>
+    <div class="node">
+      <span class="num">2</span><b>Execute</b
+      ><span>contexte lié au<br />reportId/executionId</span>
+    </div>
+    <div class="node">
+      <span class="num">3</span><b>Effet chain</b
+      ><span>report, recheck,<br />retry ou aucune action</span>
+    </div>
+    <div class="node">
+      <span class="num">4</span><b>Claim</b
+      ><span>CAS persistant,<br />un seul gagnant</span>
+    </div>
+    <div class="node">
+      <span class="num">5</span><b>Discord</b
+      ><span>alerts ou<br />manual_review</span>
+    </div>
+    <div class="node">
+      <span class="num">6</span><b>Settle</b
+      ><span>sent, failed<br />ou uncertain</span>
+    </div>
+  </div>
+
+  <h3>WF4 · réponse publique minimale</h3>
+  <div class="split-60">
+    <div class="code-panel">
+      GET /webhook/check?type=url&amp;value=... { "blacklisted": true,
+      "category": "fake_airdrop", "score": 92, "since":
+      "2026-07-24T16:17:39.000Z", "txHash": "0x..." }
+    </div>
+    <div class="card soft small">
+      <h4>Champs internes supprimés</h4>
+      <ul class="clean">
+        <li><span class="mono">normalizedValue</span></li>
+        <li><span class="mono">urlHash</span></li>
+        <li><span class="mono">reporter</span></li>
+        <li><span class="mono">active</span></li>
+        <li>détails RPC ou stack traces</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Infrastructure locale</h3>
+  <table class="micro">
+    <thead>
+      <tr>
+        <th>Service</th>
+        <th>Exposition</th>
+        <th>Persistance</th>
+        <th>Protection</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>n8n 2.32.7</td>
+        <td><span class="mono">127.0.0.1:5678</span> uniquement</td>
+        <td>Volume credentials et workflows</td>
+        <td>
+          Compte propriétaire natif, clé de chiffrement stable, diagnostics
+          désactivés
+        </td>
+      </tr>
+      <tr>
+        <td>chain-bridge</td>
+        <td>Port 3001 seulement dans le réseau Compose</td>
+        <td>Volume SQLite dédié</td>
+        <td>
+          Bearer, non-root, read-only, capacités supprimées, no-new-privileges
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Conditions avant activation</h3>
+  <div class="grid-2">
+    <ul class="checks small">
+      <li>
+        Configurer localement les credentials Header Auth et les deux webhooks
+        Discord.
+      </li>
+      <li>
+        Vérifier que le bridge est sain et que l’Owner est absent du conteneur.
+      </li>
+      <li>
+        Tester les branches legitimate, suspicious et malicious avec domaines
+        <span class="mono">.invalid</span>.
+      </li>
+      <li>Vérifier qu’un replay ne crée ni transaction ni seconde alerte.</li>
+    </ul>
+    <ul class="arrows small">
+      <li>
+        Implémenter WF1, notamment validation, rate limit et déduplication.
+      </li>
+      <li>
+        Implémenter WF2, notamment fetch SSRF-safe, mode IA v2 et score final.
+      </li>
+      <li>Connecter WF2 à l’entrée exacte de WF3.</li>
+      <li>
+        Chronométrer le flux complet et conserver les preuves
+        PolygonScan/Discord.
+      </li>
+    </ul>
+  </div>
+
+  <div class="callout danger small">
+    <strong>État déclaré.</strong> La présence de deux fichiers JSON n8n ne
+    signifie pas que quatre workflows sont opérationnels. Le dépôt atteste
+    WF3/WF4 en <span class="mono">active: false</span> et ne contient pas les
+    exports actifs de WF1/WF2. Le pipeline complet n’est donc pas encore
+    démontré.
+  </div>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · n8n</span><span class="page-number">16</span>
+  </div>
+</section>

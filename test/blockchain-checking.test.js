@@ -4,6 +4,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 
 const {
+  MAX_LOG_BLOCK_RANGE,
   checkEntry,
   isTransientRpcError,
   latestTransactionHash,
@@ -75,6 +76,7 @@ test("checkEntry returns an active URL entry and its latest report transaction",
       events: [{ transactionHash: "0xold" }, { transactionHash: "0xlatest" }],
     }),
     { type: "url", value: "https://reported.invalid/claim" },
+    { fromBlock: 0, toBlock: 100 },
   );
 
   assert.equal(result.blacklisted, true);
@@ -88,6 +90,7 @@ test("checkEntry normalizes and reads a wallet entry", async () => {
   const result = await checkEntry(
     fakeRegistry({ walletEntry: activeEntry(), events: [] }),
     { type: "wallet", value: WALLET.toLowerCase() },
+    { fromBlock: 0, toBlock: 100 },
   );
 
   assert.equal(result.blacklisted, true);
@@ -116,6 +119,7 @@ test("latestTransactionHash retries only transient RPC failures", async () => {
     {},
     {
       fromBlock: 1,
+      toBlock: 1,
       waitFn: async (milliseconds) => waits.push(milliseconds),
     },
   );
@@ -136,11 +140,61 @@ test("latestTransactionHash retries only transient RPC failures", async () => {
         },
       },
       {},
-      { waitFn: async () => {} },
+      { fromBlock: 0, toBlock: 0, waitFn: async () => {} },
     ),
     permanent,
   );
   assert.equal(permanentAttempts, 1);
+});
+
+test("latestTransactionHash searches bounded ranges newest-first", async () => {
+  const calls = [];
+  const registry = {
+    runner: {
+      async getBlockNumber() {
+        return 25_050;
+      },
+    },
+    async queryFilter(_filter, fromBlock, toBlock) {
+      calls.push([fromBlock, toBlock]);
+      if (fromBlock === 5_051) {
+        return [{ transactionHash: "0xold" }, { transactionHash: "0xlatest" }];
+      }
+      return [];
+    },
+  };
+
+  const result = await latestTransactionHash(registry, {}, { fromBlock: 1 });
+
+  assert.equal(result, "0xlatest");
+  assert.deepEqual(calls, [
+    [15_051, 25_050],
+    [5_051, 15_050],
+  ]);
+  assert.ok(
+    calls.every(([start, end]) => end - start + 1 <= MAX_LOG_BLOCK_RANGE),
+  );
+});
+
+test("latestTransactionHash covers the final partial range and returns null", async () => {
+  const calls = [];
+  const result = await latestTransactionHash(
+    {
+      async queryFilter(_filter, fromBlock, toBlock) {
+        calls.push([fromBlock, toBlock]);
+        return [];
+      },
+    },
+    {},
+    { fromBlock: 1, toBlock: 25_050 },
+  );
+
+  assert.equal(result, null);
+  assert.deepEqual(calls, [
+    [15_051, 25_050],
+    [5_051, 15_050],
+    [1, 5_050],
+  ]);
 });
 
 test("isTransientRpcError recognizes retryable codes and statuses", () => {

@@ -38,7 +38,16 @@ function temporaryDatabase() {
   return {
     databasePath: path.join(directory, "lifecycle.sqlite"),
     cleanup() {
-      fs.rmSync(directory, { recursive: true, force: true });
+      // Workers close their DatabaseSync handle before exit, but Windows can
+      // retain the SQLite/WAL handle briefly after the exit event. Let Node's
+      // documented retry support absorb that OS-level release delay so this
+      // concurrency assertion is not flaky.
+      fs.rmSync(directory, {
+        recursive: true,
+        force: true,
+        maxRetries: 5,
+        retryDelay: 100,
+      });
     },
   };
 }

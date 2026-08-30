@@ -32,11 +32,11 @@
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
-        "body": "={{ JSON.stringify({ reportId: $json.reportId, type: $json.type, value: $json.value, verdict: $json.verdict, category: $json.category, scoreFinal: $json.scoreFinal, indicators: $json.indicators, executionId: 'n8n-' + $execution.id }) }}",
+        "body": "={{ JSON.stringify({ reportId: $json.reportId, type: $json.type, value: $json.value, verdict: $json.verdict, category: $json.category, scoreFinal: $json.scoreFinal, indicators: $json.indicators, llmConfidence: $json.llmConfidence ?? null, featureScore: $json.featureScore ?? null, executionId: 'n8n-' + $execution.id }) }}",
         "options": {
           "response": {
             "response": {
-              "responseFormat": "json"
+              "responseFormat": "autodetect"
             }
           },
           "timeout": 900000
@@ -46,27 +46,6 @@
         "httpHeaderAuth": {
           "id": "REPLACE_WITH_CHAIN_BRIDGE_CREDENTIAL_ID",
           "name": "Chain Bridge Header Auth"
-        }
-      }
-    },
-    {
-      "id": "wf3-merge-execution-context",
-      "name": "Merge Execution Context",
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [-540, 0],
-      "parameters": {
-        "mode": "combine",
-        "combineBy": "combineByPosition",
-        "numberInputs": 2,
-        "options": {
-          "clashHandling": {
-            "values": {
-              "resolveClash": "preferInput2",
-              "mergeMode": "deepMerge",
-              "overrideEmpty": false
-            }
-          }
         }
       }
     },
@@ -115,11 +94,11 @@
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
-        "body": "={{ JSON.stringify({ context: { reportId: $json.reportId, type: $json.type, value: $json.value, verdict: $json.verdict, category: $json.category, scoreFinal: $json.scoreFinal, indicators: $json.indicators }, claimId: 'n8n-' + $execution.id }) }}",
+        "body": "={{ JSON.stringify({ context: { reportId: $('When Called by WF2').first().json.reportId, type: $('When Called by WF2').first().json.type, value: $('When Called by WF2').first().json.value, verdict: $('When Called by WF2').first().json.verdict, category: $('When Called by WF2').first().json.category, scoreFinal: $('When Called by WF2').first().json.scoreFinal, indicators: $('When Called by WF2').first().json.indicators, llmConfidence: $('When Called by WF2').first().json.llmConfidence ?? null, featureScore: $('When Called by WF2').first().json.featureScore ?? null }, claimId: 'n8n-' + $execution.id }) }}",
         "options": {
           "response": {
             "response": {
-              "responseFormat": "json"
+              "responseFormat": "autodetect"
             }
           },
           "timeout": 30000
@@ -266,27 +245,6 @@
       }
     },
     {
-      "id": "wf3-merge-claim-outcome",
-      "name": "Merge Claim and Outcome",
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [900, -100],
-      "parameters": {
-        "mode": "combine",
-        "combineBy": "combineByPosition",
-        "numberInputs": 2,
-        "options": {
-          "clashHandling": {
-            "values": {
-              "resolveClash": "preferInput2",
-              "mergeMode": "deepMerge",
-              "overrideEmpty": false
-            }
-          }
-        }
-      }
-    },
-    {
       "id": "wf3-settle-final-alert",
       "name": "Settle Final Alert",
       "type": "n8n-nodes-base.httpRequest",
@@ -300,11 +258,11 @@
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
-        "body": "={{ JSON.stringify({ reportId: $json.reportId, claim: $json.claim, outcome: $json.outcome }) }}",
+        "body": "={{ JSON.stringify({ reportId: $('Claim Final Alert').first().json.reportId, claim: $('Claim Final Alert').first().json.claim, outcome: $json.outcome }) }}",
         "options": {
           "response": {
             "response": {
-              "responseFormat": "json"
+              "responseFormat": "autodetect"
             }
           },
           "timeout": 30000
@@ -316,6 +274,16 @@
           "name": "Chain Bridge Header Auth"
         }
       }
+    },
+    {
+      "id": "wf3-build-result",
+      "name": "Build WF3 Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1260, -100],
+      "parameters": {
+        "jsCode": "const execution = $('Execute Secured WF3').first().json;\nconst status = $json.status || execution.status;\nconst allowedStatuses = new Set(['analyzing', 'manual_review', 'reported', 'already_blacklisted', 'failed']);\nif (!allowedStatuses.has(status)) throw new Error('Statut terminal WF3 invalide');\nconst txHash = typeof $json.txHash === 'string' ? $json.txHash : (typeof execution.txHash === 'string' ? execution.txHash : null);\nconst errorCode = typeof $json.errorCode === 'string' ? $json.errorCode : (typeof execution.errorCode === 'string' ? execution.errorCode : null);\nreturn [{ json: { reportId: execution.reportId, status, txHash, error: errorCode } }];"
+      }
     }
   ],
   "connections": {
@@ -326,27 +294,11 @@
             "node": "Execute Secured WF3",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "Merge Execution Context",
-            "type": "main",
-            "index": 0
           }
         ]
       ]
     },
     "Execute Secured WF3": {
-      "main": [
-        [
-          {
-            "node": "Merge Execution Context",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
-    "Merge Execution Context": {
       "main": [
         [
           {
@@ -366,7 +318,13 @@
             "index": 0
           }
         ],
-        []
+        [
+          {
+            "node": "Build WF3 Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Claim Final Alert": {
@@ -387,14 +345,15 @@
             "node": "Alerts Channel?",
             "type": "main",
             "index": 0
-          },
+          }
+        ],
+        [
           {
-            "node": "Merge Claim and Outcome",
+            "node": "Build WF3 Result",
             "type": "main",
             "index": 0
           }
-        ],
-        []
+        ]
       ]
     },
     "Alerts Channel?": {
@@ -441,18 +400,18 @@
       "main": [
         [
           {
-            "node": "Merge Claim and Outcome",
+            "node": "Settle Final Alert",
             "type": "main",
-            "index": 1
+            "index": 0
           }
         ]
       ]
     },
-    "Merge Claim and Outcome": {
+    "Settle Final Alert": {
       "main": [
         [
           {
-            "node": "Settle Final Alert",
+            "node": "Build WF3 Result",
             "type": "main",
             "index": 0
           }

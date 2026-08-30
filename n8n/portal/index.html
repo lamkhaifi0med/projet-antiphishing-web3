@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SENTINEL // Registre anti-phishing on-chain</title>
+    <meta
+      name="description"
+      content="Vérifiez une URL ou une adresse wallet contre le registre anti-phishing on-chain (Polygon Amoy)."
+    />
+    <style>
+      :root {
+        --bg: #05070d;
+        --bg-panel: #0a0f1a;
+        --bg-inset: #060a12;
+        --line: #16202e;
+        --line-bright: #22334a;
+        --cyan: #00e5ff;
+        --cyan-dim: rgba(0, 229, 255, 0.55);
+        --cyan-glow: rgba(0, 229, 255, 0.12);
+        --green: #00ff9d;
+        --green-glow: rgba(0, 255, 157, 0.1);
+        --red: #ff3b5c;
+        --red-glow: rgba(255, 59, 92, 0.12);
+        --amber: #ffb020;
+        --amber-glow: rgba(255, 176, 32, 0.1);
+        --text: #d7e2ee;
+        --dim: #6b7c92;
+        --faint: #3d4c60;
+        --mono: "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: var(--mono);
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        background-image:
+          linear-gradient(rgba(0, 229, 255, 0.025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 229, 255, 0.025) 1px, transparent 1px);
+        background-size: 42px 42px;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0 0 auto 0;
+        pointer-events: none;
+        z-index: 9;
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          rgba(0, 229, 255, 0.03) 50%,
+          transparent 100%
+        );
+        height: 220px;
+        animation: sweep 9s linear infinite;
+      }
+      @keyframes sweep {
+        from {
+          transform: translateY(-240px);
+        }
+        to {
+          transform: translateY(110vh);
+        }
+      }
+
+      .wrap {
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 40px 24px 72px;
+        position: relative;
+      }
+
+      .statusbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        color: var(--dim);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 9px 16px;
+        margin-bottom: 40px;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 229, 255, 0.03),
+          transparent
+        );
+      }
+      .statusbar .sys {
+        display: flex;
+        gap: 18px;
+      }
+      .statusbar .ok {
+        color: var(--green);
+      }
+      .statusbar .ok::before {
+        content: "●";
+        margin-right: 5px;
+        animation: blink 2.4s infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .mast {
+        margin-bottom: 44px;
+      }
+      .mast .tag {
+        font-size: 11px;
+        letter-spacing: 4px;
+        color: var(--cyan-dim);
+        margin-bottom: 12px;
+      }
+      .mast h1 {
+        font-size: clamp(34px, 6vw, 52px);
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #fff;
+        line-height: 1;
+      }
+      .mast h1 .cursor {
+        display: inline-block;
+        width: 0.55em;
+        height: 0.9em;
+        vertical-align: -0.08em;
+        background: var(--cyan);
+        margin-left: 6px;
+        animation: blink 1s steps(1) infinite;
+        box-shadow: 0 0 18px var(--cyan-dim);
+      }
+      .mast p {
+        margin-top: 14px;
+        color: var(--dim);
+        font-size: 13.5px;
+        max-width: 560px;
+        line-height: 1.7;
+      }
+      .mast p b {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--bg-panel);
+        margin-bottom: 26px;
+        position: relative;
+        overflow: hidden;
+      }
+      .panel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--cyan-dim),
+          transparent
+        );
+        opacity: 0.6;
+      }
+      .panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 22px;
+        border-bottom: 1px solid var(--line);
+        font-size: 11px;
+        letter-spacing: 3px;
+        color: var(--cyan-dim);
+      }
+      .panel-head .idx {
+        color: var(--faint);
+      }
+      .panel-body {
+        padding: 24px 22px;
+      }
+
+      .scan-row {
+        display: flex;
+        gap: 12px;
+      }
+      .scan-row input {
+        flex: 1;
+        padding: 16px 18px;
+        background: var(--bg-inset);
+        border: 1px solid var(--line-bright);
+        border-radius: 6px;
+        color: var(--cyan);
+        font-size: 14.5px;
+        font-family: var(--mono);
+        outline: none;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+        caret-color: var(--cyan);
+      }
+      .scan-row input::placeholder {
+        color: var(--faint);
+      }
+      .scan-row input:focus {
+        border-color: var(--cyan);
+        box-shadow:
+          0 0 0 1px var(--cyan),
+          0 0 24px var(--cyan-glow);
+      }
+      .btn {
+        padding: 16px 30px;
+        border: 1px solid var(--cyan);
+        border-radius: 6px;
+        background: transparent;
+        color: var(--cyan);
+        font-size: 13px;
+        font-weight: 700;
+        font-family: var(--mono);
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          box-shadow 0.15s,
+          color 0.15s;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .btn:hover {
+        background: var(--cyan);
+        color: #021016;
+        box-shadow: 0 0 32px var(--cyan-dim);
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: wait;
+      }
+      .hint {
+        margin-top: 12px;
+        font-size: 11.5px;
+        color: var(--faint);
+        letter-spacing: 0.5px;
+      }
+      .hint kbd {
+        border: 1px solid var(--line-bright);
+        border-radius: 3px;
+        padding: 1px 6px;
+        font-size: 10.5px;
+        color: var(--dim);
+      }
+
+      #scanline {
+        display: none;
+        margin-top: 18px;
+      }
+      #scanline.on {
+        display: block;
+      }
+      .scan-track {
+        height: 3px;
+        background: var(--line);
+        border-radius: 2px;
+        overflow: hidden;
+        position: relative;
+      }
+      .scan-track::after {
+        content: "";
+        position: absolute;
+        left: -30%;
+        width: 30%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--cyan),
+          transparent
+        );
+        animation: scan 1.4s ease-in-out infinite;
+      }
+      @keyframes scan {
+        to {
+          left: 100%;
+        }
+      }
+      #scanmsg {
+        margin-top: 10px;
+        font-size: 11.5px;
+        color: var(--dim);
+        letter-spacing: 1px;
+      }
+
+      #verdict {
+        display: none;
+        margin-top: 20px;
+        border-radius: 6px;
+        padding: 22px;
+        animation: rise 0.25s ease;
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+      }
+      #verdict.danger {
+        display: block;
+        border: 1px solid var(--red);
+        background: var(--red-glow);
+        box-shadow: 0 0 42px var(--red-glow);
+      }
+      #verdict.safe {
+        display: block;
+        border: 1px solid var(--green);
+        background: var(--green-glow);
+      }
+      #verdict.error {
+        display: block;
+        border: 1px solid var(--amber);
+        background: var(--amber-glow);
+      }
+      .v-code {
+        font-size: 10.5px;
+        letter-spacing: 3px;
+        margin-bottom: 8px;
+      }
+      #verdict.danger .v-code {
+        color: var(--red);
+      }
+      #verdict.safe .v-code {
+        color: var(--green);
+      }
+      #verdict.error .v-code {
+        color: var(--amber);
+      }
+      .v-title {
+        font-size: 21px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #fff;
+      }
+      .v-body {
+        margin-top: 10px;
+        font-size: 13px;
+        color: var(--dim);
+        line-height: 1.7;
+      }
+      .v-body b {
+        color: var(--text);
+      }
+      .v-grid {
+        display: flex;
+        gap: 34px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+      .v-grid .cell {
+        font-size: 10.5px;
+        letter-spacing: 2px;
+        color: var(--faint);
+      }
+      .v-grid .cell b {
+        display: block;
+        font-size: 19px;
+        letter-spacing: 0;
+        color: #fff;
+        margin-top: 4px;
+        font-weight: 700;
+      }
+      #verdict.danger .v-grid .cell b {
+        color: var(--red);
+      }
+      .v-link {
+        display: inline-block;
+        margin-top: 16px;
+        font-size: 12px;
+        letter-spacing: 1px;
+        color: var(--cyan);
+        text-decoration: none;
+        border-bottom: 1px solid var(--cyan-dim);
+        padding-bottom: 2px;
+      }
+      .v-link:hover {
+        text-shadow: 0 0 12px var(--cyan-dim);
+      }
+
+      .cta-body {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .cta-body p {
+        font-size: 12.5px;
+        color: var(--dim);
+        line-height: 1.7;
+        max-width: 440px;
+      }
+      .cta-body p b {
+        color: var(--text);
+      }
+      .btn-red {
+        padding: 14px 26px;
+        border: 1px solid var(--red);
+        border-radius: 6px;
+        color: var(--red);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-decoration: none;
+        text-transform: uppercase;
+        white-space: nowrap;
+        transition:
+          background 0.15s,
+          color 0.15s,
+          box-shadow 0.15s;
+      }
+      .btn-red:hover {
+        background: var(--red);
+        color: #fff;
+        box-shadow: 0 0 32px var(--red-glow);
+      }
+
+      .feed-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 4px;
+        border-bottom: 1px solid var(--line);
+        font-size: 12.5px;
+        animation: rise 0.3s ease both;
+      }
+      .feed-item:last-child {
+        border-bottom: none;
+      }
+      .sig {
+        font-size: 10px;
+        letter-spacing: 1px;
+        width: 118px;
+        flex-shrink: 0;
+        font-weight: 700;
+      }
+      .sig.published {
+        color: var(--red);
+      }
+      .sig.review {
+        color: var(--amber);
+      }
+      .sig.clean {
+        color: var(--green);
+      }
+      .sig.failed {
+        color: var(--faint);
+      }
+      .feed-target {
+        flex: 1;
+        min-width: 0;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .feed-score {
+        color: var(--dim);
+        width: 46px;
+        text-align: right;
+        font-size: 12px;
+      }
+      .feed-tx {
+        color: var(--cyan);
+        text-decoration: none;
+        font-size: 11px;
+        width: 34px;
+        text-align: right;
+      }
+      .feed-tx:hover {
+        text-shadow: 0 0 10px var(--cyan-dim);
+      }
+      .feed-empty {
+        color: var(--faint);
+        font-size: 12px;
+        padding: 12px 4px;
+      }
+
+      footer {
+        margin-top: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 11px;
+        letter-spacing: 1px;
+        color: var(--faint);
+      }
+      footer .links {
+        display: flex;
+        gap: 22px;
+      }
+      footer a {
+        color: var(--dim);
+        text-decoration: none;
+      }
+      footer a:hover {
+        color: var(--cyan);
+      }
+
+      .spinner {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        vertical-align: -2px;
+        border: 2px solid rgba(0, 229, 255, 0.3);
+        border-top-color: var(--cyan);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .scan-row {
+          flex-direction: column;
+        }
+        .statusbar {
+          flex-direction: column;
+          gap: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="statusbar">
+        <span>SENTINEL v1.0</span>
+        <span class="sys">
+          <span class="ok">REGISTRE</span>
+          <span>POLYGON AMOY</span>
+          <span id="clock">--:--:--</span>
+        </span>
+      </div>
+
+      <div class="mast">
+        <div class="tag">[ REGISTRE ANTI-PHISHING ON-CHAIN ]</div>
+        <h1>SENTINEL<span class="cursor"></span></h1>
+        <p>
+          Chaque menace confirmée par notre pipeline
+          <b>IA + revue humaine</b> est inscrite de façon <b>immuable</b> sur la
+          blockchain. Vérifiez n'importe quelle URL ou adresse wallet — la
+          réponse vient du contrat, pas de nous.
+        </p>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <span>SCAN // VÉRIFIER AVANT DE CLIQUER</span
+          ><span class="idx">01</span>
+        </div>
+        <div class="panel-body">
+          <div class="scan-row">
+            <input
+              id="checkInput"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              placeholder="> https://url-suspecte.com — ou adresse 0x…"
+            />
+            <button class="btn" id="checkBtn" onclick="runCheck()">
+              Scanner
+            </button>
+          </div>
+          <p class="hint">
+            <kbd>ENTRÉE</kbd> pour lancer · lecture directe du contrat
+            PhishingRegistry · aucune donnée conservée
+          </p>
+          <div id="scanline">
+            <div class="scan-track"></div>
+            <p id="scanmsg">INTERROGATION DU REGISTRE ON-CHAIN…</p>
+          </div>
+          <div id="verdict"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <span>ANALYSE // UN DOUTE SUR UN LIEN ?</span
+          ><span class="idx">02</span>
+        </div>
+        <div class="panel-body cta-body">
+          <p>
+            <b
+              >Un lien reçu vous semble louche ? Pas sûr d'un site ou d'un
+              wallet ?</b
+            ><br />
+            Inutile de deviner : soumettez-le et laissez le pipeline trancher.
+            Capture sécurisée → analyse IA → vérification humaine si le résultat
+            est incertain. Vous n'accusez personne — vous demandez une analyse.
+          </p>
+          <a
+            class="btn-red"
+            href="http://localhost:5678/form/64724547-5ddd-4646-bf07-8dbd2f38be30"
+            target="_blank"
+            rel="noopener"
+            >🔍 Faire analyser</a
+          >
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <span>FLUX // ACTIVITÉ RÉCENTE</span><span class="idx">03</span>
+        </div>
+        <div class="panel-body" id="feed">
+          <p class="feed-empty">CHARGEMENT…</p>
+        </div>
+      </section>
+
+      <footer>
+        <span>PIPELINE : CAPTURE → IA → SCORE → BLOCKCHAIN → DISCORD</span>
+        <span class="links">
+          <a
+            href="https://amoy.polygonscan.com/address/0x8d51dB4a92c338075360A17AcA005ec282fE1f23"
+            target="_blank"
+            rel="noopener"
+            >CONTRAT ↗</a
+          >
+          <a href="http://localhost:5678" target="_blank" rel="noopener"
+            >N8N ↗</a
+          >
+        </span>
+      </footer>
+    </div>
+
+    <script>
+      "use strict";
+
+      const POLYGONSCAN = "https://amoy.polygonscan.com/tx/";
+      function el(id) {
+        return document.getElementById(id);
+      }
+
+      setInterval(() => {
+        el("clock").textContent = new Date().toLocaleTimeString("fr-FR");
+      }, 1000);
+
+      function detectType(value) {
+        return /^0x[a-fA-F0-9]{40}$/.test(value.trim()) ? "wallet" : "url";
+      }
+      function normalize(value) {
+        let v = value.trim();
+        if (detectType(v) === "url" && !/^https?:\/\//i.test(v))
+          v = "https://" + v;
+        return v;
+      }
+
+      const SCAN_MSGS = [
+        "INTERROGATION DU REGISTRE ON-CHAIN…",
+        "LECTURE DU CONTRAT PHISHINGREGISTRY…",
+        "RÉSOLUTION DU HASH KECCAK-256…",
+        "CONSENSUS POLYGON AMOY…",
+      ];
+
+      async function runCheck() {
+        const input = el("checkInput");
+        const btn = el("checkBtn");
+        const verdict = el("verdict");
+        const scanline = el("scanline");
+        const value = normalize(input.value);
+        if (!value || value === "https://") {
+          input.focus();
+          return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span>';
+        verdict.className = "";
+        verdict.style.removeProperty("display");
+        scanline.className = "on";
+        let msgIdx = 0;
+        const msgTimer = setInterval(() => {
+          msgIdx = (msgIdx + 1) % SCAN_MSGS.length;
+          el("scanmsg").textContent = SCAN_MSGS[msgIdx];
+        }, 2600);
+
+        try {
+          const qs = new URLSearchParams({ type: detectType(value), value });
+          const r = await fetch("/webhook/check?" + qs);
+          const data = await r.json();
+
+          if (data.blacklisted === true) {
+            verdict.className = "danger";
+            verdict.innerHTML =
+              '<div class="v-code">// ALERTE — ENREGISTRÉE AU REGISTRE</div>' +
+              '<div class="v-title">⛔ MENACE CONFIRMÉE</div>' +
+              '<div class="v-body">Cette cible est inscrite comme <b>malveillante</b> sur la blockchain. Ne partagez aucune donnée, ne connectez aucun wallet.</div>' +
+              '<div class="v-grid">' +
+              '<div class="cell">SCORE DE RISQUE<b>' +
+              (data.score ?? "—") +
+              "/100</b></div>" +
+              '<div class="cell">CATÉGORIE<b>' +
+              esc(data.category || "—") +
+              "</b></div>" +
+              '<div class="cell">ENREGISTRÉE LE<b>' +
+              (data.since
+                ? new Date(data.since).toLocaleDateString("fr-FR")
+                : "—") +
+              "</b></div>" +
+              "</div>" +
+              (data.txHash
+                ? '<a class="v-link" href="' +
+                  POLYGONSCAN +
+                  esc(data.txHash) +
+                  '" target="_blank" rel="noopener">PREUVE ON-CHAIN — VOIR LA TRANSACTION ↗</a>'
+                : "");
+          } else if (data.blacklisted === false) {
+            verdict.className = "safe";
+            verdict.innerHTML =
+              '<div class="v-code">// SCAN TERMINÉ — REGISTRE CONSULTÉ</div>' +
+              '<div class="v-title">✓ AUCUN ENREGISTREMENT</div>' +
+              '<div class="v-body">Cette cible n\'est <b>pas répertoriée</b> dans le registre. Absence ≠ garantie : si un doute persiste, faites-la analyser (panneau 02).</div>';
+          } else {
+            throw new Error("réponse inattendue");
+          }
+        } catch (e) {
+          verdict.className = "error";
+          verdict.innerHTML =
+            '<div class="v-code">// RPC BLOCKCHAIN INDISPONIBLE</div>' +
+            '<div class="v-title">⏳ RÉESSAYEZ</div>' +
+            '<div class="v-body">La lecture on-chain est momentanément indisponible (limite du RPC public). Relancez le scan dans quelques secondes.</div>';
+        }
+
+        clearInterval(msgTimer);
+        scanline.className = "";
+        el("scanmsg").textContent = SCAN_MSGS[0];
+        btn.disabled = false;
+        btn.textContent = "Scanner";
+      }
+
+      el("checkInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") runCheck();
+      });
+
+      function esc(s) {
+        return String(s ?? "").replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      }
+
+      function sig(record) {
+        if (record.status === "reported" && record.txHash)
+          return { cls: "published", label: "▲ ON-CHAIN" };
+        if (record.status === "manual_review")
+          return { cls: "review", label: "◆ REVUE" };
+        if (record.status === "failed")
+          return { cls: "failed", label: "○ CAPTURE KO" };
+        if (record.verdict === "legitimate")
+          return { cls: "clean", label: "✓ LÉGITIME" };
+        return {
+          cls: "failed",
+          label: "○ " + (record.status || "—").toUpperCase().replace("_", " "),
+        };
+      }
+
+      async function loadFeed() {
+        const feed = el("feed");
+        try {
+          const r = await fetch("/api/recent");
+          const { records } = await r.json();
+          if (!records || records.length === 0) {
+            feed.innerHTML = '<p class="feed-empty">AUCUN SIGNALEMENT.</p>';
+            return;
+          }
+          feed.innerHTML = records
+            .map((rec, i) => {
+              const s = sig(rec);
+              const score =
+                rec.scoreFinal != null
+                  ? Math.round(rec.scoreFinal * 100) + "%"
+                  : "";
+              const tx = rec.txHash
+                ? '<a class="feed-tx" href="' +
+                  POLYGONSCAN +
+                  esc(rec.txHash) +
+                  '" target="_blank" rel="noopener">TX↗</a>'
+                : '<span class="feed-tx"></span>';
+              return (
+                '<div class="feed-item" style="animation-delay:' +
+                i * 45 +
+                'ms">' +
+                '<span class="sig ' +
+                s.cls +
+                '">' +
+                s.label +
+                "</span>" +
+                '<span class="feed-target" title="' +
+                esc(rec.valueDefanged) +
+                '">' +
+                esc(rec.valueDefanged || rec.reportId) +
+                "</span>" +
+                '<span class="feed-score">' +
+                score +
+                "</span>" +
+                tx +
+                "</div>"
+              );
+            })
+            .join("");
+        } catch {
+          feed.innerHTML = '<p class="feed-empty">FLUX INDISPONIBLE.</p>';
+        }
+      }
+
+      loadFeed();
+      setInterval(loadFeed, 15000);
+    </script>
+  </body>
+</html>

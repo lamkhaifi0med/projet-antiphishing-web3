@@ -89,6 +89,8 @@ test("log-only and manual-review decisions never call the blockchain", async () 
       status: "analyzing",
       finalized: true,
       alertRequired: false,
+      txHash: null,
+      errorCode: null,
     });
 
     const manual = await fixture.subject.execute(
@@ -125,6 +127,8 @@ test("a reported result is persisted only with a confirmed transaction hash", as
       status: "reported",
       finalized: true,
       alertRequired: true,
+      txHash: TX_HASH,
+      errorCode: null,
     });
     assert.deepEqual(calls, [
       {

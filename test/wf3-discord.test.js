@@ -390,3 +390,95 @@ test("rejects lifecycle decisions inconsistent with displayed analysis", () => {
     /inconsistent/,
   );
 });
+
+test("manual review explains its score in plain language from typed values", () => {
+  const claimed = claimTerminal(manualLifecycle());
+  const payload = build(
+    claimed,
+    context({
+      verdict: "malicious",
+      category: "other",
+      scoreFinal: 0.7,
+      llmConfidence: 0.95,
+      featureScore: 0.12,
+    }),
+  );
+
+  const explanation = fieldValue(payload, "Why manual review?");
+  assert.match(explanation, /very confident this target is malicious \(95%\)/);
+  assert.match(explanation, /few known red flags/);
+  assert.match(explanation, /classic scam rather than a crypto attack/);
+  assert.match(explanation, /Combined score: 70% — 10 points short of the 80%/);
+  assert.match(explanation, /likely safe to confirm as fraud/);
+  assert.ok(explanation.length <= 1024);
+  assert.doesNotMatch(JSON.stringify(payload), /@everyone|https:\/\/danger/);
+});
+
+test("uncertain manual review suggests a careful human check", () => {
+  const claimed = claimTerminal(manualLifecycle());
+  const payload = build(
+    claimed,
+    context({
+      verdict: "suspicious",
+      category: null,
+      scoreFinal: 0.62,
+      llmConfidence: 0.75,
+      featureScore: 0.3,
+    }),
+  );
+
+  const explanation = fieldValue(payload, "Why manual review?");
+  assert.match(
+    explanation,
+    /could not decide between malicious and legitimate \(confidence 75%\)/,
+  );
+  assert.match(explanation, /some suspicious traits/);
+  assert.match(explanation, /needs a careful human check/);
+});
+
+test("explanation is omitted when score components are unavailable", () => {
+  const claimed = claimTerminal(manualLifecycle());
+  const payload = build(
+    claimed,
+    context({ verdict: "suspicious", category: null, scoreFinal: 0.72 }),
+  );
+
+  const found = embed(payload).fields.find(
+    (entry) => entry.name === "Why manual review?",
+  );
+  assert.equal(found, undefined);
+});
+
+test("confirmed on-chain alerts never carry the manual-review explanation", () => {
+  const claimed = claimTerminal(reportedLifecycle());
+  const payload = build(
+    claimed,
+    context({ llmConfidence: 0.99, featureScore: 0.9 }),
+  );
+
+  const found = embed(payload).fields.find(
+    (entry) => entry.name === "Why manual review?",
+  );
+  assert.equal(found, undefined);
+});
+
+test("score components outside 0..1 are rejected", () => {
+  const claimed = claimTerminal(manualLifecycle());
+  const base = context({
+    verdict: "suspicious",
+    category: null,
+    scoreFinal: 0.72,
+  });
+  assert.throws(
+    () => build(claimed, { ...base, llmConfidence: 1.5 }),
+    Wf3DiscordValidationError,
+  );
+  assert.throws(
+    () => build(claimed, { ...base, featureScore: -0.1 }),
+    Wf3DiscordValidationError,
+  );
+  assert.throws(
+    () => build(claimed, { ...base, llmConfidence: "0.9" }),
+    Wf3DiscordValidationError,
+  );
+});

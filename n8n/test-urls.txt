@@ -1,0 +1,35 @@
+# URLs de test — pipeline anti-phishing Web3
+# Genere le 2026-08-30 — sources : OpenPhish feed + MetaMask eth-phishing-detect (ajouts recents), DNS verifie le 2026-08-30
+# ATTENTION : URLs hostiles reelles. Ne JAMAIS les ouvrir dans un navigateur.
+# Les soumettre uniquement via le formulaire (portal panneau 02) ou POST /webhook/report.
+# Les domaines phishing meurent vite : re-verifier la resolution DNS avant une demo.
+
+## Phishing Web3 — candidats on-chain (attendu : malicious, score souvent >= 0.80)
+https://trezor-io-lernnu.typedream.app/
+https://ledger-com-startt-us.pages.dev/
+https://update-trezorsuite.com/
+https://trezorsuite-web.net/
+https://trezor-notification.com/
+https://trustwallet-promo.site/
+https://begin-metamsk.wixstudio.com/
+https://asset-motmasklog.wixstudio.com/
+
+## Phishing Web3 — typosquats DeFi/exchange
+https://pancakeswapo.finance/
+https://poncakeswap.finance/
+https://pencakeswap.finance/
+https://uniswapunixkp.com/
+https://uniswapuniszk.com/
+https://kraken188.net/
+https://airdrop-x.com/
+
+## Controles legitimes (attendu : legitimate, logged_only — test anti faux-positif)
+https://www.wikipedia.org/
+https://metamask.io/
+https://trezor.io/
+
+## Wallet (attendu : manual_review direct, pas d'analyse HTML)
+0x000000000000000000000000000000000000dEaD
+
+## Verification WF4 (attendu : blacklisted=true — deja publie on-chain)
+# hxxp://www-ledger-com-live-app[.]icueoe[.]top/... (defang — utiliser la valeur exacte publiee si retest)

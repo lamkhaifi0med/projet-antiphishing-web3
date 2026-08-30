@@ -37,7 +37,8 @@ async function fetchWithTimeout(url, options, ms) {
 
 async function checkGemini() {
   const apiKey = process.env.GEMINI_API_KEY?.trim();
-  const model = process.env.GEMINI_MODEL_PRIMARY?.trim() || "gemini-flash-latest";
+  const model =
+    process.env.GEMINI_MODEL_PRIMARY?.trim() || "gemini-flash-latest";
   const label = `Gemini (${model})`;
 
   if (!apiKey) {
@@ -60,7 +61,12 @@ async function checkGemini() {
     const latencyMs = Date.now() - started;
 
     if (!response.ok) {
-      return { label, status: "unreachable", httpStatus: response.status, latencyMs };
+      return {
+        label,
+        status: "unreachable",
+        httpStatus: response.status,
+        latencyMs,
+      };
     }
 
     const data = await response.json();
@@ -78,8 +84,11 @@ async function checkGemini() {
 
 async function checkNvidia() {
   const apiKey = process.env.NVIDIA_API_KEY?.trim();
-  const baseUrl = (process.env.NVIDIA_BASE_URL?.trim() || NVIDIA_DEFAULT_BASE_URL).replace(/\/+$/, "");
-  const model = process.env.NVIDIA_MODEL_FALLBACK?.trim() || "meta/llama-3.1-8b-instruct";
+  const baseUrl = (
+    process.env.NVIDIA_BASE_URL?.trim() || NVIDIA_DEFAULT_BASE_URL
+  ).replace(/\/+$/, "");
+  const model =
+    process.env.NVIDIA_MODEL_FALLBACK?.trim() || "openai/gpt-oss-20b";
   const label = `NVIDIA NIM (${model})`;
 
   if (!apiKey) {
@@ -110,7 +119,12 @@ async function checkNvidia() {
     const latencyMs = Date.now() - started;
 
     if (!response.ok) {
-      return { label, status: "unreachable", httpStatus: response.status, latencyMs };
+      return {
+        label,
+        status: "unreachable",
+        httpStatus: response.status,
+        latencyMs,
+      };
     }
 
     const data = await response.json();
@@ -151,7 +165,9 @@ function printResult(result) {
 
 async function main() {
   console.log("Smoke test Phase 0 — connectivité LLM (Gemini / NVIDIA NIM)");
-  console.log("Ce script ne remplace pas le client de production (RF-A6, Phase 3).\n");
+  console.log(
+    "Ce script ne remplace pas le client de production (RF-A6, Phase 3).\n",
+  );
 
   const [gemini, nvidia] = await Promise.all([checkGemini(), checkNvidia()]);
 
@@ -160,7 +176,9 @@ async function main() {
 
   const failed = [gemini, nvidia].filter((result) => result.status !== "ok");
   if (failed.length > 0) {
-    console.log(`${failed.length} fournisseur(s) injoignable(s) ou non configuré(s).`);
+    console.log(
+      `${failed.length} fournisseur(s) injoignable(s) ou non configuré(s).`,
+    );
     process.exitCode = 1;
   } else {
     console.log("Les deux fournisseurs sont joignables.");
@@ -169,6 +187,9 @@ async function main() {
 
 main().catch((error) => {
   const secrets = [process.env.GEMINI_API_KEY, process.env.NVIDIA_API_KEY];
-  console.error("Échec inattendu du smoke test :", redact(secrets, error.message));
+  console.error(
+    "Échec inattendu du smoke test :",
+    redact(secrets, error.message),
+  );
   process.exitCode = 1;
 });

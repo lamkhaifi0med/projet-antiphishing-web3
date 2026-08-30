@@ -63,7 +63,13 @@ services:
       - frontend
       - bridge_internal
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5678/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:5678/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
       interval: 10s
       timeout: 3s
       retries: 10
@@ -86,6 +92,8 @@ services:
         condition: service_healthy
     networks:
       - frontend
+      # Requis pour /api/recent (lecture seule du flux public du bridge).
+      - bridge_internal
     read_only: true
     tmpfs:
       - /tmp:size=8m,mode=1777
@@ -96,7 +104,15 @@ services:
     cap_drop:
       - ALL
     healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "-q",
+          "-O",
+          "/dev/null",
+          "http://127.0.0.1:8080/healthz",
+        ]
       interval: 10s
       timeout: 3s
       retries: 5
@@ -131,7 +147,13 @@ services:
     cap_drop:
       - ALL
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8787/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8787/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
       interval: 10s
       timeout: 3s
       retries: 5
@@ -159,7 +181,13 @@ services:
     cap_drop:
       - ALL
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8788/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8788/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
       interval: 10s
       timeout: 3s
       retries: 5
@@ -178,7 +206,7 @@ services:
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}
       - GEMINI_MODEL_PRIMARY=${GEMINI_MODEL_PRIMARY:-gemini-flash-lite-latest}
       - NVIDIA_API_KEY=${NVIDIA_API_KEY:-}
-      - NVIDIA_MODEL_FALLBACK=${NVIDIA_MODEL_FALLBACK:-meta/llama-3.1-8b-instruct}
+      - NVIDIA_MODEL_FALLBACK=${NVIDIA_MODEL_FALLBACK:-openai/gpt-oss-20b}
       - NVIDIA_BASE_URL=${NVIDIA_BASE_URL:-https://integrate.api.nvidia.com/v1}
     networks:
       - bridge_internal
@@ -191,7 +219,13 @@ services:
     cap_drop:
       - ALL
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8789/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8789/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
       interval: 10s
       timeout: 3s
       retries: 5

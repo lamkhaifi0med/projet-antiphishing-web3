@@ -33,6 +33,10 @@ const CONTEXT_FIELDS = Object.freeze([
   "scoreFinal",
   "indicators",
 ]);
+const OPTIONAL_CONTEXT_FIELDS = Object.freeze([
+  "llmConfidence",
+  "featureScore",
+]);
 const EXECUTE_FIELDS = Object.freeze([...CONTEXT_FIELDS, "executionId"]);
 const CLAIM_FIELDS = Object.freeze(["context", "claimId"]);
 const SETTLE_FIELDS = Object.freeze(["reportId", "claim", "outcome"]);
@@ -52,7 +56,7 @@ function coordinatorError(statusCode, code, message, options) {
   return new Wf3CoordinatorError(statusCode, code, message, options);
 }
 
-function assertExactObject(value, fields, label) {
+function assertExactObject(value, fields, label, optionalFields = []) {
   if (value === null || typeof value !== "object" || Array.isArray(value)) {
     throw coordinatorError(
       400,
@@ -60,7 +64,7 @@ function assertExactObject(value, fields, label) {
       `${label} must be an object.`,
     );
   }
-  const allowed = new Set(fields);
+  const allowed = new Set([...fields, ...optionalFields]);
   const unknown = Object.keys(value).filter((field) => !allowed.has(field));
   const missing = fields.filter(
     (field) => !Object.prototype.hasOwnProperty.call(value, field),
@@ -83,12 +87,16 @@ function contextFromDecision(decision) {
     category: decision.category,
     scoreFinal: decision.scoreFinal,
     indicators: Object.freeze([...decision.indicators]),
+    llmConfidence: decision.llmConfidence ?? null,
+    featureScore: decision.featureScore ?? null,
   });
 }
 
 function executionContext(input) {
   return Object.fromEntries(
-    CONTEXT_FIELDS.map((field) => [field, input[field]]),
+    [...CONTEXT_FIELDS, ...OPTIONAL_CONTEXT_FIELDS]
+      .filter((field) => Object.prototype.hasOwnProperty.call(input, field))
+      .map((field) => [field, input[field]]),
   );
 }
 
@@ -159,6 +167,8 @@ function lifecycleOutput(decision, lifecycle) {
     status: lifecycle.status,
     finalized: lifecycle.finalized,
     alertRequired: lifecycle.alert.state === ALERT_STATES.PENDING,
+    txHash: lifecycle.txHash,
+    errorCode: lifecycle.errorCode,
   });
 }
 
@@ -509,7 +519,12 @@ class Wf3Coordinator {
 
   async execute(input) {
     this.requireDependencies();
-    assertExactObject(input, EXECUTE_FIELDS, "WF3 execution request");
+    assertExactObject(
+      input,
+      EXECUTE_FIELDS,
+      "WF3 execution request",
+      OPTIONAL_CONTEXT_FIELDS,
+    );
     const executionId = validateExecutionId(input.executionId);
     const decision = decideWf3Action(executionContext(input));
     const context = contextFromDecision(decision);
@@ -656,6 +671,8 @@ class Wf3Coordinator {
         reportId: lifecycle.reportId,
         status: lifecycle.status,
         alertState: lifecycle.alert.state,
+        txHash: lifecycle.txHash,
+        errorCode: lifecycle.errorCode,
       });
     });
   }

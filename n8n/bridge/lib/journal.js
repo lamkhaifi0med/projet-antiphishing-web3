@@ -14,7 +14,9 @@ function createJournal(filePath) {
         const record = JSON.parse(line);
         if (record?.reportId) records.set(record.reportId, record);
       } catch {
-        throw new Error(`Journal corrompu : ligne JSON invalide dans ${filePath}`);
+        throw new Error(
+          `Journal corrompu : ligne JSON invalide dans ${filePath}`,
+        );
       }
     }
   }
@@ -23,48 +25,69 @@ function createJournal(filePath) {
 
   async function persist() {
     const temporaryPath = `${filePath}.tmp`;
-    const payload = [...records.values()].map((record) => JSON.stringify(record)).join("\n");
-    await fs.promises.writeFile(temporaryPath, payload ? `${payload}\n` : "", "utf8");
+    const payload = [...records.values()]
+      .map((record) => JSON.stringify(record))
+      .join("\n");
+    await fs.promises.writeFile(
+      temporaryPath,
+      payload ? `${payload}\n` : "",
+      "utf8",
+    );
     await fs.promises.rename(temporaryPath, filePath);
   }
 
   async function append(record) {
-    if (records.has(record.reportId)) {
-      return { created: false, record: records.get(record.reportId) };
-    }
-
-    writeQueue = writeQueue.catch(() => {}).then(async () => {
-      if (records.has(record.reportId)) return;
-      records.set(record.reportId, record);
-      try {
-        await persist();
-      } catch (error) {
-        records.delete(record.reportId);
-        throw error;
-      }
-    });
-    await writeQueue;
-    return { created: true, record: records.get(record.reportId) };
+    writeQueue = writeQueue
+      .catch(() => {})
+      .then(async () => {
+        if (records.has(record.reportId)) {
+          return { created: false, record: records.get(record.reportId) };
+        }
+        records.set(record.reportId, record);
+        try {
+          await persist();
+        } catch (error) {
+          records.delete(record.reportId);
+          throw error;
+        }
+        return { created: true, record };
+      });
+    return writeQueue;
   }
 
-
   async function update(reportId, patch) {
-    writeQueue = writeQueue.catch(() => {}).then(async () => {
-      const current = records.get(reportId);
-      if (!current) return;
-      records.set(reportId, { ...current, ...patch, updatedAt: new Date().toISOString() });
-      try {
-        await persist();
-      } catch (error) {
-        records.set(reportId, current);
-        throw error;
-      }
-    });
+    writeQueue = writeQueue
+      .catch(() => {})
+      .then(async () => {
+        const current = records.get(reportId);
+        if (!current) return;
+        records.set(reportId, {
+          ...current,
+          ...patch,
+          updatedAt: new Date().toISOString(),
+        });
+        try {
+          await persist();
+        } catch (error) {
+          records.set(reportId, current);
+          throw error;
+        }
+      });
     await writeQueue;
     return records.get(reportId) || null;
   }
 
-  return { append, update, get: (reportId) => records.get(reportId) || null };
+  return {
+    append,
+    update,
+    get: (reportId) => records.get(reportId) || null,
+    recent: (limit = 10) =>
+      [...records.values()]
+        .sort((a, b) =>
+          String(b.createdAt || "").localeCompare(String(a.createdAt || "")),
+        )
+        .slice(0, limit),
+  };
 }
 
 module.exports = { createJournal };

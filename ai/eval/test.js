@@ -4,7 +4,18 @@
 // confusion, métriques, et couverture. Aucun réseau, aucune LLM.
 
 const assert = require("node:assert/strict");
-const { classificationOutcome, computeCoverage, metricsFromMatrix, updateMatrix, emptyMatrix } = require("./evaluate");
+const {
+  classificationOutcome,
+  computeCoverage,
+  metricsFromMatrix,
+  updateMatrix,
+  emptyMatrix,
+  countBy,
+  defangUrl,
+  defangTarget,
+  toPersistedUrlFeatures,
+  toPersistedOutcome,
+} = require("./evaluate");
 
 function testClassificationOutcome() {
   assert.equal(classificationOutcome(true, "phishing"), "TP");
@@ -53,11 +64,106 @@ function testComputeCoverageByLabel() {
   assert.deepEqual(coverage.legitimate, { total: 1, measured: 1 });
 }
 
+function testEvaluationSummaryCountsEvidencePaths() {
+  const outcomes = [
+    { analysisMode: "combined", captureStatus: "ok", verdict: "malicious" },
+    { analysisMode: "url_only", captureStatus: "dead", verdict: "suspicious" },
+    { analysisMode: "url_only", captureStatus: "empty", verdict: "legitimate" },
+  ];
+  assert.deepEqual(countBy(outcomes, "analysisMode"), {
+    combined: 1,
+    url_only: 2,
+  });
+  assert.deepEqual(countBy(outcomes, "captureStatus"), {
+    ok: 1,
+    dead: 1,
+    empty: 1,
+  });
+  assert.deepEqual(countBy(outcomes, "verdict"), {
+    malicious: 1,
+    suspicious: 1,
+    legitimate: 1,
+  });
+}
+
+function testPersistedOutcomesDefangAndOmitRawUrls() {
+  const rawUrl = "https://sub.example.test/path?next=1#fragment";
+  assert.equal(
+    defangUrl(rawUrl),
+    "hxxps://sub[.]example[.]test/path?next=1#fragment",
+  );
+  assert.equal(defangUrl("not a URL"), "[invalid URL omitted]");
+  assert.equal(
+    defangTarget("sub.example.test/path"),
+    "sub[.]example[.]test/path",
+  );
+
+  const persisted = toPersistedOutcome({
+    url: rawUrl,
+    label: "phishing",
+    verdict: "malicious",
+    indicators: ["synthetic test signal"],
+    explanation: "Synthetic free-text rationale that must not be persisted.",
+    urlFeatures: {
+      score: 0.8,
+      domain: "sub.example.test",
+      tld: "test",
+      subdomainCount: 1,
+      whoisAgeDays: 7,
+      whoisSource: "frozen_cache",
+      components: { tld: 0 },
+    },
+  });
+  assert.equal(Object.hasOwn(persisted, "url"), false);
+  assert.equal(
+    persisted.displayUrl,
+    "hxxps://sub[.]example[.]test/path?next=1#fragment",
+  );
+  assert.equal(persisted.verdict, "malicious");
+  assert.equal(Object.hasOwn(persisted, "indicators"), false);
+  assert.equal(Object.hasOwn(persisted, "explanation"), false);
+  assert.equal(persisted.indicatorCount, 1);
+  assert.equal(persisted.explanationPresent, true);
+  assert.equal(Object.hasOwn(persisted.urlFeatures, "domain"), false);
+  assert.deepEqual(
+    persisted.urlFeatures,
+    toPersistedUrlFeatures({
+      score: 0.8,
+      domain: "sub.example.test",
+      tld: "test",
+      subdomainCount: 1,
+      whoisAgeDays: 7,
+      whoisSource: "frozen_cache",
+      components: { tld: 0 },
+    }),
+  );
+}
+
 const tests = [
-  ["classificationOutcome couvre les 4 quadrants TP/FP/FN/TN", testClassificationOutcome],
-  ["metricsFromMatrix calcule precision/rappel/F1 corrects", testMetricsFromMatrix],
-  ["metricsFromMatrix renvoie null sur denominateur nul, jamais NaN/Infinity", testMetricsFromMatrixHandlesZeroDenominators],
-  ["computeCoverage separe la couverture par label reel", testComputeCoverageByLabel],
+  [
+    "classificationOutcome couvre les 4 quadrants TP/FP/FN/TN",
+    testClassificationOutcome,
+  ],
+  [
+    "metricsFromMatrix calcule precision/rappel/F1 corrects",
+    testMetricsFromMatrix,
+  ],
+  [
+    "metricsFromMatrix renvoie null sur denominateur nul, jamais NaN/Infinity",
+    testMetricsFromMatrixHandlesZeroDenominators,
+  ],
+  [
+    "computeCoverage separe la couverture par label reel",
+    testComputeCoverageByLabel,
+  ],
+  [
+    "les agregats conservent les modes, statuts de capture et verdicts",
+    testEvaluationSummaryCountsEvidencePaths,
+  ],
+  [
+    "les artefacts defangent les URLs et n'enregistrent aucun champ url brut",
+    testPersistedOutcomesDefangAndOmitRawUrls,
+  ],
 ];
 
 let failed = 0;

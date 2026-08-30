@@ -1,0 +1,749 @@
+<!-- PAGE 17 — SÉCURITÉ -->
+<section class="page compact" data-page="17">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span><span>Sécurité</span>
+  </div>
+  <div class="section-title">
+    <div class="index">16</div>
+    <div>
+      <h1>Sécurité par frontières successives</h1>
+      <p class="subtitle">
+        Le prototype traite comme hostiles les entrées utilisateur, les pages
+        capturées, les réponses LLM et les erreurs de fournisseurs.
+      </p>
+    </div>
+  </div>
+
+  <div class="architecture">
+    <div class="box">
+      <b>Owner</b
+      ><span
+        >administration<br />reporters et retraits<br /><strong
+          >hors n8n</strong
+        ></span
+      >
+    </div>
+    <div class="connector">≠</div>
+    <div class="box core">
+      <b>Reporter</b
+      ><span>publication seulement<br />injecté au bridge<br />révocable</span>
+    </div>
+    <div class="connector">→</div>
+    <div class="box">
+      <b>Registre</b
+      ><span>lecture publique<br />écriture contrôlée<br />aucun fonds</span>
+    </div>
+  </div>
+
+  <h3>Modèle de menace et contrôles réalisés</h3>
+  <table class="micro">
+    <thead>
+      <tr>
+        <th>Menace</th>
+        <th>Contrôle mis en place</th>
+        <th>État</th>
+        <th>Risque résiduel / action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Vol ou abus de la clé d’administration</td>
+        <td>
+          Owner distinct du Reporter et explicitement absent de n8n/bridge.
+        </td>
+        <td><span class="status done">Réalisé</span></td>
+        <td>
+          Sécuriser opérationnellement la sauvegarde Owner et prévoir rotation.
+        </td>
+      </tr>
+      <tr>
+        <td>Injection de commande via une URL</td>
+        <td>
+          Schéma fermé, arguments séparés, <span class="mono">spawn</span> et
+          <span class="mono">shell: false</span>.
+        </td>
+        <td><span class="status done">Testé</span></td>
+        <td>Conserver l’interdiction d’Execute Command dans n8n.</td>
+      </tr>
+      <tr>
+        <td>Requête interne SSRF depuis un site soumis</td>
+        <td>
+          Capture isolée&nbsp;: protocole, DNS, IP privées/loopback/link-local,
+          redirections et taille contrôlés.
+        </td>
+        <td><span class="status partial">Outil prêt</span></td>
+        <td>
+          Intégrer le même fetch sécurisé dans WF2 et exécuter les tests
+          d’attaque.
+        </td>
+      </tr>
+      <tr>
+        <td>Prompt injection dans la page</td>
+        <td>
+          Délimiteurs, message système prioritaire, aucun outil, contenu textuel
+          borné, JSON strict.
+        </td>
+        <td><span class="status partial">Conçu</span></td>
+        <td>Documenter un test adversarial dans le flux WF2 final.</td>
+      </tr>
+      <tr>
+        <td>Faux positif publié</td>
+        <td>
+          Seuil haut, revue manuelle, fonction de retrait Owner et historique
+          des events.
+        </td>
+        <td><span class="status done">Cycle prouvé</span></td>
+        <td>Formaliser la procédure de contestation avant usage réel.</td>
+      </tr>
+      <tr>
+        <td>Transaction dupliquée après timeout</td>
+        <td>
+          Taxonomie d’erreurs, recheck on-chain obligatoire, trois tentatives
+          maximum.
+        </td>
+        <td><span class="status done">Testé</span></td>
+        <td>Valider avec un RPC réel dégradé pendant le test E2E.</td>
+      </tr>
+      <tr>
+        <td>Double alerte concurrente</td>
+        <td>SQLite, révisions, CAS et claim unique avant Discord.</td>
+        <td><span class="status done">Testé</span></td>
+        <td>
+          Accepter l’état <span class="mono">uncertain</span> si l’accusé
+          Discord est ambigu.
+        </td>
+      </tr>
+      <tr>
+        <td>Exposition de détails internes</td>
+        <td>
+          Réponse WF4 filtrée, erreurs génériques, logs sans message RPC brut.
+        </td>
+        <td><span class="status done">Testé</span></td>
+        <td>Revalider après toute modification de schéma.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Durcissement des conteneurs</h3>
+  <div class="grid-4">
+    <div class="card text-center small">
+      <strong>Non-root</strong><br /><span class="text-muted"
+        >privilèges système réduits</span
+      >
+    </div>
+    <div class="card text-center small">
+      <strong>Read-only</strong><br /><span class="text-muted"
+        >seul le volume SQLite écrit</span
+      >
+    </div>
+    <div class="card text-center small">
+      <strong>cap_drop ALL</strong><br /><span class="text-muted"
+        >capacités Linux retirées</span
+      >
+    </div>
+    <div class="card text-center small">
+      <strong>Aucun port hôte</strong><br /><span class="text-muted"
+        >bridge interne Compose</span
+      >
+    </div>
+  </div>
+  <p class="small">
+    L’option <span class="mono">no-new-privileges</span> empêche l’élévation, un
+    <span class="mono">tmpfs</span> borné reçoit les fichiers temporaires et le
+    healthcheck n’expose aucune configuration. L’interface n8n est liée à
+    <span class="mono">127.0.0.1</span> et utilise le compte propriétaire natif
+    ainsi qu’une clé de chiffrement stable pour les credentials.
+  </p>
+
+  <h3>Audit du smart contract</h3>
+  <div class="grid-2">
+    <div class="card blue small">
+      <h4>Slither 0.11.5</h4>
+      <ul class="checks">
+        <li>0 alerte critique</li>
+        <li>0 alerte haute</li>
+        <li>0 alerte moyenne</li>
+        <li>0 alerte faible</li>
+      </ul>
+      <p>
+        Une information <span class="mono">pragma</span> seulement&nbsp;:
+        OpenZeppelin <span class="mono">^0.8.20</span> et contrat
+        <span class="mono">^0.8.24</span>, compatibles avec le compilateur
+        0.8.24.
+      </p>
+    </div>
+    <div class="card blue small">
+      <h4>Revue manuelle</h4>
+      <ul class="checks">
+        <li>Accès Owner/Reporter couvert par tests.</li>
+        <li>Réentrance non applicable&nbsp;: aucun appel externe.</li>
+        <li>Pas de boucle non bornée ni transfert de valeur.</li>
+        <li>Front-running à impact limité&nbsp;: aucun fonds ni enchère.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warning small">
+    <strong>Résidu principal.</strong> La sécurité des briques ne remplace pas
+    celle du système intégré. Le rate limiting du futur webhook, le fetch
+    SSRF-safe dans WF2, les credentials réels, les tests d’injection et
+    l’exposition réseau de la démo doivent être validés ensemble avant toute
+    ouverture au public.
+  </div>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Sécurité</span
+    ><span class="page-number">17</span>
+  </div>
+</section>
+
+<!-- PAGE 18 — QUALITÉ -->
+<section class="page compact" data-page="18">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span
+    ><span>Qualité et preuves</span>
+  </div>
+  <div class="section-title">
+    <div class="index">17</div>
+    <div>
+      <h1>Tests, couverture, CI et audit</h1>
+      <p class="subtitle">
+        Les chiffres ont été rejoués le 11 août 2026 sur
+        <span class="mono">main</span>, commit
+        <span class="mono">2e99059</span>, avec Node 22.14.0.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid-4">
+    <div class="stat">
+      <span class="value">118/118</span
+      ><span class="label">tests Node passants<br />0 échec, 0 skip</span>
+    </div>
+    <div class="stat">
+      <span class="value">13/13</span
+      ><span class="label">tests Hardhat passants</span>
+    </div>
+    <div class="stat">
+      <span class="value">100&nbsp;%</span
+      ><span class="label">statements, fonctions et lignes Solidity</span>
+    </div>
+    <div class="stat">
+      <span class="value">92,31&nbsp;%</span
+      ><span class="label">branches Solidity couvertes</span>
+    </div>
+  </div>
+
+  <h3>Périmètre des 118 tests Node</h3>
+  <div class="grid-3">
+    <div class="card small">
+      <h4>Entrées et scripts</h4>
+      <ul>
+        <li>Normalisation URL/wallet</li>
+        <li>Catégories et scores</li>
+        <li>Lecture et publication</li>
+        <li>Réconciliation d’incertitude</li>
+      </ul>
+    </div>
+    <div class="card small">
+      <h4>Bridge HTTP</h4>
+      <ul>
+        <li>Authentification</li>
+        <li>Corps et schémas fermés</li>
+        <li>Processus sans shell</li>
+        <li>Taxonomie d’erreurs</li>
+      </ul>
+    </div>
+    <div class="card small">
+      <h4>Fiabilité WF3</h4>
+      <ul>
+        <li>Décision et seuils</li>
+        <li>Backoff et recheck</li>
+        <li>Cycle SQLite</li>
+        <li>Concurrence et ownership</li>
+      </ul>
+    </div>
+    <div class="card small">
+      <h4>Discord</h4>
+      <ul>
+        <li>Défangeage</li>
+        <li>Mentions neutralisées</li>
+        <li>Claims gagnants</li>
+        <li>Settlement ambigu</li>
+      </ul>
+    </div>
+    <div class="card small">
+      <h4>Exports n8n</h4>
+      <ul>
+        <li>WF3/WF4 inactifs</li>
+        <li>Aucun secret exporté</li>
+        <li>Credentials référencés</li>
+        <li>Wiring sécurisé</li>
+      </ul>
+    </div>
+    <div class="card small">
+      <h4>Persistance</h4>
+      <ul>
+        <li>Redémarrage SQLite</li>
+        <li>CAS canonique</li>
+        <li>Détection de corruption</li>
+        <li>Deux connexions concurrentes</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Périmètre des 13 tests Hardhat</h3>
+  <table class="micro">
+    <thead>
+      <tr>
+        <th>Domaine</th>
+        <th>Cas couverts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Administration</td>
+        <td>
+          Owner initial, gestion réservée des reporters, adresse nulle refusée,
+          révocation effective.
+        </td>
+      </tr>
+      <tr>
+        <td>URLs</td>
+        <td>
+          Stockage, événement, métadonnées, inconnue inactive, accès refusé,
+          doublon, score, retrait et re-report.
+        </td>
+      </tr>
+      <tr>
+        <td>Wallets</td>
+        <td>
+          Stockage/lecture, wallet nul, score, doublon, retrait inactif et
+          désactivation Owner.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Couverture du contrat</h3>
+  <table class="small">
+    <thead>
+      <tr>
+        <th>Fichier</th>
+        <th class="number">Statements</th>
+        <th class="number">Branches</th>
+        <th class="number">Fonctions</th>
+        <th class="number">Lignes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="mono">PhishingRegistry.sol</span></td>
+        <td class="number">100 %</td>
+        <td class="number">92,31 %</td>
+        <td class="number">100 %</td>
+        <td class="number">100 %</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="split-60">
+    <div>
+      <h3>Intégration continue</h3>
+      <p>
+        Le pipeline GitHub Actions possède deux jobs. Le premier installe,
+        compile, teste et mesure la couverture Hardhat. Le second valide la
+        syntaxe JavaScript, exécute les tests Node et lance
+        <span class="mono">npm audit --omit=dev</span>. Les dépendances sont
+        installées avec <span class="mono">npm ci</span> sous Node 22.
+      </p>
+    </div>
+    <div class="card blue small">
+      <h4>Artefacts vérifiables</h4>
+      <ul class="clean">
+        <li><span class="mono">contracts/coverage.json</span></li>
+        <li><span class="mono">contracts/coverage/lcov.info</span></li>
+        <li><span class="mono">contracts/slither-report.json</span></li>
+        <li><span class="mono">ai/eval/report-v1.md</span></li>
+        <li><span class="mono">.github/workflows/ci.yml</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warning small">
+    <strong>Portée des preuves.</strong> Les 131 tests valident fortement le
+    comportement local et hors ligne, mais ils ne remplacent pas un test live de
+    WF1 → WF2 → WF3 → Polygon → Discord → WF4. Le rapport ne transforme donc pas
+    la qualité unitaire en affirmation E2E.
+  </div>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Qualité</span><span class="page-number">18</span>
+  </div>
+</section>
+
+<!-- PAGE 19 — BILAN ET DIFFICULTÉS -->
+<section class="page compact" data-page="19">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span
+    ><span>Bilan et enseignements</span>
+  </div>
+  <div class="section-title">
+    <div class="index">18</div>
+    <div>
+      <h1>Bilan par livrable</h1>
+      <p class="subtitle">
+        La valeur déjà produite est importante, mais la fin de projet dépend
+        désormais de l’intégration et de la mesure.
+      </p>
+    </div>
+  </div>
+
+  <table class="small">
+    <thead>
+      <tr>
+        <th>Livrable</th>
+        <th>État</th>
+        <th>Réalisé</th>
+        <th>Reste à obtenir</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>L1 · Workflows n8n</strong></td>
+        <td><span class="status partial">Partiel</span></td>
+        <td>Compose, bridge, WF3 et WF4 exportés/testés.</td>
+        <td>WF1/WF2, activation, credentials et chaînage complet.</td>
+      </tr>
+      <tr>
+        <td><strong>L2 · Smart contract</strong></td>
+        <td><span class="status done">Réalisé</span></td>
+        <td>
+          Contrat, tests, couverture, scripts, déploiement et vérification.
+        </td>
+        <td>Uniquement maintenance si interface ou dépendances changent.</td>
+      </tr>
+      <tr>
+        <td><strong>L3 · Module IA</strong></td>
+        <td><span class="status partial">Partiel</span></td>
+        <td>Prompts, client, fallback, dataset, capture et rapport v1.</td>
+        <td>Recall v2 et atteinte de la cible ≥ 80 %.</td>
+      </tr>
+      <tr>
+        <td><strong>L4 · Audit sécurité</strong></td>
+        <td><span class="status partial">Socle avancé</span></td>
+        <td>Slither, revue contrat, bridge et Docker durcis.</td>
+        <td>Tests intégrés SSRF/prompt injection/rate limit et revue E2E.</td>
+      </tr>
+      <tr>
+        <td><strong>L5 · Rapport final</strong></td>
+        <td><span class="status partial">En cours</span></td>
+        <td>
+          Documentation technique abondante et présent rapport d’avancement.
+        </td>
+        <td>Résultats E2E, latences, bilan final et soutenabilité mesurée.</td>
+      </tr>
+      <tr>
+        <td><strong>L6 · Démo E2E</strong></td>
+        <td><span class="status pending">À valider</span></td>
+        <td>Preuves isolées blockchain et tests hors ligne.</td>
+        <td>Scénario rejouable complet, Discord live et endpoint actif.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Difficultés rencontrées et réponses apportées</h3>
+  <table class="micro">
+    <thead>
+      <tr>
+        <th>Difficulté</th>
+        <th>Observation</th>
+        <th>Réponse mise en œuvre</th>
+        <th>Suite</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Contenu phishing éphémère</td>
+        <td>Nombreux domaines déjà morts ou refusés à la capture.</td>
+        <td>
+          Priorité aux menaces actives, cache figé, index d’intégrité et
+          historique séparé.
+        </td>
+        <td>Capturer plus tôt et diversifier les sources récentes.</td>
+      </tr>
+      <tr>
+        <td>Pages courtes / SPA</td>
+        <td>Texte parfois absent sans signifier légitime.</td>
+        <td>
+          Statuts <span class="mono">empty</span>/<span class="mono"
+            >challenged</span
+          >
+          et diagnostic v1 documenté.
+        </td>
+        <td>Modes URL-only et structurel en v2.</td>
+      </tr>
+      <tr>
+        <td>Rappel IA faible</td>
+        <td>Sept FN issus du court-circuit, pas du sous-ensemble Gemini.</td>
+        <td>Cause racine tracée, métriques strictes conservées.</td>
+        <td>Implémenter les features URL et rejouer le même périmètre.</td>
+      </tr>
+      <tr>
+        <td>RPC et publication incertains</td>
+        <td>Un timeout ne révèle pas si la transaction a été minée.</td>
+        <td>Codes fermés, recheck systématique, backoff et retries bornés.</td>
+        <td>Injecter une panne RPC dans le test intégré.</td>
+      </tr>
+      <tr>
+        <td>Idempotence Discord</td>
+        <td>Pas de clé d’idempotence native.</td>
+        <td>
+          Claim SQLite gagnant et fermeture
+          <span class="mono">uncertain</span> sans resend.
+        </td>
+        <td>Prévoir une procédure d’audit manuel.</td>
+      </tr>
+      <tr>
+        <td>Secrets et commandes</td>
+        <td>n8n ne doit pas devenir une frontière de shell.</td>
+        <td>
+          Bridge interne, token, <span class="mono">spawn</span> sans shell et
+          séparation Owner/Reporter.
+        </td>
+        <td>Valider la configuration locale avant activation.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Enseignements techniques</h3>
+  <div class="grid-2">
+    <div class="card accent small">
+      <h4>L’automatisation exige des états</h4>
+      <p>
+        Une suite de nodes ne suffit pas lorsqu’elle déclenche des transactions
+        et alertes. Révisions, transitions canoniques et réconciliation rendent
+        les reprises explicables.
+      </p>
+    </div>
+    <div class="card accent small">
+      <h4>La prudence peut réduire le rappel</h4>
+      <p>
+        Forcer la revue manuelle sur toute page courte protège contre les faux
+        positifs, mais ignore des preuves URL utiles. Le bon compromis dépend du
+        mode d’analyse.
+      </p>
+    </div>
+    <div class="card accent small">
+      <h4>L’immutabilité ne remplace pas la gouvernance</h4>
+      <p>
+        Un registre auditable doit aussi prévoir qui écrit, qui peut corriger,
+        comment une contestation est traitée et quelles données sont publiées.
+      </p>
+    </div>
+    <div class="card accent small">
+      <h4>Une métrique doit rester honnête</h4>
+      <p>
+        Changer la définition de « positif » ou exclure les cas difficiles
+        aurait amélioré artificiellement les chiffres sans améliorer le
+        détecteur.
+      </p>
+    </div>
+  </div>
+
+  <div class="callout success small">
+    <strong>Position actuelle.</strong> Le projet n’est pas bloqué sur une
+    inconnue générale. Les dépendances restantes sont précises&nbsp;: Recall v2,
+    WF1, WF2, configuration locale, connexion des interfaces et validation E2E.
+    Le socle blockchain/sécurité fournit déjà la destination et les garanties
+    nécessaires à cette intégration.
+  </div>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Bilan</span><span class="page-number">19</span>
+  </div>
+</section>
+
+<!-- PAGE 20 — ROADMAP ET CONCLUSION -->
+<section class="page compact" data-page="20">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span
+    ><span>Feuille de route et conclusion</span>
+  </div>
+  <div class="section-title">
+    <div class="index">19</div>
+    <div>
+      <h1>Passer du socle à la démonstration</h1>
+      <p class="subtitle">
+        Une séquence courte et contrôlée permet de fermer les écarts sans
+        remettre en cause l’architecture livrée.
+      </p>
+    </div>
+  </div>
+
+  <h3>Priorités ordonnées</h3>
+  <div class="timeline roadmap">
+    <div class="item">
+      <b>P0 · Baseline et Recall v2</b>
+      <p>
+        Figer commit, cache et paramètres du run v1 ; implémenter features URL,
+        modes d’analyse, tests et rapport v2. Ne pas poursuivre si la précision
+        descend sous 85 % ou le rappel reste sous 80 % sans analyse d’erreurs.
+      </p>
+    </div>
+    <div class="item">
+      <b>P1 · WF1 Ingestion</b>
+      <p>
+        Ajouter webhook/formulaire, schéma strict, reportId, rate limiting,
+        validation URL/wallet et déduplication via
+        <span class="mono">/internal/check</span>.
+      </p>
+    </div>
+    <div class="item">
+      <b>P2 · WF2 Analyse</b>
+      <p>
+        Intégrer le fetch SSRF-safe, les représentations bornées, le client IA
+        v2, la conversion en risque, le score final et l’appel exact de WF3.
+      </p>
+    </div>
+    <div class="item">
+      <b>P3 · Activation contrôlée</b>
+      <p>
+        Configurer les credentials chiffrés, tester les branches sans
+        transaction, puis un cas <span class="mono">.invalid</span> malveillant
+        sur Polygon Amoy et Discord.
+      </p>
+    </div>
+    <div class="item">
+      <b>P4 · Validation E2E et clôture</b>
+      <p>
+        Rejouer doublon, panne RPC, prompt injection, SSRF, faux positif et
+        check public ; mesurer latences, conserver tx hashes/captures et
+        finaliser le rapport technique.
+      </p>
+    </div>
+  </div>
+
+  <h3>Scénario d’acceptation final</h3>
+  <div class="flow">
+    <div class="node">
+      <span class="num">1</span><b>Submit</b
+      ><span>202 + reportId<br />entrée validée</span>
+    </div>
+    <div class="node">
+      <span class="num">2</span><b>Analyze</b
+      ><span>JSON conforme<br />preuves et score</span>
+    </div>
+    <div class="node">
+      <span class="num">3</span><b>Publish</b
+      ><span>une transaction<br />tx hash confirmé</span>
+    </div>
+    <div class="node">
+      <span class="num">4</span><b>Alert</b
+      ><span>un message<br />défangé et auditable</span>
+    </div>
+    <div class="node">
+      <span class="num">5</span><b>Check</b
+      ><span>statut public<br />cohérent on-chain</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card blue small">
+      <h4>Critères de sortie techniques</h4>
+      <ul class="checks">
+        <li>Précision IA ≥ 85 % et rappel ≥ 80 % sur le périmètre figé.</li>
+        <li>Signalement → alerte en moins de 60 s, mesures horodatées.</li>
+        <li>
+          Un doublon ne produit ni seconde transaction ni seconde alerte finale.
+        </li>
+        <li>
+          SSRF et prompt injection rejetés ou neutralisés par tests documentés.
+        </li>
+      </ul>
+    </div>
+    <div class="card blue small">
+      <h4>Preuves à conserver</h4>
+      <ul class="checks">
+        <li>
+          Export des quatre workflows avec
+          <span class="mono">active</span> documenté.
+        </li>
+        <li>Rapport IA v2 et paramètres complets du run.</li>
+        <li>Tx hash PolygonScan, event, réponse WF4 et message Discord.</li>
+        <li>
+          Logs défangés, temps par étape, résultats de tests et audit final.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Conclusion</h3>
+  <p>
+    L’avancement démontre la faisabilité des parties structurantes&nbsp;:
+    registre Web3 public et contrôlé, interaction sûre, action idempotente, IA
+    structurée, dataset traçable et tests étendus. Le contrat est réellement
+    déployé ; les comportements blockchain, de concurrence et d’erreur sont
+    prouvés.
+  </p>
+  <p>
+    Les limites restent explicites&nbsp;: rappel IA insuffisant, WF1/WF2 non
+    intégrés, WF3/WF4 inactifs et E2E non validé. La priorité est désormais de
+    relier les briques, améliorer l’analyse du contenu pauvre et produire une
+    preuve complète chronométrée.
+  </p>
+
+  <h3>Références de preuve dans le dépôt</h3>
+  <table class="micro">
+    <tbody>
+      <tr>
+        <td>
+          <span class="mono">README.md</span> ·
+          <span class="mono">PLAN.md</span>
+        </td>
+        <td>État global, architecture, réseau et plan initial.</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="mono">contracts/contracts/PhishingRegistry.sol</span>
+        </td>
+        <td>Implémentation du registre et contrôle d’accès.</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="mono">contracts/test/</span> ·
+          <span class="mono">contracts/coverage/</span> ·
+          <span class="mono">slither-report.json</span>
+        </td>
+        <td>Tests, couverture et audit.</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="mono">ai/client/</span> ·
+          <span class="mono">ai/prompts/</span> ·
+          <span class="mono">ai/eval/report-v1.md</span>
+        </td>
+        <td>Client, prompts, schéma et résultats IA.</td>
+      </tr>
+      <tr>
+        <td>
+          <span class="mono">n8n/workflows/</span> ·
+          <span class="mono">n8n/services/chain-bridge/</span>
+        </td>
+        <td>Exports WF3/WF4, bridge, persistance et coordination.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="text-center mt-2">
+    <p class="kicker mb-1">Rapport préparé collectivement par</p>
+    <p class="mb-0">
+      <strong>Lamkhaifi Mohamed &nbsp;·&nbsp; Malek Mouhcine</strong>
+    </p>
+  </div>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · 11 août 2026</span
+    ><span class="page-number">20</span>
+  </div>
+</section>

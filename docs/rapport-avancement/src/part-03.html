@@ -1,0 +1,701 @@
+<!-- PAGE 9 — SMART CONTRACT -->
+<section class="page" data-page="9">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span><span>Smart contract</span>
+  </div>
+  <div class="section-title">
+    <div class="index">08</div>
+    <div>
+      <h1>Le registre PhishingRegistry</h1>
+      <p class="subtitle">
+        Une blacklist permissionnée en écriture, publique en lecture et conçue
+        sans transfert de fonds.
+      </p>
+    </div>
+  </div>
+
+  <p class="lead">
+    Le contrat Solidity constitue le registre partagé du prototype. Il ne décide
+    pas qu’une cible est malveillante&nbsp;: il reçoit une décision déjà
+    contrôlée, l’associe à des métadonnées minimales et rend son statut
+    consultable par toute application compatible EVM.
+  </p>
+
+  <div class="split-60">
+    <div>
+      <h3>Modèle de données</h3>
+      <div class="code-panel">
+        enum Category { FakeExchange, WalletDrainer, FakeAirdrop, FakeSupport,
+        Ponzi, Other } struct Entry { Category category; uint8 score; // 0 à 100
+        uint40 timestamp; address reporter; bool active; }
+      </div>
+    </div>
+    <div>
+      <h3>Deux espaces de clés</h3>
+      <div class="card soft small mb-2">
+        <h4>URLs</h4>
+        <p>
+          Stockées sous forme de <span class="mono">bytes32</span>, obtenu par
+          <span class="mono">keccak256</span> d’une URL normalisée hors chaîne.
+        </p>
+      </div>
+      <div class="card soft small">
+        <h4>Wallets EVM</h4>
+        <p>
+          Stockés directement comme <span class="mono">address</span>, après
+          validation et checksum dans les scripts.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Surface fonctionnelle</h3>
+  <table class="small">
+    <thead>
+      <tr>
+        <th>Famille</th>
+        <th>Fonctions</th>
+        <th>Autorisation</th>
+        <th>Comportement</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Administration</td>
+        <td><span class="mono">setReporter</span></td>
+        <td>Owner</td>
+        <td>Autorise ou révoque une adresse de publication non nulle.</td>
+      </tr>
+      <tr>
+        <td>Publication</td>
+        <td>
+          <span class="mono">reportURL</span>,
+          <span class="mono">reportWallet</span>
+        </td>
+        <td>Reporter</td>
+        <td>Valide le score et refuse une entrée déjà active.</td>
+      </tr>
+      <tr>
+        <td>Lecture</td>
+        <td>
+          <span class="mono">isBlacklisted*</span>,
+          <span class="mono">get*Entry</span>
+        </td>
+        <td>Publique</td>
+        <td>Retourne le statut actif et les métadonnées sans transaction.</td>
+      </tr>
+      <tr>
+        <td>Correction</td>
+        <td>
+          <span class="mono">removeURL</span>,
+          <span class="mono">removeWallet</span>
+        </td>
+        <td>Owner</td>
+        <td>
+          Désactive l’entrée ; les logs de transactions restent historiques.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Événements et auditabilité</h3>
+  <div class="grid-4">
+    <div class="card text-center small">
+      <strong>URLReported</strong><br /><span class="text-muted"
+        >hash, catégorie, score, reporter</span
+      >
+    </div>
+    <div class="card text-center small">
+      <strong>WalletReported</strong><br /><span class="text-muted"
+        >wallet, catégorie, score, reporter</span
+      >
+    </div>
+    <div class="card text-center small">
+      <strong>EntryRemoved</strong><br /><span class="text-muted"
+        >clé et nature URL/wallet</span
+      >
+    </div>
+    <div class="card text-center small">
+      <strong>ReporterUpdated</strong><br /><span class="text-muted"
+        >adresse et autorisation</span
+      >
+    </div>
+  </div>
+
+  <h3>Propriétés de sécurité obtenues</h3>
+  <div class="grid-2">
+    <ul class="checks small">
+      <li>
+        <strong>Contrôle d’accès&nbsp;:</strong> OpenZeppelin
+        <span class="mono">Ownable</span> pour l’administration et modifier
+        dédié pour la publication.
+      </li>
+      <li>
+        <strong>Validation&nbsp;:</strong> wallet et reporter nuls refusés,
+        score borné, doublon actif rejeté.
+      </li>
+      <li>
+        <strong>Complexité bornée&nbsp;:</strong> mappings et absence de boucle
+        non bornée&nbsp;; écritures en temps constant.
+      </li>
+    </ul>
+    <ul class="checks small">
+      <li>
+        <strong>Absence de réentrance pratique&nbsp;:</strong> aucun transfert
+        de fonds ni appel externe.
+      </li>
+      <li>
+        <strong>Correction gouvernée&nbsp;:</strong> seul l’Owner désactive une
+        entrée en cas de faux positif.
+      </li>
+      <li>
+        <strong>Historique&nbsp;:</strong> la désactivation modifie l’état actif
+        mais n’efface pas les events déjà inscrits.
+      </li>
+    </ul>
+  </div>
+
+  <div class="callout warning small">
+    <strong>Limite de conception.</strong> Le registre est décentralisé dans sa
+    consultation et sa traçabilité, mais l’écriture reste permissionnée. Cette
+    décision réduit le spam et les publications arbitraires pour le prototype ;
+    une version communautaire nécessiterait réputation, staking, contestation ou
+    gouvernance multi-acteurs.
+  </div>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Smart contract</span
+    ><span class="page-number">9</span>
+  </div>
+</section>
+
+<!-- PAGE 10 — DÉPLOIEMENT -->
+<section class="page compact" data-page="10">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span
+    ><span>Déploiement et preuves on-chain</span>
+  </div>
+  <div class="section-title">
+    <div class="index">09</div>
+    <div>
+      <h1>Du contrat local à Polygon Amoy</h1>
+      <p class="subtitle">
+        Les preuves publiques démontrent le déploiement, une publication réelle
+        et le cycle de correction d’un faux positif.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="stat">
+      <span class="value">80002</span
+      ><span class="label">Chain ID<br />Polygon Amoy</span>
+    </div>
+    <div class="stat">
+      <span class="value">43&nbsp;090&nbsp;902</span
+      ><span class="label">bloc de déploiement configuré</span>
+    </div>
+    <div class="stat">
+      <span class="value">6</span
+      ><span class="label">catégories de fraude supportées on-chain</span>
+    </div>
+  </div>
+
+  <h3>Identité du déploiement</h3>
+  <table class="small">
+    <tbody>
+      <tr>
+        <td><strong>Contrat</strong></td>
+        <td>
+          <span class="mono">PhishingRegistry</span> · Solidity 0.8.24 ·
+          OpenZeppelin Ownable
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Adresse</strong></td>
+        <td class="break-anywhere">
+          <a
+            href="https://amoy.polygonscan.com/address/0x8d51dB4a92c338075360A17AcA005ec282fE1f23#code"
+            >0x8d51dB4a92c338075360A17AcA005ec282fE1f23</a
+          >
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Déploiement</strong></td>
+        <td class="break-anywhere">
+          <a
+            href="https://amoy.polygonscan.com/tx/0x8e2e4e3c73ca2a7a5dd1f35372945c8462c8b6c194db6b36ccc2e93dc46de2dc"
+            >0x8e2e4e3c73ca2a7a5dd1f35372945c8462c8b6c194db6b36ccc2e93dc46de2dc</a
+          >
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Vérification</strong></td>
+        <td>
+          Code source publiquement vérifié dans l’explorateur Amoy PolygonScan.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Preuve 1 · cycle de publication blockchain</h3>
+  <div class="flow">
+    <div class="node">
+      <span class="num">1</span><b>Donnée sûre</b
+      ><span>demo-phishing.invalid/<br />wallet-drainer</span>
+    </div>
+    <div class="node">
+      <span class="num">2</span><b>Normalisation</b
+      ><span>domaine réservé,<br />aucune cible réelle</span>
+    </div>
+    <div class="node">
+      <span class="num">3</span><b>Transaction</b
+      ><span>report URL confirmé</span>
+    </div>
+    <div class="node">
+      <span class="num">4</span><b>Event</b><span>preuve dans les logs</span>
+    </div>
+    <div class="node">
+      <span class="num">5</span><b>Check</b><span>entrée active relue</span>
+    </div>
+  </div>
+  <div class="evidence">
+    <span class="icon">TX</span>
+    <div>
+      <b>Transaction de démonstration</b
+      ><span
+        ><a
+          href="https://amoy.polygonscan.com/tx/0x208b9ccdfe1f0daf464321e571b341b280694c4bfc364d590267794c50a33943"
+          >0x208b9ccdfe1f0daf464321e571b341b280694c4bfc364d590267794c50a33943</a
+        ></span
+      >
+    </div>
+  </div>
+  <p class="small">
+    Cette preuve valide la chaîne <strong>report → event → check</strong> au
+    niveau blockchain. Elle n’établit pas que le signalement provenait de
+    WF1/WF2 ou que Discord a été appelé.
+  </p>
+
+  <h3>Preuve 2 · correction d’un faux positif</h3>
+  <div class="grid-2">
+    <div class="evidence">
+      <span class="icon">R</span>
+      <div>
+        <b>Signalement de test</b
+        ><span
+          ><a
+            href="https://amoy.polygonscan.com/tx/0xde03a89b43467363178faf145a0b74bb96a5a599b1f0af875d3c83dae1d4b459"
+            >0xde03a89b…dae1d4b459</a
+          ></span
+        >
+      </div>
+    </div>
+    <div class="evidence">
+      <span class="icon">X</span>
+      <div>
+        <b>Désactivation par l’Owner</b
+        ><span
+          ><a
+            href="https://amoy.polygonscan.com/tx/0x55cad45e7f376143dbaf67cb53546fef805a5e026d64151419c6cac303ade17c"
+            >0x55cad45e…303ade17c</a
+          ></span
+        >
+      </div>
+    </div>
+  </div>
+  <p class="small">
+    La cible <span class="mono">false-positive.invalid/remove-me</span> a été
+    publiée puis désactivée. La lecture active devient fausse, tandis que les
+    événements restent visibles. Cela démontre la procédure d’administration
+    sans exposer une URL malveillante réelle.
+  </p>
+
+  <h3>Scripts d’exploitation livrés</h3>
+  <table class="micro">
+    <thead>
+      <tr>
+        <th>Script</th>
+        <th>Rôle</th>
+        <th>Clé requise</th>
+        <th>Sortie</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="mono">check.js</span></td>
+        <td>Lecture URL/wallet et recherche du dernier tx hash.</td>
+        <td>Aucune</td>
+        <td>JSON interne complet ou public filtrable.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">report.js</span></td>
+        <td>Publication, confirmation et réconciliation d’incertitude.</td>
+        <td>Reporter</td>
+        <td>
+          <span class="mono">reported</span> ou
+          <span class="mono">already_blacklisted</span>.
+        </td>
+      </tr>
+      <tr>
+        <td><span class="mono">remove.js</span></td>
+        <td>Désactivation administrative d’un faux positif.</td>
+        <td>Owner</td>
+        <td>Tx hash ou <span class="mono">not_blacklisted</span>.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">batchReport.js</span></td>
+        <td>Publication séquentielle depuis un fichier contrôlé.</td>
+        <td>Reporter</td>
+        <td>Résultats JSON par entrée.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">listen.js</span></td>
+        <td>Lecture historique ou suivi continu des events.</td>
+        <td>Aucune</td>
+        <td>Flux d’événements normalisés.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Preuves on-chain</span
+    ><span class="page-number">10</span>
+  </div>
+</section>
+
+<!-- PAGE 11 — BRIDGE -->
+<section class="page compact" data-page="11">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span
+    ><span>Scripts et chain bridge</span>
+  </div>
+  <div class="section-title">
+    <div class="index">10</div>
+    <div>
+      <h1>Une frontière de confiance explicite</h1>
+      <p class="subtitle">
+        n8n ne reçoit ni scripts hôte ni clé Owner&nbsp;: toutes les opérations
+        blockchain passent par un service interne borné.
+      </p>
+    </div>
+  </div>
+
+  <div class="architecture">
+    <div class="box">
+      <b>n8n</b
+      ><span
+        >Contexte validé<br />credential Header Auth<br />aucune clé privée
+        directe</span
+      >
+    </div>
+    <div class="connector">→</div>
+    <div class="box core">
+      <b>chain-bridge</b
+      ><span
+        >Bearer timing-safe<br />JSON fermé ≤ 16 KiB<br />taxonomie
+        d’erreurs</span
+      >
+    </div>
+    <div class="connector">→</div>
+    <div class="box">
+      <b>Scripts + RPC</b
+      ><span
+        >spawn sans shell<br />clé Reporter seulement<br />Polygon Amoy</span
+      >
+    </div>
+  </div>
+
+  <h3>Contrôles à l’entrée du bridge</h3>
+  <div class="grid-2">
+    <ul class="checks small">
+      <li>
+        Token bearer d’au moins 32 caractères, comparé avec
+        <span class="mono">timingSafeEqual</span>.
+      </li>
+      <li>
+        <span class="mono">Content-Type: application/json</span> obligatoire et
+        corps limité à 16 KiB.
+      </li>
+      <li>Objet exact&nbsp;: champs manquants ou inattendus rejetés.</li>
+      <li>URL, wallet, catégorie et score validés par une liste fermée.</li>
+    </ul>
+    <ul class="checks small">
+      <li>
+        Processus enfant lancé avec arguments séparés et
+        <span class="mono">shell: false</span>.
+      </li>
+      <li>Sortie limitée et validée comme un unique objet JSON.</li>
+      <li>Erreurs RPC brutes remplacées par des codes techniques sûrs.</li>
+      <li>
+        Endpoint santé minimal&nbsp;:
+        <span class="mono">{ "status": "ok" }</span>.
+      </li>
+    </ul>
+  </div>
+
+  <h3>Routes internes implémentées</h3>
+  <table class="micro">
+    <thead>
+      <tr>
+        <th>Route</th>
+        <th>Finalité</th>
+        <th>Effet externe possible</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="mono">POST /internal/check</span></td>
+        <td>Lecture et normalisation d’une cible.</td>
+        <td>Aucun.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">POST /internal/report</span></td>
+        <td>Publication d’une cible validée.</td>
+        <td>Transaction Reporter.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">/internal/lifecycle/{create,read,cas}</span></td>
+        <td>Gestion atomique du cycle de vie.</td>
+        <td>Écriture SQLite uniquement.</td>
+      </tr>
+      <tr>
+        <td><span class="mono">/internal/wf3/{execute,claim,settle}</span></td>
+        <td>Coordination publication, alerte et reprise.</td>
+        <td>Transaction puis autorisation Discord.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Fiabilité face aux erreurs transitoires</h3>
+  <div class="flow">
+    <div class="node">
+      <span class="num">1</span><b>Échec report</b
+      ><span>timeout, réseau,<br />429 ou RPC 5xx</span>
+    </div>
+    <div class="node">
+      <span class="num">2</span><b>Recheck</b
+      ><span>relire la chaîne<br />obligatoirement</span>
+    </div>
+    <div class="node">
+      <span class="num">3</span><b>Décider</b
+      ><span>déjà actif = succès<br />sinon retry borné</span>
+    </div>
+    <div class="node">
+      <span class="num">4</span><b>Backoff</b
+      ><span>≈ 1 s puis 2 s<br />jitter ± 25 %</span>
+    </div>
+    <div class="node">
+      <span class="num">5</span><b>Terminer</b
+      ><span>3 tentatives max<br />ou échec sûr</span>
+    </div>
+  </div>
+
+  <div class="split-60">
+    <div>
+      <h3>Idempotence et concurrence</h3>
+      <p>
+        Chaque <span class="mono">reportId</span> est lié à une empreinte
+        SHA-256 du contexte et, pendant un effet ouvert, à un
+        <span class="mono">executionId</span>. SQLite conserve un numéro de
+        révision. Les transitions et claims sont appliqués par
+        compare-and-swap&nbsp;: une seule exécution peut gagner le droit
+        d’envoyer l’alerte finale.
+      </p>
+      <p class="small">
+        Une réutilisation du même identifiant avec une cible ou un verdict
+        différent est un conflit, pas un nouveau traitement. Un replay terminal
+        retourne l’état persisté sans répéter la transaction.
+      </p>
+    </div>
+    <div class="card blue small">
+      <h4>Limite « exactly once »</h4>
+      <p>
+        Discord ne fournit pas de clé d’idempotence. Une panne entre la
+        réception du message et l’enregistrement local empêche de savoir avec
+        certitude si l’envoi a réussi.
+      </p>
+      <p>
+        Le choix retenu privilégie l’absence de doublon&nbsp;: l’état devient
+        <span class="mono">uncertain</span> et aucun renvoi automatique n’est
+        effectué.
+      </p>
+    </div>
+  </div>
+
+  <div class="callout success small">
+    <strong>Apport au projet.</strong> Cette architecture empêche qu’une URL
+    contrôlée par un utilisateur soit interpolée dans une commande et limite la
+    clé Reporter au seul service qui en a besoin. Elle transforme une
+    orchestration visuelle en chaîne d’effets persistante, testable et
+    auditable.
+  </div>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Chain bridge</span
+    ><span class="page-number">11</span>
+  </div>
+</section>
+
+<!-- PAGE 12 — IA CONCEPTION -->
+<section class="page" data-page="12">
+  <div class="running-head">
+    <span class="mark">Rapport d’avancement</span><span>Module IA</span>
+  </div>
+  <div class="section-title">
+    <div class="index">11</div>
+    <div>
+      <h1>Conception du module IA v1</h1>
+      <p class="subtitle">
+        Un appel combiné examine la structure de l’URL, le contenu visible et un
+        digest structurel borné.
+      </p>
+    </div>
+  </div>
+
+  <p class="lead">
+    Le module IA ne reçoit jamais un site comme une source d’instructions. Il
+    reçoit des représentations textuelles explicitement délimitées et doit
+    retourner uniquement un objet JSON validable. L’architecture cherche à
+    conjuguer capacité d’interprétation et comportement fermé en cas d’erreur.
+  </p>
+
+  <div class="grid-3">
+    <div class="card accent">
+      <h4>1 · Analyse d’URL</h4>
+      <ul class="small">
+        <li>Typosquatting et distance avec une marque connue.</li>
+        <li>Homoglyphes, substitutions et punycode.</li>
+        <li>TLD, sous-domaines trompeurs et raccourcisseurs.</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h4>2 · Analyse structurelle</h4>
+      <ul class="small">
+        <li>Champs demandant seed phrase ou clé privée.</li>
+        <li>
+          Motifs <span class="mono">eth_sign</span>,
+          <span class="mono">approve</span>,
+          <span class="mono">setApprovalForAll</span>.
+        </li>
+        <li>Domaines de scripts externes et indices de clonage.</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h4>3 · Analyse sémantique</h4>
+      <ul class="small">
+        <li>Urgence artificielle et menace de blocage.</li>
+        <li>Faux support ou vérification externe.</li>
+        <li>Faux airdrop et rendement irréaliste.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Chaîne de traitement d’une analyse v1</h3>
+  <div class="flow">
+    <div class="node">
+      <span class="num">A</span><b>Qualité</b
+      ><span>texte ≥ 200 caractères<br />et pas de challenge</span>
+    </div>
+    <div class="node">
+      <span class="num">B</span><b>Prompt</b
+      ><span>système + trois<br />checklists combinées</span>
+    </div>
+    <div class="node">
+      <span class="num">C</span><b>Provider</b
+      ><span>Gemini puis NVIDIA<br />si incident transitoire</span>
+    </div>
+    <div class="node">
+      <span class="num">D</span><b>Validation</b
+      ><span>parse JSON + schéma<br />fermé</span>
+    </div>
+    <div class="node">
+      <span class="num">E</span><b>Résultat</b
+      ><span>verdict ou suspicious<br />après retries</span>
+    </div>
+  </div>
+
+  <h3>Stratégie multi-provider</h3>
+  <table class="small">
+    <thead>
+      <tr>
+        <th>Situation Gemini</th>
+        <th>Comportement</th>
+        <th>Justification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Réponse valide</td>
+        <td>Conserver le verdict Gemini.</td>
+        <td>Chemin nominal et latence minimale.</td>
+      </tr>
+      <tr>
+        <td>Timeout, HTTP 429 ou 5xx</td>
+        <td>Basculer vers NVIDIA NIM.</td>
+        <td>Incident supposé transitoire, continuité de service.</td>
+      </tr>
+      <tr>
+        <td>Erreur définitive, ex. configuration invalide</td>
+        <td>Ne pas masquer par un fallback.</td>
+        <td>Une mauvaise configuration doit être corrigée explicitement.</td>
+      </tr>
+      <tr>
+        <td>JSON invalide ou schéma refusé</td>
+        <td>
+          Réessayer jusqu’à deux fois, puis
+          <span class="mono">suspicious</span>.
+        </td>
+        <td>Aucune sortie libre ne doit franchir la frontière IA.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Défense contre la prompt injection</h3>
+  <div class="split-60">
+    <div>
+      <p>
+        Le message système déclare que tout ce qui se trouve entre
+        <span class="mono">&lt;&lt;&lt;URL&gt;&gt;&gt;</span>,
+        <span class="mono">&lt;&lt;&lt;PAGE_TEXT&gt;&gt;&gt;</span> et
+        <span class="mono">&lt;&lt;&lt;STRUCTURAL_DIGEST&gt;&gt;&gt;</span> est
+        une donnée non fiable. Une phrase comme «&nbsp;ignore les consignes
+        précédentes&nbsp;» doit devenir un indicateur de manipulation, jamais
+        une instruction.
+      </p>
+      <p>
+        Le modèle ne reçoit pas le HTML/JavaScript brut et ne dispose d’aucun
+        outil. Les extraits sont bornés, les indicateurs sont limités à cinq et
+        la réponse est fermée par le schéma.
+      </p>
+    </div>
+    <div class="card soft small">
+      <h4>Métadonnées techniques retournées</h4>
+      <ul class="clean">
+        <li><span class="mono">manualReview</span></li>
+        <li>
+          <span class="mono">modelUsed</span> et
+          <span class="mono">modelName</span>
+        </li>
+        <li><span class="mono">latencyMs</span></li>
+        <li><span class="mono">retries</span></li>
+        <li><span class="mono">reason</span> pour les fallbacks sûrs</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout danger small">
+    <strong>Défaut identifié de la v1.</strong> Lorsque le texte contient moins
+    de 200 caractères ou ressemble à une page de challenge, le client
+    court-circuite toute analyse et retourne immédiatement
+    <span class="mono">suspicious</span>. Cette règle prudente évite les faux
+    positifs, mais elle produit sept faux négatifs dans l’évaluation stricte. Le
+    plan v2 détaillé en page 15 corrige ce point sans assouplir la définition
+    des métriques.
+  </div>
+
+  <div class="folio">
+    <span>Anti-Phishing Web3 · Module IA</span
+    ><span class="page-number">12</span>
+  </div>
+</section>

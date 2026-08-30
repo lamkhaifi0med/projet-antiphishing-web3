@@ -23,7 +23,9 @@ function readPrompt(filename) {
 function extractChecklist(markdown) {
   const match = markdown.match(/## Instruction\s*\n([\s\S]*?)\n<<</);
   if (!match) {
-    throw new Error("Format de prompt inattendu : section '## Instruction' introuvable avant un délimiteur <<<.");
+    throw new Error(
+      "Format de prompt inattendu : section '## Instruction' introuvable avant un délimiteur <<<.",
+    );
   }
   return match[1].trim();
 }
@@ -39,21 +41,48 @@ function loadSystemPrompt() {
 // pour que le modele raisonne sur ce qu'il a reellement (URL + features
 // deterministes) sans halluciner un contenu de page qu'il n'a pas vu.
 const MODE_NOTES = {
-  combined: "Preuve complete disponible : URL, texte de page et digest structurel.",
-  url_structural: "Texte de page insuffisant ou indisponible ; le digest structurel reste exploitable (motif Web3, champ de formulaire sensible ou domaine de script externe detecte). Ne pas deduire de legitimite de l'absence de texte.",
-  url_only: "Aucune preuve de page exploitable (page de defi, contenu vide, ou echec de capture). Analyse fondee uniquement sur l'URL et les features deterministes ci-dessous. Un manque de preuve n'est PAS une preuve de legitimite : reste prudent, un score de risque URL eleve doit peser dans le verdict.",
+  combined:
+    "Preuve complete disponible : URL, texte de page et digest structurel.",
+  url_structural:
+    "Texte de page insuffisant ou indisponible ; le digest structurel reste exploitable (motif Web3, champ de formulaire sensible ou domaine de script externe detecte). Ne pas deduire de legitimite de l'absence de texte.",
+  url_only:
+    "Aucune preuve de page exploitable (page de defi, contenu vide, ou echec de capture). Analyse fondee uniquement sur l'URL et les features deterministes ci-dessous. Un manque de preuve n'est PAS une preuve de legitimite : reste prudent, un score de risque URL eleve doit peser dans le verdict.",
 };
 
 function formatUrlFeatures(urlFeatures) {
   if (!urlFeatures) return "indisponible";
-  const { score, domain, tld, subdomainCount, whoisAgeDays, whoisSource, components } = urlFeatures;
-  return JSON.stringify({ score, domain, tld, subdomainCount, whoisAgeDays, whoisSource, components });
+  const {
+    score,
+    domain,
+    tld,
+    subdomainCount,
+    whoisAgeDays,
+    whoisSource,
+    components,
+  } = urlFeatures;
+  return JSON.stringify({
+    score,
+    domain,
+    tld,
+    subdomainCount,
+    whoisAgeDays,
+    whoisSource,
+    components,
+  });
 }
 
-function buildUserPrompt({ url, textExcerpt, structuralDigest, urlFeatures, mode = "combined" }) {
+function buildUserPrompt({
+  url,
+  textExcerpt,
+  structuralDigest,
+  urlFeatures,
+  mode = "combined",
+}) {
   const urlChecklist = extractChecklist(readPrompt("url-analysis.md"));
   const sourceChecklist = extractChecklist(readPrompt("source-analysis.md"));
-  const semanticChecklist = extractChecklist(readPrompt("semantic-analysis.md"));
+  const semanticChecklist = extractChecklist(
+    readPrompt("semantic-analysis.md"),
+  );
 
   const hasPageText = mode === "combined";
   const hasDigest = mode === "combined" || mode === "url_structural";
@@ -82,11 +111,15 @@ function buildUserPrompt({ url, textExcerpt, structuralDigest, urlFeatures, mode
     "<<<END_URL_FEATURES>>>",
     "",
     "<<<PAGE_TEXT>>>",
-    hasPageText ? String(textExcerpt ?? "") : "indisponible pour ce mode d'analyse",
+    hasPageText
+      ? String(textExcerpt ?? "")
+      : "indisponible pour ce mode d'analyse",
     "<<<END_PAGE_TEXT>>>",
     "",
     "<<<STRUCTURAL_DIGEST>>>",
-    hasDigest ? JSON.stringify(structuralDigest ?? null) : "indisponible pour ce mode d'analyse",
+    hasDigest
+      ? JSON.stringify(structuralDigest ?? null)
+      : "indisponible pour ce mode d'analyse",
     "<<<END_STRUCTURAL_DIGEST>>>",
     "",
     "## Decision finale obligatoire",

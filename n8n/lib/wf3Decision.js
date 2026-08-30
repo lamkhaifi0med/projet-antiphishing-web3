@@ -21,6 +21,7 @@ const REQUIRED_FIELDS = Object.freeze([
   "scoreFinal",
   "indicators",
 ]);
+const OPTIONAL_SCORE_FIELDS = Object.freeze(["llmConfidence", "featureScore"]);
 const VERDICTS = new Set(["malicious", "suspicious", "legitimate"]);
 
 class Wf3ValidationError extends Error {
@@ -40,7 +41,7 @@ function assertExactInput(input) {
     fail("WF3 input must be a JSON object.");
   }
 
-  const allowed = new Set(REQUIRED_FIELDS);
+  const allowed = new Set([...REQUIRED_FIELDS, ...OPTIONAL_SCORE_FIELDS]);
   const unknown = Object.keys(input).filter((field) => !allowed.has(field));
   if (unknown.length > 0) {
     fail(
@@ -116,6 +117,22 @@ function validateScoreFinal(value) {
   return value;
 }
 
+// Composantes optionnelles du score (WF2 : confiance LLM et score des
+// heuristiques URL). Elles n'influencent jamais la décision, uniquement
+// l'explication affichée dans l'alerte Discord.
+function validateOptionalScore(value, label) {
+  if (value === undefined || value === null) return null;
+  if (
+    typeof value !== "number" ||
+    !Number.isFinite(value) ||
+    value < 0 ||
+    value > 1
+  ) {
+    fail(`${label} must be null or a finite JSON number from 0 to 1.`);
+  }
+  return value;
+}
+
 function validateIndicators(value) {
   if (!Array.isArray(value) || value.length > MAX_INDICATORS) {
     fail(
@@ -150,6 +167,8 @@ function validateWf3Input(input) {
     category: validateCategory(verdict, input.category),
     scoreFinal: validateScoreFinal(input.scoreFinal),
     indicators: validateIndicators(input.indicators),
+    llmConfidence: validateOptionalScore(input.llmConfidence, "llmConfidence"),
+    featureScore: validateOptionalScore(input.featureScore, "featureScore"),
   };
 }
 

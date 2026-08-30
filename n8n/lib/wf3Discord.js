@@ -33,6 +33,10 @@ const CONTEXT_FIELDS = Object.freeze([
   "scoreFinal",
   "indicators",
 ]);
+const OPTIONAL_CONTEXT_FIELDS = Object.freeze([
+  "llmConfidence",
+  "featureScore",
+]);
 const REQUEST_FIELDS = Object.freeze(["lifecycle", "claim", "context"]);
 const CLAIM_FIELDS = Object.freeze(["claimId", "claimRevision"]);
 
@@ -75,11 +79,11 @@ function fail(message) {
   throw new Wf3DiscordValidationError(message);
 }
 
-function assertExactObject(value, fields, label) {
+function assertExactObject(value, fields, label, optionalFields = []) {
   if (value === null || typeof value !== "object" || Array.isArray(value)) {
     fail(`${label} must be an object.`);
   }
-  const allowed = new Set(fields);
+  const allowed = new Set([...fields, ...optionalFields]);
   const unknown = Object.keys(value).filter((field) => !allowed.has(field));
   const missing = fields.filter(
     (field) => !Object.prototype.hasOwnProperty.call(value, field),
@@ -107,7 +111,7 @@ function validateClaim(value) {
 }
 
 function validateContext(value) {
-  assertExactObject(value, CONTEXT_FIELDS, "context");
+  assertExactObject(value, CONTEXT_FIELDS, "context", OPTIONAL_CONTEXT_FIELDS);
 
   let target;
   try {
@@ -141,6 +145,8 @@ function validateContext(value) {
       scoreFinal: null,
       indicators: Object.freeze([]),
       decision: null,
+      llmConfidence: null,
+      featureScore: null,
     });
   }
 
@@ -159,6 +165,8 @@ function validateContext(value) {
     scoreFinal: decision.scoreFinal,
     indicators: Object.freeze([...decision.discordIndicators]),
     decision: decision.action,
+    llmConfidence: decision.llmConfidence,
+    featureScore: decision.featureScore,
   });
 }
 
@@ -289,6 +297,78 @@ function formatCategory(category) {
   return category === null ? "Not assigned" : neutralizeText(category);
 }
 
+// Explication en langage simple, construite exclusivement a partir de valeurs
+// numeriques typees et de phrases fixes : aucun texte libre du modele n'entre
+// ici, le durcissement anti-injection Discord reste donc intact.
+function explainScore(context) {
+  if (
+    context.decision !== "manual_review" ||
+    typeof context.llmConfidence !== "number" ||
+    typeof context.featureScore !== "number" ||
+    typeof context.scoreFinal !== "number"
+  ) {
+    return null;
+  }
+
+  const confidencePercent = Math.round(context.llmConfidence * 100);
+  const scorePercent = Math.round(context.scoreFinal * 100);
+  const gapPoints = Math.max(0, 80 - scorePercent);
+
+  const sentences = [];
+
+  if (context.verdict === "malicious") {
+    if (context.llmConfidence >= 0.9) {
+      sentences.push(
+        `The AI is very confident this target is malicious (${confidencePercent}%).`,
+      );
+    } else if (context.llmConfidence >= 0.7) {
+      sentences.push(
+        `The AI thinks this target is malicious but is not certain (${confidencePercent}%).`,
+      );
+    } else {
+      sentences.push(
+        `The AI leans toward malicious with low certainty (${confidencePercent}%).`,
+      );
+    }
+  } else {
+    sentences.push(
+      `The AI could not decide between malicious and legitimate (confidence ${confidencePercent}%).`,
+    );
+  }
+
+  if (context.featureScore < 0.2) {
+    sentences.push("The automatic URL checks found few known red flags.");
+  } else if (context.featureScore < 0.5) {
+    sentences.push(
+      "The automatic URL checks found some suspicious traits, but not enough to be conclusive.",
+    );
+  } else {
+    sentences.push(
+      "The URL itself also looks suspicious to the automatic checks.",
+    );
+  }
+
+  if (context.verdict === "malicious" && context.category === "other") {
+    sentences.push(
+      "This looks like a classic scam rather than a crypto attack, and the automatic checks are tuned for crypto threats \u2014 which lowers the combined score.",
+    );
+  }
+
+  sentences.push(
+    `Combined score: ${scorePercent}% \u2014 ${gapPoints} point${gapPoints === 1 ? "" : "s"} short of the 80% needed for automatic on-chain publication.`,
+  );
+
+  const strongAiWeakFeatures =
+    context.verdict === "malicious" &&
+    context.llmConfidence >= 0.9 &&
+    context.featureScore < 0.2;
+  const suggestion = strongAiWeakFeatures
+    ? "The AI verdict is strong; this is likely safe to confirm as fraud after a quick look."
+    : "Signals are mixed \u2014 this one needs a careful human check.";
+
+  return `${sentences.join("\n")}\n\n**Suggested action:** ${suggestion}`;
+}
+
 function formatIndicators(indicators) {
   if (indicators.length === 0) return "None available";
   return indicators
@@ -369,12 +449,20 @@ function buildFinalDiscordPayload(input) {
     ),
     field("Category", formatCategory(context.category), true),
     field("Score", formatScore(context.scoreFinal), true),
+  ];
+  if (lifecycle.status === STATUSES.MANUAL_REVIEW) {
+    const explanation = explainScore(context);
+    if (explanation !== null) {
+      fields.push(field("Why manual review?", explanation));
+    }
+  }
+  fields.push(
     field("Indicators", formatIndicators(context.indicators)),
     field("Publication", presentation.publication),
     field("Transaction", formatTransaction(lifecycle)),
     field("Report ID", neutralizeText(lifecycle.reportId), true),
     field("Timestamp", lifecycle.updatedAt, true),
-  ];
+  );
   if (lifecycle.errorCode) {
     fields.push(field("Technical code", lifecycle.errorCode, true));
   }
@@ -425,5 +513,6 @@ module.exports = {
   Wf3DiscordValidationError,
   buildFinalDiscordPayload,
   defangTarget,
+  explainScore,
   neutralizeText,
 };
