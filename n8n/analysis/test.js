@@ -3,7 +3,12 @@
 
 const assert = require("node:assert/strict");
 const { domainToASCII } = require("node:url");
-const { calculateUrlFeatures, registeredDomain, scoreAge, hasHomoglyphEvidence } = require("../../ai/features/urlFeatures");
+const {
+  calculateUrlFeatures,
+  registeredDomain,
+  scoreAge,
+  hasHomoglyphEvidence,
+} = require("../../ai/features/urlFeatures");
 const { createAnalysisServer, decide, llmRisk } = require("./server");
 
 const SECRET = "test-secret-32-characters-minimum-value";
@@ -12,11 +17,19 @@ async function main() {
   assert.equal(registeredDomain("a.b.example.co.uk"), "example.co.uk");
   // REVIEW_COMMIT_57747F0.md §7 : co.in n'etait pas dans la petite liste
   // codee en dur, "login.example.co.in" se reduisait a "co.in".
-  assert.equal(registeredDomain("login.example.co.in"), "example.co.in", "co.in doit etre traite comme un suffixe a deux niveaux via la vraie Public Suffix List");
+  assert.equal(
+    registeredDomain("login.example.co.in"),
+    "example.co.in",
+    "co.in doit etre traite comme un suffixe a deux niveaux via la vraie Public Suffix List",
+  );
   // Hebergement generique (suffixe prive de la PSL) : la partie que
   // l'attaquant controle librement est le domaine pertinent, pas
   // "vercel.app" partage par tout le monde.
-  assert.equal(registeredDomain("phishing-site.vercel.app"), "phishing-site.vercel.app", "un hebergement generique (suffixe prive PSL) doit etre traite comme son propre domaine enregistrable");
+  assert.equal(
+    registeredDomain("phishing-site.vercel.app"),
+    "phishing-site.vercel.app",
+    "un hebergement generique (suffixe prive PSL) doit etre traite comme son propre domaine enregistrable",
+  );
   // IP litterale : ne doit plus etre depecee comme des labels de domaine.
   assert.equal(registeredDomain("192.0.2.10"), "192.0.2.10");
 
@@ -26,21 +39,102 @@ async function main() {
   // REVIEW_COMMIT_57747F0.md §7 : un label xn-- n'est une preuve
   // d'homoglyphe que s'il decode vers un caractere confusable documente ;
   // un IDN legitime (japonais ici) ne doit pas etre penalise.
-  assert.equal(hasHomoglyphEvidence([domainToASCII("ѕсam-binance"), "com"]), true, "un homoglyphe cyrillique reellement present doit etre detecte");
-  assert.equal(hasHomoglyphEvidence([domainToASCII("日本語"), "jp"]), false, "un IDN legitime sans caractere confusable ne doit pas etre marque comme homoglyphe");
+  assert.equal(
+    hasHomoglyphEvidence([domainToASCII("ѕсam-binance"), "com"]),
+    true,
+    "un homoglyphe cyrillique reellement present doit etre detecte",
+  );
+  assert.equal(
+    hasHomoglyphEvidence([domainToASCII("日本語"), "jp"]),
+    false,
+    "un IDN legitime sans caractere confusable ne doit pas etre marque comme homoglyphe",
+  );
 
   // RF-N7 : la confiance mesure la certitude du verdict, pas un risque brut.
   assert.equal(llmRisk("malicious", 0.95), 0.95);
   assert.ok(Math.abs(llmRisk("legitimate", 0.98) - 0.02) < 1e-9);
   assert.equal(llmRisk("suspicious", 0.7), 0.5);
 
-  const features = await calculateUrlFeatures("https://bit.ly/a", "https://a.b.c.bad.xyz", { lookupDomainAge: async () => ({ ageDays: 3, source: "test" }) });
-  assert.equal(features.score, 0.8);
+  const features = await calculateUrlFeatures(
+    "https://bit.ly/a",
+    "https://a.b.c.bad.xyz",
+    { lookupDomainAge: async () => ({ ageDays: 3, source: "test" }) },
+  );
+  assert.equal(features.score, 0.57);
+  assert.equal(features.brandDetected, null);
+
+  // Signal brand-proximity : un typosquat de marque Web3 doit etre marque,
+  // le domaine officiel jamais. Trois voies de detection :
+  // sous-chaine (pancakeswapo, kraken188, subdomaine ledger), distance
+  // d'edition <= 2 (poncakeswap, begin-metamsk), officiel -> 0.
+  const noAge = {
+    lookupDomainAge: async () => ({ ageDays: null, source: "unavailable" }),
+  };
+  for (const [url, expectedBrand] of [
+    ["https://pancakeswapo.finance/", "pancakeswap"],
+    ["https://poncakeswap.finance/", "pancakeswap"],
+    ["https://pencakeswap.finance/", "pancakeswap"],
+    ["https://uniswapunixkp.com/", "uniswap"],
+    ["https://kraken188.net/", "kraken"],
+    ["http://www-ledger-com-live-app.woasp3.top/x", "ledger"],
+    ["https://update-trezorsuite.com/", "trezor"],
+    ["https://trustwallet-promo.site/", "trustwallet"],
+    ["https://begin-metamsk.wixstudio.com/", "metamask"],
+  ]) {
+    const brandFeatures = await calculateUrlFeatures(url, url, noAge);
+    assert.equal(
+      brandFeatures.brandDetected,
+      expectedBrand,
+      `${url} doit detecter ${expectedBrand}`,
+    );
+    assert.equal(brandFeatures.components.brand, 1);
+    assert.ok(
+      brandFeatures.score >= 0.45,
+      `${url} score ${brandFeatures.score} doit etre >= 0.45 (brand 0.35 + RDAP neutre 0.11)`,
+    );
+  }
+  for (const officialUrl of [
+    "https://pancakeswap.finance/",
+    "https://metamask.io/",
+    "https://trezor.io/",
+    "https://uniswap.org/",
+    "https://www.wikipedia.org/",
+  ]) {
+    const officialFeatures = await calculateUrlFeatures(
+      officialUrl,
+      officialUrl,
+      { lookupDomainAge: async () => ({ ageDays: 4000, source: "test" }) },
+    );
+    assert.equal(
+      officialFeatures.components.brand,
+      0,
+      `${officialUrl} ne doit pas etre marque brand-proximity`,
+    );
+    assert.equal(officialFeatures.brandDetected, null);
+    assert.ok(
+      officialFeatures.score < 0.2,
+      `${officialUrl} score ${officialFeatures.score} doit rester faible`,
+    );
+  }
+  // pancakeswapo avec RDAP indisponible : le cas reel qui plafonnait a 0.70.
+  // featureScore 0.46 -> scoreFinal 0.7*0.95 + 0.3*0.46 = 0.803 >= 0.80.
+  const typosquat = await calculateUrlFeatures(
+    "https://pancakeswapo.finance/",
+    "https://pancakeswapo.finance/",
+    noAge,
+  );
+  assert.equal(typosquat.score, 0.46);
+  assert.ok(
+    0.7 * 0.95 + 0.3 * typosquat.score >= 0.8,
+    "un typosquat malicious a 95% doit franchir le seuil de publication",
+  );
 
   // Une URL avec un hote IP litteral ne doit plus jeter ni produire un
   // score incoherent : whoisAge reste neutre, aucun signal TLD/sous-domaine/
   // homoglyphe/shortener bidon derive d'un decoupage de l'adresse en labels.
-  const ipFeatures = await calculateUrlFeatures("https://192.0.2.10/wallet-connect");
+  const ipFeatures = await calculateUrlFeatures(
+    "https://192.0.2.10/wallet-connect",
+  );
   assert.equal(ipFeatures.domain, "192.0.2.10");
   assert.equal(ipFeatures.tld, null);
   assert.equal(ipFeatures.subdomainCount, 0);
@@ -49,7 +143,14 @@ async function main() {
 
   const server = createAnalysisServer({
     secret: SECRET,
-    analyzeContent: async () => ({ verdict: "malicious", confidence: 0.95, category: "wallet_drainer", indicators: ["approve illimite"], modelUsed: "gemini", modelName: "test" }),
+    analyzeContent: async () => ({
+      verdict: "malicious",
+      confidence: 0.95,
+      category: "wallet_drainer",
+      indicators: ["approve illimite"],
+      modelUsed: "gemini",
+      modelName: "test",
+    }),
     scoreUrl: async () => ({ score: 0.8, components: {} }),
   });
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
@@ -57,15 +158,29 @@ async function main() {
   try {
     const response = await fetch(`${base}/analyze`, {
       method: "POST",
-      headers: { "content-type": "application/json", authorization: `Bearer ${SECRET}` },
-      body: JSON.stringify({ url: "https://bad.xyz", finalUrl: "https://bad.xyz", textExcerpt: "x".repeat(250), structuralDigest: {} }),
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${SECRET}`,
+      },
+      body: JSON.stringify({
+        url: "https://bad.xyz",
+        finalUrl: "https://bad.xyz",
+        textExcerpt: "x".repeat(250),
+        structuralDigest: {},
+      }),
     });
     assert.equal(response.status, 200);
     const result = await response.json();
     assert.equal(result.scoreFinal, 0.905);
     assert.equal(result.status, "reporting");
-    assert.equal(decide({ verdict: "suspicious" }, 0.4).status, "manual_review");
-    assert.equal(decide({ verdict: "legitimate" }, 0.9).decision, "logged_only");
+    assert.equal(
+      decide({ verdict: "suspicious" }, 0.4).status,
+      "manual_review",
+    );
+    assert.equal(
+      decide({ verdict: "legitimate" }, 0.9).decision,
+      "logged_only",
+    );
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }
@@ -74,19 +189,39 @@ async function main() {
   // scoreFinal bas (risque), pas haut (confiance brute).
   const legitimateServer = createAnalysisServer({
     secret: SECRET,
-    analyzeContent: async () => ({ verdict: "legitimate", confidence: 0.98, category: null, indicators: [], modelUsed: "gemini", modelName: "test" }),
+    analyzeContent: async () => ({
+      verdict: "legitimate",
+      confidence: 0.98,
+      category: null,
+      indicators: [],
+      modelUsed: "gemini",
+      modelName: "test",
+    }),
     scoreUrl: async () => ({ score: 0, components: {} }),
   });
-  await new Promise((resolve) => legitimateServer.listen(0, "127.0.0.1", resolve));
+  await new Promise((resolve) =>
+    legitimateServer.listen(0, "127.0.0.1", resolve),
+  );
   const legitimateBase = `http://127.0.0.1:${legitimateServer.address().port}`;
   try {
     const response = await fetch(`${legitimateBase}/analyze`, {
       method: "POST",
-      headers: { "content-type": "application/json", authorization: `Bearer ${SECRET}` },
-      body: JSON.stringify({ url: "https://good.example", finalUrl: "https://good.example", textExcerpt: "x".repeat(250), structuralDigest: {} }),
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${SECRET}`,
+      },
+      body: JSON.stringify({
+        url: "https://good.example",
+        finalUrl: "https://good.example",
+        textExcerpt: "x".repeat(250),
+        structuralDigest: {},
+      }),
     });
     const result = await response.json();
-    assert.ok(result.scoreFinal < 0.05, `expected a low risk score for a confident legitimate verdict, got ${result.scoreFinal}`);
+    assert.ok(
+      result.scoreFinal < 0.05,
+      `expected a low risk score for a confident legitimate verdict, got ${result.scoreFinal}`,
+    );
     assert.equal(result.decision, "logged_only");
   } finally {
     await new Promise((resolve) => legitimateServer.close(resolve));
@@ -95,4 +230,7 @@ async function main() {
   console.log("WF2 analysis: 24/24 tests passes.");
 }
 
-main().catch((error) => { console.error(error); process.exitCode = 1; });
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

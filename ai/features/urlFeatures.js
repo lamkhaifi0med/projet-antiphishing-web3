@@ -38,6 +38,44 @@ const SHORTENERS = new Set([
 ]);
 const RDAP_TIMEOUT_MS = 4_000;
 
+// Marques Web3 les plus usurpees, associees a leurs domaines officiels
+// (domaine enregistrable). Liste fermee et deterministe : le signal
+// brand-proximity vaut 1 quand un hostname NON officiel contient le nom de
+// la marque ou un token a distance d'edition <= 2 (typosquat), et 0 pour le
+// domaine officiel lui-meme. Aucun nom < 6 caracteres pour limiter les
+// collisions accidentelles. Ce signal ne publie jamais seul : le verdict LLM
+// `malicious` reste obligatoire avant toute ecriture on-chain.
+const BRANDS = new Map([
+  ["metamask", ["metamask.io"]],
+  ["pancakeswap", ["pancakeswap.finance"]],
+  ["uniswap", ["uniswap.org"]],
+  ["opensea", ["opensea.io"]],
+  ["coinbase", ["coinbase.com"]],
+  ["binance", ["binance.com"]],
+  ["kraken", ["kraken.com"]],
+  ["ledger", ["ledger.com"]],
+  ["trezor", ["trezor.io"]],
+  ["trustwallet", ["trustwallet.com"]],
+  ["phantom", ["phantom.app", "phantom.com"]],
+  ["exodus", ["exodus.com", "exodus.io"]],
+  ["sushiswap", ["sushi.com", "sushiswap.com"]],
+  ["aave", []],
+  ["lido", []],
+  ["polygon", ["polygon.technology"]],
+  ["arbitrum", ["arbitrum.io", "arbitrum.foundation"]],
+  ["solana", ["solana.com"]],
+  ["chainlink", ["chain.link", "chainlinklabs.com"]],
+  ["etherscan", ["etherscan.io"]],
+  ["blockchain", ["blockchain.com"]],
+  ["robinhood", ["robinhood.com"]],
+]);
+const OFFICIAL_BRAND_DOMAINS = new Set(
+  [...BRANDS.values()].flat().concat(["aave.com", "lido.fi"]),
+);
+// Les marques trop courtes ne participent qu'au test de sous-chaine exact,
+// jamais a la distance d'edition (trop de faux positifs).
+const MIN_BRAND_LENGTH_FOR_DISTANCE = 6;
+
 // Caracteres confusables (homoglyphes) documentes, cibles sur les lettres
 // latines les plus imitees en typosquatting Web3 (ex. binance -> Ьinance,
 // coinbase -> coinЬase). Volontairement non exhaustif : couvre les lettres
@@ -90,6 +128,53 @@ function scoreAge(ageDays) {
   if (ageDays <= 7) return 1;
   if (ageDays >= 365) return 0;
   return 1 - (ageDays - 7) / 358;
+}
+
+// Distance de Levenshtein classique, bornee : on s'arrete des que la
+// distance minimale possible depasse `max` (2 ici), ce qui suffit pour un
+// test de typosquat et reste O(n*m) sur des tokens courts.
+function editDistance(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i += 1) {
+    const current = [i];
+    let rowMin = i;
+    for (let j = 1; j <= b.length; j += 1) {
+      const substitution = previous[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1);
+      current[j] = Math.min(previous[j] + 1, current[j - 1] + 1, substitution);
+      if (current[j] < rowMin) rowMin = current[j];
+    }
+    if (rowMin > max) return max + 1;
+    previous = current;
+  }
+  return previous[b.length];
+}
+
+// Signal brand-proximity deterministe. Regles, dans l'ordre :
+// 1. domaine officiel de la marque -> 0 (jamais penalise) ;
+// 2. le hostname (hors suffixe public) contient le nom d'une marque en
+//    sous-chaine -> 1 (ex. pancakeswapo.finance, kraken188.net,
+//    www-ledger-com-live-app.woasp3.top) ;
+// 3. un token du hostname (split sur . - _) est a distance d'edition 1-2
+//    d'une marque -> 1 (ex. poncakeswap, begin-metamsk).
+function scoreBrandProximity(hostname, domain) {
+  if (OFFICIAL_BRAND_DOMAINS.has(domain)) return { score: 0, brand: null };
+  const parsed = parseHostname(hostname);
+  const suffix = parsed.publicSuffix ? `.${parsed.publicSuffix}` : "";
+  const head =
+    suffix && hostname.toLowerCase().endsWith(suffix)
+      ? hostname.toLowerCase().slice(0, -suffix.length)
+      : hostname.toLowerCase();
+  const tokens = head.split(/[.\-_]/).filter(Boolean);
+  for (const [brand] of BRANDS) {
+    if (head.includes(brand)) return { score: 1, brand };
+    if (brand.length < MIN_BRAND_LENGTH_FOR_DISTANCE) continue;
+    for (const token of tokens) {
+      const distance = editDistance(token, brand, 2);
+      if (distance >= 1 && distance <= 2) return { score: 1, brand };
+    }
+  }
+  return { score: 0, brand: null };
 }
 
 function containsConfusableChar(text) {
@@ -149,6 +234,25 @@ async function lookupDomainAge(domain, fetchImpl = fetch) {
   }
 }
 
+// Ponderation des composantes. Contraintes de calibration (rejeu hors ligne
+// du run Gemini v2.2 gele, ai/eval) :
+// 1. typosquat de marque a confiance LLM 0.95 avec RDAP indisponible
+//    (whoisAge neutre 0.5) doit publier : 0.7*0.95 + 0.3*(0.35 + 0.5*0.22)
+//    = 0.8033 >= 0.80 ;
+// 2. phishing non-marque sur TLD suspect + domaine tres recent (les cas
+//    deja publies en v2.2) doit continuer a publier : tld 0.25 + age 0.22 ;
+// 3. aucune entree legitime du jeu gele ne doit atteindre 0.80.
+function combineComponents(components) {
+  const score =
+    0.35 * components.brand +
+    0.25 * components.tld +
+    0.22 * components.whoisAge +
+    0.08 * components.homoglyph +
+    0.07 * components.subdomains +
+    0.03 * components.shortener;
+  return Number(score.toFixed(4));
+}
+
 // Score les features d'un hostname donne. `shortenerHostname` reste celui de
 // l'URL originale : c'est la que le raccourcisseur apparait, pas apres
 // redirection.
@@ -163,25 +267,22 @@ async function scoreHostname(hostname, shortenerHostname, options) {
     // ici - un lookup ARIN/RIPE distinct serait une amelioration future
     // hors perimetre de ce correctif).
     const components = {
+      brand: 0,
       tld: 0,
       whoisAge: scoreAge(null),
       homoglyph: 0,
       subdomains: 0,
       shortener: 0,
     };
-    const score =
-      0.3 * components.tld +
-      0.25 * components.whoisAge +
-      0.2 * components.homoglyph +
-      0.15 * components.subdomains +
-      0.1 * components.shortener;
+    const score = combineComponents(components);
     return {
-      score: Number(score.toFixed(4)),
+      score,
       domain,
       tld: null,
       subdomainCount: 0,
       whoisAgeDays: null,
       whoisSource: "not_applicable_ip",
+      brandDetected: null,
       components,
     };
   }
@@ -205,27 +306,25 @@ async function scoreHostname(hostname, shortenerHostname, options) {
     ? { ageDays: 0, source: "free_hosting_subdomain" }
     : await (options.lookupDomainAge || lookupDomainAge)(domain);
 
+  const brandProximity = scoreBrandProximity(hostname.toLowerCase(), domain);
   const components = {
+    brand: brandProximity.score,
     tld: freeHosting || SUSPICIOUS_TLDS.has(tld) ? 1 : 0,
     whoisAge: scoreAge(age.ageDays),
     homoglyph: hasHomoglyphEvidence(labels) ? 1 : 0,
     subdomains: subdomainCount >= 3 ? 1 : subdomainCount === 2 ? 0.5 : 0,
     shortener: SHORTENERS.has(registeredDomain(shortenerHostname)) ? 1 : 0,
   };
-  const score =
-    0.3 * components.tld +
-    0.25 * components.whoisAge +
-    0.2 * components.homoglyph +
-    0.15 * components.subdomains +
-    0.1 * components.shortener;
+  const score = combineComponents(components);
 
   return {
-    score: Number(score.toFixed(4)),
+    score,
     domain,
     tld,
     subdomainCount,
     whoisAgeDays: Number.isFinite(age.ageDays) ? Math.floor(age.ageDays) : null,
     whoisSource: age.source,
+    brandDetected: brandProximity.brand,
     components,
   };
 }
@@ -267,4 +366,6 @@ module.exports = {
   registeredDomain,
   scoreAge,
   hasHomoglyphEvidence,
+  scoreBrandProximity,
+  editDistance,
 };
