@@ -3,7 +3,7 @@
 Pipeline complet de détection, d'analyse et de blocage automatisé des menaces de phishing Web3 :
 **signalement → orchestration n8n → analyse LLM (Gemini, fallback NVIDIA) → blacklist décentralisée on-chain (Polygon Amoy) → alertes Discord → vérification publique**.
 
-Stage de 40 jours — binôme. Voir [PLAN.md](PLAN.md) et [docs/CAHIER_DES_CHARGES.md](docs/CAHIER_DES_CHARGES.md).
+Stage de 40 jours — binôme. Voir [PLAN.md](PLAN.md).
 
 ## État du projet — 31/08/2026 : pipeline complet opérationnel ✅
 
@@ -25,7 +25,7 @@ Preuves on-chain récentes (URLs de phishing réelles) :
 
 Résultats IA (prompt v2.2 gelé, dataset 72 entrées, Gemini) : **précision 100 %, rappel 80,6 %, F1 89,2 %** — critères d'acceptation atteints (≥ 85 % / ≥ 80 %). Détails dans [ai/prompts/FROZEN_V2_2.md](ai/prompts/FROZEN_V2_2.md) et [ai/eval](ai/eval).
 
-Les cahiers individuels : [Profil A — Web3](docs/CAHIER_DES_CHARGES_PROFIL_A_WEB3.md), [Profil B — IA](docs/CAHIER_DES_CHARGES_PROFIL_B_IA.md). Instructions d'exploitation : [n8n/README.md](n8n/README.md).
+Instructions d'exploitation : [n8n/README.md](n8n/README.md).
 
 ## Structure du dépôt
 
@@ -43,7 +43,7 @@ Les cahiers individuels : [Profil A — Web3](docs/CAHIER_DES_CHARGES_PROFIL_A_W
 │       ├── chain-bridge/   # Frontière n8n ↔ blockchain (clé Reporter isolée)
 │       └── discord-bot/    # Boutons admin de résolution des revues manuelles
 ├── test/        # Tests Node racine (133) : bridge, lifecycle, WF3, Discord…
-└── docs/        # Cahiers des charges, rapports, revues
+└── docs/        # Documents internes au binôme (non versionnés)
 ```
 
 ## Démarrage rapide
@@ -195,4 +195,3 @@ La normalisation URL appliquée avant `keccak256` suit le cahier des charges : s
 - Le bridge refuse les champs inconnus, borne les requêtes, masque les erreurs RPC et exécute les scripts sans shell.
 - SQLite impose l'idempotence et un compare-and-swap atomique pour éviter les transactions ou alertes Discord concurrentes.
 - Une publication blockchain incertaine est toujours relue on-chain avant toute nouvelle tentative.
-- Voir la section Sécurisation du [cahier des charges](docs/CAHIER_DES_CHARGES.md).

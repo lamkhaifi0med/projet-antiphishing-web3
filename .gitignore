@@ -41,3 +41,6 @@ Thumbs.db
 # Documents de handoff locaux (contiennent des references aux secrets)
 docs/HANDOFF_BINOME.md
 SECRETS_WHATSAPP.txt
+
+# Docs internes au binome (locaux uniquement)
+docs/
