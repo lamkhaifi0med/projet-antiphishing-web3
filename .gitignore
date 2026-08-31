@@ -37,3 +37,7 @@ __pycache__/
 .DS_Store
 Thumbs.db
 .vscode/settings.json
+
+# Documents de handoff locaux (contiennent des references aux secrets)
+docs/HANDOFF_BINOME.md
+SECRETS_WHATSAPP.txt
