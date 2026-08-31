@@ -1,27 +1,49 @@
 # Anti-Phishing Web3 — Bouclier communautaire par IA Générative & Blockchain
 
-Prototype de détection, d'analyse et de blocage automatisé des menaces de phishing Web3 :
-**signalement → orchestration n8n → analyse LLM (Gemini) → blacklist décentralisée on-chain (Polygon Amoy) → alertes Discord**.
+Pipeline complet de détection, d'analyse et de blocage automatisé des menaces de phishing Web3 :
+**signalement → orchestration n8n → analyse LLM (Gemini, fallback NVIDIA) → blacklist décentralisée on-chain (Polygon Amoy) → alertes Discord → vérification publique**.
 
 Stage de 40 jours — binôme. Voir [PLAN.md](PLAN.md) et [docs/CAHIER_DES_CHARGES.md](docs/CAHIER_DES_CHARGES.md).
 
-## État du projet — 03/08/2026
+## État du projet — 31/08/2026 : pipeline complet opérationnel ✅
 
-- **Profil A — Web3 / sécurité : environ 95 %**. Contrat, scripts, bridge interne, WF3, WF4, durcissement Docker, tests et CI sont livrés sur `main`.
-- **WF3 et WF4 sont volontairement inactifs** : ils attendent les credentials locaux et le test d'intégration contrôlé.
-- **WF1 et WF2 restent à intégrer par Profil B**, avec l'amélioration du rappel IA.
-- Le pipeline complet signalement → IA → blockchain → Discord → vérification publique n'est donc pas encore déclaré E2E.
+Le pipeline E2E est **prouvé en conditions réelles**, plusieurs fois, sur des URLs de phishing actives :
 
-Le détail vérifié de la contribution Web3 se trouve dans [le cahier individuel Profil A](docs/CAHIER_DES_CHARGES_PROFIL_A_WEB3.md). Les instructions d'exploitation et d'activation sont dans [le guide n8n](n8n/README.md).
+1. **WF1 — Ingestion** : webhook + formulaire, validation stricte, rate limiting, déduplication on-chain (une URL déjà blacklistée ne repart pas en analyse).
+2. **WF2 — Analyse** : fetch sandboxé (conteneur dédié, sans exécution JS), features URL déterministes (TLD, âge WHOIS, homoglyphes, **proximité de marque / typosquat** sur 22 marques Web3), analyse LLM structurée (Gemini primaire, NVIDIA NIM fallback), score combiné `0.7×IA + 0.3×features`.
+3. **WF3 — Action** : verdict `malicious` avec score ≥ 0,80 → publication on-chain automatique via le chain-bridge ; zone grise → **revue manuelle** ; alerte Discord détaillée avec explication du score en langage simple.
+4. **Bot Discord de résolution** : les cas en revue manuelle sont postés dans `#manual-review` avec les boutons **✅ Publier on-chain / ❌ Rejeter**, réservés aux administrateurs. Un clic publie (ou rejette) et met à jour le journal — plus aucun cul-de-sac opérationnel.
+5. **WF4 — Vérification** : `GET /check` public (lecture seule on-chain) + portail web de consultation.
+
+Preuves on-chain récentes (URLs de phishing réelles) :
+
+| Cas                                          | Score  | Transaction                                                                                                           |
+| -------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------- |
+| Phishing Ledger (OpenPhish)                  | 0,865  | [0xf77442ad…86af](https://amoy.polygonscan.com/tx/0xf77442ad3a4a5c447ae0f012b06835e4ae10ca67c7d523a8dd1e0d90ad1c86af) |
+| icueoe.top (Ledger phish)                    | ≥ 0,80 | [0x9c73fa5d…77d5](https://amoy.polygonscan.com/tx/0x9c73fa5dd41ff44b30dbbea3c141e6bbee7ba6d64e4991754b2828019e9977d5) |
+| pancakeswapo.finance (typosquat PancakeSwap) | 0,803  | [0x56a78903…6949](https://amoy.polygonscan.com/tx/0x56a789033632451c74827e654684efe6e9868720633633f6c40093323fd96949) |
+
+Résultats IA (prompt v2.2 gelé, dataset 72 entrées, Gemini) : **précision 100 %, rappel 80,6 %, F1 89,2 %** — critères d'acceptation atteints (≥ 85 % / ≥ 80 %). Détails dans [ai/prompts/FROZEN_V2_2.md](ai/prompts/FROZEN_V2_2.md) et [ai/eval](ai/eval).
+
+Les cahiers individuels : [Profil A — Web3](docs/CAHIER_DES_CHARGES_PROFIL_A_WEB3.md), [Profil B — IA](docs/CAHIER_DES_CHARGES_PROFIL_B_IA.md). Instructions d'exploitation : [n8n/README.md](n8n/README.md).
 
 ## Structure du dépôt
 
 ```
-├── contracts/   # Hardhat : smart contract PhishingRegistry, tests, déploiement
-├── scripts/     # Interaction blockchain (ethers.js) : report, check, listen
-├── ai/          # Templates de prompts, dataset d'évaluation, scripts d'éval
-├── n8n/         # docker-compose.yml + workflows exportés (JSON)
-└── docs/        # Cahiers des charges, présentation, rapport
+├── contracts/   # Hardhat : smart contract PhishingRegistry, tests, déploiement, audit
+├── scripts/     # Interaction blockchain (ethers.js) : report, check, listen, remove
+├── ai/          # Prompts (v2.2 gelé), client LLM, dataset 72 entrées, évaluations
+├── n8n/         # docker-compose (7 services), workflows WF1-WF4, bridge, portail
+│   ├── bridge/         # Journal des signalements (JSONL, API authentifiée)
+│   ├── capture/        # Fetch sandboxé des sites suspects
+│   ├── analysis/       # Features URL + appel LLM
+│   ├── proxy/          # Point d'entrée public (nginx, :8080)
+│   ├── portal/         # Page web de vérification
+│   └── services/
+│       ├── chain-bridge/   # Frontière n8n ↔ blockchain (clé Reporter isolée)
+│       └── discord-bot/    # Boutons admin de résolution des revues manuelles
+├── test/        # Tests Node racine (133) : bridge, lifecycle, WF3, Discord…
+└── docs/        # Cahiers des charges, rapports, revues
 ```
 
 ## Démarrage rapide
@@ -31,16 +53,29 @@ Prérequis : Node.js ≥ 22, Docker Desktop, Git.
 ```bash
 # 1. Cloner et installer
 git clone <repo-url> && cd projet_stage
+npm install
 
 # 2. Configurer les secrets (jamais commités)
-copy .env.example .env    # puis remplir les valeurs
+copy .env.example .env            # clés RPC + wallets (racine)
+copy n8n\.env.example n8n\.env    # clés API IA, secrets services, Discord
 
-# 3. Lancer n8n
+# 3. Lancer la stack complète (7 conteneurs)
 cd n8n && docker compose up -d
 
-# 4. Compiler et tester le contrat
-cd contracts && npm install && npx hardhat test
+# 4. Vérifier
+docker compose ps                  # tous les services doivent être "healthy"
+curl http://localhost:8080/health
+
+# 5. Tester le pipeline (URL de démonstration)
+curl -X POST http://localhost:8080/webhook/report -H "Content-Type: application/json" ^
+  -d "{\"type\":\"url\",\"value\":\"https://demo-phishing.invalid/claim\",\"reporterContact\":\"demo@example.com\"}"
+
+# Tests hors ligne (aucun réseau requis)
+cd .. && npm run test:all          # 133 tests racine + suites de tous les services
+cd contracts && npm install && npx hardhat test   # 13 tests contrat
 ```
+
+Le portail de vérification est servi sur `http://localhost:8080/` ; l'interface n8n sur `http://localhost:5678`.
 
 ## Contrat déployé — Polygon Amoy
 
@@ -55,23 +90,36 @@ Le registre `PhishingRegistry` est déployé et vérifié publiquement :
 
 L'adresse `Reporter` est autorisée à publier les signalements. L'adresse `Owner` reste réservée au déploiement, à la gestion des reporters et à la correction des faux positifs.
 
-Test d'intégration du cycle on-chain réalisé avec l'URL réservée `demo-phishing.invalid/wallet-drainer` : https://amoy.polygonscan.com/tx/0x208b9ccdfe1f0daf464321e571b341b280694c4bfc364d590267794c50a33943. Cette preuve couvre report → event → check au niveau blockchain ; elle ne remplace pas le test E2E commun WF1 → WF2 → WF3 → Discord → WF4, encore à réaliser. Cette entrée est une donnée de démonstration, pas une URL de phishing réelle.
+Test d'intégration du cycle on-chain réalisé avec l'URL réservée `demo-phishing.invalid/wallet-drainer` : https://amoy.polygonscan.com/tx/0x208b9ccdfe1f0daf464321e571b341b280694c4bfc364d590267794c50a33943. Le test E2E commun WF1 → WF2 → WF3 → Discord → WF4 a depuis été réalisé plusieurs fois sur des cas réels (voir les preuves en tête de ce document). Cette entrée est une donnée de démonstration, pas une URL de phishing réelle.
 
 Le cycle de correction d'un faux positif a aussi été validé avec `false-positive.invalid/remove-me` : [signalement](https://amoy.polygonscan.com/tx/0xde03a89b43467363178faf145a0b74bb96a5a599b1f0af875d3c83dae1d4b459) puis [désactivation par Owner](https://amoy.polygonscan.com/tx/0x55cad45e7f376143dbaf67cb53546fef805a5e026d64151419c6cac303ade17c). Cette URL réservée `.invalid` n'est pas une menace réelle.
 
-## Architecture d'intégration Profil A
+## Architecture d'intégration
 
 n8n n'exécute jamais directement un shell blockchain et ne monte pas les scripts de l'hôte. Il appelle un service `chain-bridge` interne authentifié, qui valide des schémas JSON fermés puis lance les scripts avec `spawn` et `shell: false`. Seule la clé Reporter testnet entre dans ce conteneur ; la clé Owner reste hors de n8n.
 
-| Composant          | Rôle                                                                     | État                        |
-| ------------------ | ------------------------------------------------------------------------ | --------------------------- |
-| `PhishingRegistry` | Registre on-chain vérifiable des URLs et wallets actifs                  | Déployé et vérifié          |
-| Chain bridge       | Frontière sécurisée entre n8n, les clés et les scripts ethers.js         | Implémenté et testé         |
-| WF3                | Décision, publication/recheck/retry, cycle persistant et alertes Discord | Implémenté, `active: false` |
-| WF4                | `GET /check`, lecture seule on-chain et réponse publique filtrée         | Implémenté, `active: false` |
-| WF1 / WF2          | Ingestion, déduplication, capture et analyse IA                          | À intégrer par Profil B     |
+| Composant          | Rôle                                                                     | État                         |
+| ------------------ | ------------------------------------------------------------------------ | ---------------------------- |
+| `PhishingRegistry` | Registre on-chain vérifiable des URLs et wallets actifs                  | Déployé, vérifié, alimenté   |
+| Proxy nginx        | Point d'entrée public unique (:8080), rate limiting                      | En production locale         |
+| WF1 / WF2          | Ingestion, déduplication, capture sandboxée et analyse IA                | Opérationnels (live E2E)     |
+| WF3                | Décision, publication/recheck/retry, cycle persistant et alertes Discord | Opérationnel (live E2E)      |
+| WF4                | `GET /check`, lecture seule on-chain et réponse publique filtrée         | Opérationnel (live E2E)      |
+| Chain bridge       | Frontière sécurisée entre n8n, les clés et les scripts ethers.js         | Opérationnel (SQLite CAS)    |
+| Bridge journal     | Journal JSONL des signalements, API authentifiée + flux public borné     | Opérationnel                 |
+| Bot Discord        | Résolution des revues manuelles par boutons admin (publier / rejeter)    | Opérationnel (testé en réel) |
+| Portail            | Page web publique de vérification d'URL/wallet                           | Opérationnel                 |
 
 WF3 applique les seuils suivants : verdict `malicious` avec `scoreFinal ≥ 0,80` → publication ; `suspicious` ou `malicious` entre `0,50` et `0,79` → revue manuelle ; `legitimate` ou score inférieur à `0,50` → journalisation sans transaction.
+
+### Revue manuelle — bot Discord
+
+Chaque cas en zone grise est posté dans le canal `#manual-review` avec le détail complet (cible défangée, verdict IA, indicateurs, explication du score en langage simple) et deux boutons réservés aux administrateurs :
+
+- **✅ Publier on-chain** : refang de l'URL, publication via le chain-bridge (mêmes garanties que WF3 : retries, relecture on-chain), puis mise à jour du journal avec le hash de transaction. Une cible déjà au registre est reconnue (`already_blacklisted`) sans double transaction.
+- **❌ Rejeter** : statut `dismissed` dans le journal, aucune transaction.
+
+Le bot est un service autonome **sans dépendance npm** (WebSocket et fetch natifs Node 22), protégé contre le double-clic (relecture de l'état avant chaque action) et ne postant jamais deux fois le même cas.
 
 ## Scripts blockchain (intégration n8n)
 
@@ -122,10 +170,11 @@ La normalisation URL appliquée avant `keccak256` suit le cahier des charges : s
 ## Qualité vérifiée
 
 - **13/13 tests Hardhat** ; couverture du contrat : **100 % lignes / 92,31 % branches**.
-- **118/118 tests Node** couvrant les entrées, lectures/publications, erreurs, bridge, lifecycle SQLite, concurrence, retries, Discord et définitions WF3/WF4.
+- **133/133 tests Node racine** + suites dédiées par service (bridge, capture, analyse, bot Discord, workflows) — tous hors ligne, aucun réseau requis.
+- **Évaluation IA gelée et reproductible** : dataset 72 entrées, prompt v2.2, précision 100 % / rappel 80,6 % / F1 89,2 % (Gemini primaire) ; fallback NVIDIA benchmarké. Test automatisé de résistance au prompt-injection (RF-A7).
 - **Slither 0.11.5** : aucune alerte critique, haute, moyenne ou faible ; une information `pragma` justifiée.
 - **CI GitHub** : compilation, tests/couverture Hardhat, syntaxe JavaScript, tests Node et audit des dépendances.
-- **Conteneur bridge durci** validé : non-root, lecture seule, capabilities supprimées, `no-new-privileges` et aucune exposition réseau publique.
+- **Conteneurs durcis** : non-root, lecture seule, capabilities supprimées, `no-new-privileges`, réseaux internes segmentés (le journal et les clés ne sont jamais exposés publiquement).
 
 ## Réseau blockchain
 

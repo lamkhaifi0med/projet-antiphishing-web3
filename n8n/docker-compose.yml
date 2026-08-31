@@ -276,6 +276,58 @@ services:
       retries: 5
       start_period: 5s
 
+  # Bot Discord de resolution des revues manuelles : poste chaque cas
+  # manual_review avec des boutons Publier/Rejeter reserves aux
+  # administrateurs du serveur. Connexion gateway sortante uniquement
+  # (websocket) : aucun port entrant, aucun endpoint public.
+  discord-bot:
+    build:
+      context: ..
+      dockerfile: n8n/services/discord-bot/Dockerfile
+    container_name: anti-phishing-discord-bot
+    restart: unless-stopped
+    expose:
+      - "8790"
+    environment:
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN:?manquant - voir n8n/.env.example}
+      - DISCORD_MANUAL_REVIEW_CHANNEL_ID=${DISCORD_MANUAL_REVIEW_CHANNEL_ID:?manquant - voir n8n/.env.example}
+      - DISCORD_ADMIN_ROLE_ID=${DISCORD_ADMIN_ROLE_ID:-}
+      - BRIDGE_URL=http://bridge:8787
+      - BRIDGE_SHARED_SECRET=${BRIDGE_SHARED_SECRET:?manquant - voir n8n/README.md}
+      - CHAIN_BRIDGE_URL=http://chain-bridge:3001
+      - CHAIN_BRIDGE_TOKEN=${CHAIN_BRIDGE_TOKEN:?manquante - voir n8n/README.md}
+      - BOT_STATE_PATH=/data/posted.json
+    volumes:
+      - discord_bot_state:/data
+    networks:
+      - bridge_internal
+      # Sortie Internet pour la gateway/REST Discord, aucun port entrant.
+      - blockchain_egress
+    read_only: true
+    tmpfs:
+      - /tmp:size=8m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    depends_on:
+      bridge:
+        condition: service_healthy
+      chain-bridge:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:8790/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 3s
+      retries: 10
+      start_period: 20s
+
 volumes:
   n8n_data:
     name: anti_phishing_n8n_data
@@ -283,6 +335,8 @@ volumes:
     name: anti_phishing_chain_bridge_state
   bridge_data:
     name: anti_phishing_bridge_data
+  discord_bot_state:
+    name: anti_phishing_discord_bot_state
 
 networks:
   frontend:

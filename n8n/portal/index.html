@@ -770,6 +770,8 @@
           return { cls: "published", label: "▲ ON-CHAIN" };
         if (record.status === "manual_review")
           return { cls: "review", label: "◆ REVUE" };
+        if (record.status === "dismissed")
+          return { cls: "clean", label: "✓ REJETE (ADMIN)" };
         if (record.status === "failed")
           return { cls: "failed", label: "○ CAPTURE KO" };
         if (record.verdict === "legitimate")

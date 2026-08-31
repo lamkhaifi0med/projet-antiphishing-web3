@@ -143,6 +143,9 @@ const REPORT_STATUSES = new Set([
   "reported",
   "already_blacklisted",
   "failed",
+  // Resolution admin d'une revue manuelle (bot Discord) : rejet explicite,
+  // sans publication on-chain.
+  "dismissed",
 ]);
 const VERDICTS = new Set(["malicious", "suspicious", "legitimate", null]);
 const DECISIONS = new Set(["reporting", "manual_review", "logged_only", null]);
