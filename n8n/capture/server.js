@@ -4,13 +4,55 @@
 const crypto = require("node:crypto");
 const http = require("node:http");
 const { captureUrl } = require("../../ai/tools/capture-pages/lib/fetcher");
-const { extractTextExcerpt, buildStructuralDigest } = require("../../ai/tools/capture-pages/lib/htmlToDigest");
+const {
+  extractTextExcerpt,
+  buildStructuralDigest,
+} = require("../../ai/tools/capture-pages/lib/htmlToDigest");
 
 const MAX_BODY_BYTES = 4 * 1024;
 
+// Un certificat wildcard (*.exemple.tld) ne couvre qu'un seul label : sur
+// les hebergeurs gratuits (vercel.app, netlify.app, github.io...), la forme
+// www.<projet>.<hebergeur> echoue toujours en TLS alors que la page reelle
+// vit a l'apex. La normalisation on-chain supprime deja le prefixe www.,
+// donc les deux formes designent la meme entree : on reessaie une seule
+// fois sans www., avec la verification de certificat toujours active.
+function isCertificateNameMismatch(error) {
+  return (
+    error?.code === "ERR_TLS_CERT_ALTNAME_INVALID" ||
+    /altnames|does not match certificate/i.test(String(error?.message ?? ""))
+  );
+}
+
+function withoutWww(url) {
+  const parsed = new URL(url);
+  if (!/^www\./i.test(parsed.hostname)) return null;
+  parsed.hostname = parsed.hostname.replace(/^www\./i, "");
+  return parsed.toString();
+}
+
+async function captureWithApexFallback(capture, url) {
+  try {
+    return await capture(url);
+  } catch (error) {
+    const apexUrl = isCertificateNameMismatch(error) ? withoutWww(url) : null;
+    if (!apexUrl) throw error;
+    const result = await capture(apexUrl);
+    return {
+      ...result,
+      finalUrl: result.finalUrl || apexUrl,
+      wwwFallback: true,
+    };
+  }
+}
+
 function sendJson(response, status, body) {
   const payload = JSON.stringify(body);
-  response.writeHead(status, { "content-type": "application/json", "content-length": Buffer.byteLength(payload), "cache-control": "no-store" });
+  response.writeHead(status, {
+    "content-type": "application/json",
+    "content-length": Buffer.byteLength(payload),
+    "cache-control": "no-store",
+  });
   response.end(payload);
 }
 
@@ -27,48 +69,84 @@ function readBody(request) {
     let size = 0;
     request.on("data", (chunk) => {
       size += chunk.length;
-      if (size > MAX_BODY_BYTES) return reject(Object.assign(new Error("Corps trop volumineux."), { status: 413 }));
+      if (size > MAX_BODY_BYTES)
+        return reject(
+          Object.assign(new Error("Corps trop volumineux."), { status: 413 }),
+        );
       chunks.push(chunk);
     });
     request.on("end", () => {
-      try { resolve(JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}")); }
-      catch { reject(Object.assign(new Error("JSON invalide."), { status: 400 })); }
+      try {
+        resolve(JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}"));
+      } catch {
+        reject(Object.assign(new Error("JSON invalide."), { status: 400 }));
+      }
     });
     request.on("error", reject);
   });
 }
 
 function createCaptureServer({ secret, capture = captureUrl }) {
-  if (typeof secret !== "string" || secret.length < 32) throw new Error("BRIDGE_SHARED_SECRET invalide.");
+  if (typeof secret !== "string" || secret.length < 32)
+    throw new Error("BRIDGE_SHARED_SECRET invalide.");
   return http.createServer(async (request, response) => {
     try {
-      if (request.method === "GET" && request.url === "/health") return sendJson(response, 200, { status: "ok" });
-      if (!authorized(request, secret)) return sendJson(response, 401, { error: "unauthorized" });
-      if (request.method !== "POST" || request.url !== "/capture") return sendJson(response, 404, { error: "not_found" });
+      if (request.method === "GET" && request.url === "/health")
+        return sendJson(response, 200, { status: "ok" });
+      if (!authorized(request, secret))
+        return sendJson(response, 401, { error: "unauthorized" });
+      if (request.method !== "POST" || request.url !== "/capture")
+        return sendJson(response, 404, { error: "not_found" });
       const body = await readBody(request);
-      if (Object.keys(body).some((key) => key !== "url") || typeof body.url !== "string" || body.url.length > 2048) {
+      if (
+        Object.keys(body).some((key) => key !== "url") ||
+        typeof body.url !== "string" ||
+        body.url.length > 2048
+      ) {
         return sendJson(response, 400, { error: "invalid_url" });
       }
       const parsed = new URL(body.url);
-      if (!["http:", "https:"].includes(parsed.protocol) || parsed.username || parsed.password) return sendJson(response, 400, { error: "invalid_url" });
-      const result = await capture(body.url);
-      if (!result.html) return sendJson(response, 422, { error: "unusable_response", details: result });
+      if (
+        !["http:", "https:"].includes(parsed.protocol) ||
+        parsed.username ||
+        parsed.password
+      )
+        return sendJson(response, 400, { error: "invalid_url" });
+      const result = await captureWithApexFallback(capture, body.url);
+      if (!result.html)
+        return sendJson(response, 422, {
+          error: "unusable_response",
+          details: result,
+        });
       sendJson(response, 200, {
         finalUrl: result.finalUrl || body.url,
         httpStatus: result.httpStatus,
         truncated: Boolean(result.truncated),
+        wwwFallback: Boolean(result.wwwFallback),
         textExcerpt: extractTextExcerpt(result.html),
-        structuralDigest: buildStructuralDigest(result.html, new URL(result.finalUrl || body.url).hostname),
+        structuralDigest: buildStructuralDigest(
+          result.html,
+          new URL(result.finalUrl || body.url).hostname,
+        ),
       });
     } catch (error) {
-      const clientError = ["SSRF_BLOCKED", "UNSUPPORTED_PROTOCOL", "ENOTFOUND"].includes(error.code);
-      sendJson(response, error.status || (clientError ? 422 : 502), { error: clientError ? "capture_blocked" : "capture_failed", message: error.message });
+      const clientError = [
+        "SSRF_BLOCKED",
+        "UNSUPPORTED_PROTOCOL",
+        "ENOTFOUND",
+      ].includes(error.code);
+      sendJson(response, error.status || (clientError ? 422 : 502), {
+        error: clientError ? "capture_blocked" : "capture_failed",
+        message: error.message,
+      });
     }
   });
 }
 
 if (require.main === module) {
-  const server = createCaptureServer({ secret: process.env.BRIDGE_SHARED_SECRET || "" });
+  const server = createCaptureServer({
+    secret: process.env.BRIDGE_SHARED_SECRET || "",
+  });
   server.listen(Number(process.env.CAPTURE_PORT || 8788), "0.0.0.0");
 }
 
