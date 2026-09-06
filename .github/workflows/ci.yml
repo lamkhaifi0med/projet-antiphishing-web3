@@ -82,6 +82,8 @@ jobs:
           REGISTRY_CONTRACT_ADDRESS: "0x8d51dB4a92c338075360A17AcA005ec282fE1f23"
           REGISTRY_DEPLOYMENT_BLOCK: "43090902"
           REPORTER_PRIVATE_KEY: "0x0000000000000000000000000000000000000000000000000000000000000001"
+          DISCORD_BOT_TOKEN: ci-placeholder-not-a-real-secret
+          DISCORD_MANUAL_REVIEW_CHANNEL_ID: "000000000000000000"
         run: docker compose config --quiet
 
       - name: Run interaction script unit tests
